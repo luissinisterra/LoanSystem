@@ -1,5 +1,6 @@
 package app.views;
 
+import app.Application;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import app.manager.FormsManager;
@@ -19,6 +20,11 @@ public class Login extends JPanel {
         txtPassword = new JPasswordField();
         chRememberMe = new JCheckBox("Remember me");
         cmdLogin = new JButton("Login");
+
+        cmdLogin.addActionListener(e -> {
+            Application.login();
+        });
+
         JPanel panel = new JPanel(new MigLayout("wrap,fillx,insets 35 45 30 45", "fill,250:280"));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "arc:20;" +
