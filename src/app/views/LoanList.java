@@ -1,6 +1,7 @@
 package app.views;
 
-import app.views.NewLoanForm;
+import app.views.forms.EditLoanForm;
+import app.views.forms.PanelLogin;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 
@@ -10,6 +11,9 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 
 public class LoanList extends JPanel {
+
+    private DefaultTableModel model;
+    private JTable table;
 
     public LoanList() {
         init();
@@ -50,13 +54,50 @@ public class LoanList extends JPanel {
 
         // Acción para el botón Nuevo
         newButton.addActionListener(e -> {
-            app.views.NewLoanForm newLoanForm = new NewLoanForm();
+            PanelLogin.NewLoanForm newLoanForm = new PanelLogin.NewLoanForm();
             JFrame frame = new JFrame("Nuevo Préstamo");
             frame.setContentPane(newLoanForm);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
+        });
+
+        editButton.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                // Obtener los datos del préstamo seleccionado
+                String client = (String) model.getValueAt(selectedRow, 0);
+                String amount = (String) model.getValueAt(selectedRow, 1);
+                String interestRate = (String) model.getValueAt(selectedRow, 2);
+                String term = (String) model.getValueAt(selectedRow, 3);
+                String status = (String) model.getValueAt(selectedRow, 4);
+                String date = (String) model.getValueAt(selectedRow, 5);
+
+                // Abrir el formulario de edición
+                EditLoanForm editLoanForm = new EditLoanForm(client, amount, interestRate, term, status, date);
+                JFrame frame = new JFrame("Editar Préstamo");
+                frame.setContentPane(editLoanForm);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione un préstamo para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
+        // Acción para el botón Eliminar
+        deleteButton.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este préstamo?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    model.removeRow(selectedRow); // Elimina la fila seleccionada
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione un préstamo para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
         });
 
         // Agregar componentes a la barra de herramientas
@@ -66,8 +107,10 @@ public class LoanList extends JPanel {
         toolBar.add(editButton);
         toolBar.add(deleteButton);
 
-        // Tabla de préstamos
-        DefaultTableModel model = new DefaultTableModel();
+        // Modelo de la tabla
+        model = new DefaultTableModel();
+
+        // Columnas de la tabla
         model.addColumn("Cliente");
         model.addColumn("Monto");
         model.addColumn("Tasa de Interés");
@@ -80,7 +123,8 @@ public class LoanList extends JPanel {
         model.addRow(new Object[]{"María López", "$15,000", "7%", "24", "Activo", "2023-09-15"});
         model.addRow(new Object[]{"Carlos Sánchez", "$20,000", "6%", "36", "Inactivo", "2023-08-20"});
 
-        JTable table = new JTable(model);
+        // Crear la tabla con el modelo
+        table = new JTable(model);
         table.setRowHeight(40); // Altura de las filas
         table.setShowHorizontalLines(true);
         table.setShowVerticalLines(true);
