@@ -38,10 +38,10 @@ public class FinancialReport extends JPanel {
         // Tabla con columnas más anchas
         String[] columns = {"Concepto", "Trim. 1", "Trim. 2", "Trim. 3", "Trim. 4"};
         Object[][] data = {
-                {"Ingresos Operativos", "$120,000", "$135,000", "$142,000", "$160,000"},
-                {"Gastos Administrativos", "$45,000", "$48,000", "$52,000", "$55,000"},
+                {"Ingresos", "$120,000", "$135,000", "$142,000", "$160,000"},
+                {"Gastos", "$45,000", "$48,000", "$52,000", "$55,000"},
                 {"Beneficio Bruto", "$75,000", "$87,000", "$90,000", "$105,000"},
-                {"Impuestos Corporativos", "$18,000", "$21,000", "$23,000", "$26,000"},
+                {"Impuestos", "$18,000", "$21,000", "$23,000", "$26,000"},
                 {"Beneficio Neto Final", "$57,000", "$66,000", "$67,000", "$79,000"},
                 {"Flujo de Caja Operativo", "$49,000", "$58,000", "$60,000", "$72,000"}
         };
@@ -85,7 +85,7 @@ public class FinancialReport extends JPanel {
 
         cmdExport.setPreferredSize(new Dimension(300, 45));// Ancho aumentado
 
-        JButton cmdSapa = new JButton("Abrir Sapa");
+        JButton cmdSapa = new JButton("Opciones de reporte");
         cmdSapa.putClientProperty(FlatClientProperties.STYLE,
                 "[light]background:darken(@background,10%);" +
                         "[dark]background:lighten(@background,10%);" +
