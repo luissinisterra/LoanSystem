@@ -1,9 +1,7 @@
 package app.views.forms;
 
 import app.Application;
-import app.views.FinancialReport;
-import app.views.LoanDetails;
-import app.views.LoanList;
+import app.views.*;
 import app.views.FinancialReport;
 import app.views.forms.other.FormDashboard;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -87,6 +85,9 @@ public class MainForm extends JLayeredPane {
             } else if(index == 4) {
                 if (subIndex == 1) {
                     Application.showForm(new FinancialReport());
+                }
+                if (subIndex == 2) {
+                    Application.showForm(new Overheads());
                 }
 
             } else if (index == 6) {
