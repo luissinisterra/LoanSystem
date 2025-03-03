@@ -17,9 +17,7 @@ public class FormsManager {
         return instance;
     }
 
-    private FormsManager() {
-
-    }
+    private FormsManager() {}
 
     public void initApplication(Application application) {
         this.application = application;
