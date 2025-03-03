@@ -1,4 +1,4 @@
-package app.views.form.other;
+package app.views.forms.other;
 
 import com.formdev.flatlaf.FlatClientProperties;
 

@@ -24,7 +24,7 @@ import app.views.menu.mode.ToolBarAccentColor;
  */
 public class Menu extends JPanel {
 
-    private final String menuItems[][] = {
+    /*private final String menuItems[][] = {
             {"~MAIN~"},
             {"Dashboard"},
             {"~WEB APP~"},
@@ -38,6 +38,22 @@ public class Menu extends JPanel {
             {"Charts", "Apex", "Flot", "Peity", "Sparkline"},
             {"Icons", "Feather Icons", "Flag Icons", "Mdi Icons"},
             {"Special Pages", "Blank page", "Faq", "Invoice", "Profile", "Pricing", "Timeline"},
+            {"Logout"}
+    };*/
+
+    private final String menuItems[][] = {
+            {"~MAIN~"},
+            {"Dashboard"},
+            {"~LOANS~"},
+            {"New Loan", "Loan List", "Loan Details"},
+            {"~CUSTOMERS~"},
+            {"Customer Management", "Add Customer", "Customer List"},
+            {"~PAYMENTS~"},
+            {"Payment Processing", "Payment History"},
+            {"~REPORTS~"},
+            {"Financial Reports", "Loan Reports", "Customer Reports"},
+            {"~SETTINGS~"},
+            {"User Settings", "System Settings"},
             {"Logout"}
     };
 

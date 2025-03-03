@@ -1,4 +1,4 @@
-package app.views.form;
+package app.views.forms;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import javax.swing.JPanel;

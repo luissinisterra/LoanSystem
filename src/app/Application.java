@@ -1,8 +1,8 @@
 package app;
 
 import app.manager.FormsManager;
-import app.views.Login;
-import app.views.MainForm;
+import app.views.forms.Login;
+import app.views.forms.MainForm;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
