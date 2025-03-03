@@ -1,6 +1,7 @@
 package app.views.forms;
 
 import app.Application;
+import app.views.LoanDetails;
 import app.views.LoanList;
 import app.views.forms.other.FormDashboard;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -75,13 +76,14 @@ public class MainForm extends JLayeredPane {
                 Application.showForm(new FormDashboard());
             } else if (index == 1) {
                 if (subIndex == 1) {
-                    //Application.showForm(new FormInbox());
                     Application.showForm(new LoanList());
                 } else if (subIndex == 2) {
-                    Application.showForm(new FormRead());
+                    Application.showForm(new LoanDetails());
                 } else {
                     action.cancel();
                 }
+            } else if(index == 5) {
+
             } else if (index == 6) {
                 Application.logout();
             } else {
