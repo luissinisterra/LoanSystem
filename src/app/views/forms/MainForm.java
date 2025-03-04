@@ -3,7 +3,6 @@ package app.views.forms;
 import app.Application;
 import app.views.*;
 import app.views.FinancialReport;
-import app.views.forms.other.FormDashboard;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
