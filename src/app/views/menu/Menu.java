@@ -24,37 +24,20 @@ import app.views.menu.mode.ToolBarAccentColor;
  */
 public class Menu extends JPanel {
 
-    /*private final String menuItems[][] = {
-            {"~MAIN~"},
-            {"Dashboard"},
-            {"~WEB APP~"},
-            {"Email", "Inbox", "Read", "Compost"},
-            {"Chat"},
-            {"Calendar"},
-            {"~COMPONENT~"},
-            {"Advanced UI", "Cropper", "Owl Carousel", "Sweet Alert"},
-            {"Forms", "Basic Elements", "Advanced Elements", "Editors", "Wizard"},
-            {"~OTHER~"},
-            {"Charts", "Apex", "Flot", "Peity", "Sparkline"},
-            {"Icons", "Feather Icons", "Flag Icons", "Mdi Icons"},
-            {"Special Pages", "Blank page", "Faq", "Invoice", "Profile", "Pricing", "Timeline"},
-            {"Logout"}
-    };*/
-
     private final String menuItems[][] = {
-            {"~MAIN~"},
-            {"Dashboard"},
-            {"~LOANS~"},
-            {"New Loan", "Loan List", "Loan Details"},
-            {"~CUSTOMERS~"},
-            {"Customer Management", "Add Customer", "Customer List"},
-            {"~PAYMENTS~"},
-            {"Payment Processing", "Payment History"},
-            {"~ACCOUNTING~"},
-            {"Balance", "Loan Reports", "Overheads"},
-            {"~SETTINGS~"},
-            {"User Settings", "System Settings"},
-            {"Logout"}
+            {"~PRINCIPAL~"},
+            {"Panel de Control"},
+            {"~PRÉSTAMOS~"},
+            {"Nuevo Préstamo", "Lista de Préstamos", "Detalles del Préstamo"},
+            {"~CLIENTES~"},
+            {"Gestión de Clientes", "Agregar Cliente", "Lista de Clientes"},
+            {"~PAGOS~"},
+            {"Procesamiento de Pagos", "Historial de Pagos"},
+            {"~CONTABILIDAD~"},
+            {"Balance", "Reportes de Préstamos", "Gastos Generales"},
+            {"~CONFIGURACIÓN~"},
+            {"Configuración de Usuario", "Configuración del Sistema"},
+            {"Cerrar Sesión"}
     };
 
     public boolean isMenuFull() {
@@ -81,7 +64,7 @@ public class Menu extends JPanel {
 
     private final List<MenuEvent> events = new ArrayList<>();
     private boolean menuFull = true;
-    private final String headerName = "Loan system";
+    private final String headerName = "Sistema de préstamos";
 
     protected final boolean hideMenuTitleOnMinimum = true;
     protected final int menuTitleLeftInset = 5;
