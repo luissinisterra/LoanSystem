@@ -1,7 +1,6 @@
 package app.views.forms;
 
 import app.Application;
-import app.views.Dashboard;
 import app.views.LoanDetails;
 import app.views.LoanList;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -71,7 +70,7 @@ public class MainForm extends JLayeredPane {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             if (index == 0) {
-                Application.showForm(new Dashboard());
+                //Application.showForm(new Dashboard());
             } else if (index == 1) {
                 if (subIndex == 1) {
                     Application.showForm(new LoanList());
