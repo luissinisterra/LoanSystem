@@ -20,13 +20,13 @@ public class Register extends JPanel {
         txtUsername = new JTextField();
         txtPassword = new JPasswordField();
         txtConfirmPassword = new JPasswordField();
-        cmdRegister = new JButton("Sign Up");
+        cmdRegister = new JButton("Registrate");
 
         cmdRegister.addActionListener(e -> {
             if (isMatchPassword()) {
                 //  Do something here
             } else {
-                Notifications.getInstance().show(Notifications.Type.ERROR, "Passwords don't match. Try again!");
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Las contraseñas no coinciden");
             }
         });
 
@@ -36,11 +36,11 @@ public class Register extends JPanel {
                 "[light]background:darken(@background,3%);" +
                 "[dark]background:lighten(@background,3%)");
 
-        txtFirstName.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "First name");
-        txtLastName.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Last name");
-        txtUsername.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter your username or email");
-        txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter your password");
-        txtConfirmPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Re-enter your password");
+        txtFirstName.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nombres");
+        txtLastName.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Apellidos");
+        txtUsername.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ingresa tu usuario");
+        txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ingresa tu clave");
+        txtConfirmPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Vuelve a ingresar tu clave");
         txtPassword.putClientProperty(FlatClientProperties.STYLE, "" +
                 "showRevealButton:true");
         txtConfirmPassword.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -53,8 +53,8 @@ public class Register extends JPanel {
                 "focusWidth:0;" +
                 "innerFocusWidth:0");
 
-        JLabel lbTitle = new JLabel("Welcome to our Chat Application");
-        JLabel description = new JLabel("Join us to chat, connect, and make new friends. Sign up now and start chatting!");
+        JLabel lbTitle = new JLabel("¡Bienvenido a nuestra app de prestamos!");
+        JLabel description = new JLabel("¡Unete para tener un mejor control de tus prestamos y finanzas!");
         lbTitle.putClientProperty(FlatClientProperties.STYLE, "" +
                 "font:bold +10");
         description.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -64,17 +64,17 @@ public class Register extends JPanel {
 
         panel.add(lbTitle);
         panel.add(description);
-        panel.add(new JLabel("Full Name"), "gapy 10");
+        panel.add(new JLabel("Nombre completo"), "gapy 10");
         panel.add(txtFirstName, "split 2");
         panel.add(txtLastName);
-        panel.add(new JLabel("Gender"), "gapy 8");
+        panel.add(new JLabel("Genero"), "gapy 8");
         panel.add(createGenderPanel());
         panel.add(new JSeparator(), "gapy 5 5");
-        panel.add(new JLabel("Username or Email"));
+        panel.add(new JLabel("Nombre de usuario"));
         panel.add(txtUsername);
-        panel.add(new JLabel("Password"), "gapy 8");
+        panel.add(new JLabel("Clave"), "gapy 8");
         panel.add(txtPassword);
-        panel.add(new JLabel("Confirm Password"), "gapy 0");
+        panel.add(new JLabel("Confirmar clave"), "gapy 0");
         panel.add(txtConfirmPassword);
         panel.add(cmdRegister, "gapy 20");
         panel.add(createLoginLabel(), "gapy 10");
@@ -85,8 +85,8 @@ public class Register extends JPanel {
         JPanel panel = new JPanel(new MigLayout("insets 0"));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null");
-        jrMale = new JRadioButton("Male");
-        jrFemale = new JRadioButton("Female");
+        jrMale = new JRadioButton("Hombre");
+        jrFemale = new JRadioButton("Mujer");
         groupGender = new ButtonGroup();
         groupGender.add(jrMale);
         groupGender.add(jrFemale);
@@ -100,7 +100,7 @@ public class Register extends JPanel {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null");
-        JButton cmdLogin = new JButton("<html><a href=\"#\">Sign in here</a></html>");
+        JButton cmdLogin = new JButton("<html><a href=\"#\">Inicia sesión</a></html>");
         cmdLogin.putClientProperty(FlatClientProperties.STYLE, "" +
                 "border:3,3,3,3");
         cmdLogin.setContentAreaFilled(false);
@@ -108,7 +108,7 @@ public class Register extends JPanel {
         cmdLogin.addActionListener(e -> {
             FormsManager.getInstance().showForm(new Login());
         });
-        JLabel label = new JLabel("Already have an account ?");
+        JLabel label = new JLabel("¿Ya tienes una cuenta?");
         label.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten(@foreground,30%);" +
                 "[dark]foreground:darken(@foreground,30%)");

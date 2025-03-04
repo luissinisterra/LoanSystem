@@ -18,8 +18,8 @@ public class Login extends JPanel {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         txtUsername = new JTextField();
         txtPassword = new JPasswordField();
-        chRememberMe = new JCheckBox("Remember me");
-        cmdLogin = new JButton("Login");
+        chRememberMe = new JCheckBox("Recordarme");
+        cmdLogin = new JButton("Iniciar sesión");
 
         cmdLogin.addActionListener(e -> {
             Application.login();
@@ -40,11 +40,11 @@ public class Login extends JPanel {
                 "focusWidth:0;" +
                 "innerFocusWidth:0");
 
-        txtUsername.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter your username or email");
-        txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter your password");
+        txtUsername.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ingresa tu nombre de usuario o correo");
+        txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ingresa tu clave");
 
-        JLabel lbTitle = new JLabel("Welcome back!");
-        JLabel description = new JLabel("Please sign in to access your account");
+        JLabel lbTitle = new JLabel("¡Bienvenido de nuevo!");
+        JLabel description = new JLabel("Por favor inicia sesion para continuar");
         lbTitle.putClientProperty(FlatClientProperties.STYLE, "" +
                 "font:bold +10");
         description.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -53,9 +53,9 @@ public class Login extends JPanel {
 
         panel.add(lbTitle);
         panel.add(description);
-        panel.add(new JLabel("Username"), "gapy 8");
+        panel.add(new JLabel("Nombre de usuario"), "gapy 8");
         panel.add(txtUsername);
-        panel.add(new JLabel("Password"), "gapy 8");
+        panel.add(new JLabel("Clave"), "gapy 8");
         panel.add(txtPassword);
         panel.add(chRememberMe, "grow 0");
         panel.add(cmdLogin, "gapy 10");
@@ -67,7 +67,7 @@ public class Login extends JPanel {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null");
-        JButton cmdRegister = new JButton("<html><a href=\"#\">Sign up</a></html>");
+        JButton cmdRegister = new JButton("<html><a href=\"#\">Registrate</a></html>");
         cmdRegister.putClientProperty(FlatClientProperties.STYLE, "" +
                 "border:3,3,3,3");
         cmdRegister.setContentAreaFilled(false);
@@ -75,7 +75,7 @@ public class Login extends JPanel {
         cmdRegister.addActionListener(e -> {
             FormsManager.getInstance().showForm(new Register());
         });
-        JLabel label = new JLabel("Don't have an account ?");
+        JLabel label = new JLabel("¿No tienes una cuenta?");
         label.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten(@foreground,30%);" +
                 "[dark]foreground:darken(@foreground,30%)");
