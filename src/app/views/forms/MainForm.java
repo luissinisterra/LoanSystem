@@ -1,8 +1,8 @@
 package app.views.forms;
 
 import app.Application;
-import app.views.LoanDetails;
-import app.views.LoanList;
+import app.views.*;
+import app.views.FinancialReport;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
@@ -70,7 +70,7 @@ public class MainForm extends JLayeredPane {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             if (index == 0) {
-                //Application.showForm(new Dashboard());
+                //Application.showForm(new FormDashboard());
             } else if (index == 1) {
                 if (subIndex == 1) {
                     Application.showForm(new LoanList());
@@ -79,7 +79,13 @@ public class MainForm extends JLayeredPane {
                 } else {
                     action.cancel();
                 }
-            } else if(index == 5) {
+            } else if(index == 4) {
+                if (subIndex == 1) {
+                    Application.showForm(new FinancialReport());
+                }
+                if (subIndex == 2) {
+                    Application.showForm(new Overheads());
+                }
 
             } else if (index == 6) {
                 Application.logout();

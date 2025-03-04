@@ -1,7 +1,7 @@
 package app.views;
 
 import app.views.forms.EditLoanForm;
-import app.views.forms.PanelLogin;
+import app.views.forms.NewLoanForm;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 
@@ -54,7 +54,7 @@ public class LoanList extends JPanel {
 
         // Acción para el botón Nuevo
         newButton.addActionListener(e -> {
-            PanelLogin.NewLoanForm newLoanForm = new PanelLogin.NewLoanForm();
+            NewLoanForm newLoanForm = new NewLoanForm();
             JFrame frame = new JFrame("Nuevo Préstamo");
             frame.setContentPane(newLoanForm);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
