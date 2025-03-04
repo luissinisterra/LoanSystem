@@ -50,8 +50,8 @@ public class Menu extends JPanel {
             {"Customer Management", "Add Customer", "Customer List"},
             {"~PAYMENTS~"},
             {"Payment Processing", "Payment History"},
-            {"~REPORTS~"},
-            {"Financial Reports", "Loan Reports", "Customer Reports"},
+            {"~ACCOUNTING~"},
+            {"Balance", "Loan Reports", "Overheads"},
             {"~SETTINGS~"},
             {"User Settings", "System Settings"},
             {"Logout"}
@@ -81,7 +81,7 @@ public class Menu extends JPanel {
 
     private final List<MenuEvent> events = new ArrayList<>();
     private boolean menuFull = true;
-    private final String headerName = "Raven Channel";
+    private final String headerName = "Loan system";
 
     protected final boolean hideMenuTitleOnMinimum = true;
     protected final int menuTitleLeftInset = 5;

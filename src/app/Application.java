@@ -91,8 +91,8 @@ public class Application extends JFrame {
             //  app.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
             app.setVisible(true);
         });
-    }
+                }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
-}
+                // Variables declaration - do not modify//GEN-BEGIN:variables
+                // End of variables declaration//GEN-END:variables
+                }
