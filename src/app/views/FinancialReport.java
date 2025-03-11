@@ -8,6 +8,8 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import app.util.ExportarExcel;
 
 public class FinancialReport extends JPanel {
 
@@ -107,6 +109,22 @@ public class FinancialReport extends JPanel {
                 frame.setVisible(true);
             }
         });
+
+        //ActionListener para boton de exportar
+        cmdExport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ExportarExcel obj;
+
+                try {
+                    obj = new ExportarExcel();
+                    obj.exportarExcel(table);
+                } catch (IOException ex) {
+                    System.out.println("Error: " + ex);
+                }
+            }
+        });
+
 
         // Composición final
         panel.add(lbTitle, "gapbottom 15");
