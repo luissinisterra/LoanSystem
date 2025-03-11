@@ -34,7 +34,7 @@ public class Menu extends JPanel {
             {"~PAGOS~"},
             {"Procesamiento de Pagos", "Historial de Pagos"},
             {"~CONTABILIDAD~"},
-            {"Balance", "Reportes de Préstamos", "Gastos Generales"},
+            {"Balance", "Reportes de Préstamos", "Gastos Generales", "Ganancias Generales"},
             {"~CONFIGURACIÓN~"},
             {"Configuración de Usuario", "Configuración del Sistema"},
             {"Cerrar Sesión"}
