@@ -1,4 +1,4 @@
-package app.views;
+package app.view;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -9,9 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Overheads extends JPanel {
+public class Incomes extends JPanel {
 
-    public Overheads() {
+    public Incomes() {
         init();
     }
 
@@ -26,18 +26,18 @@ public class Overheads extends JPanel {
                         "[dark]background:lighten(@background,3%)");
 
         // Título modificado
-        JLabel lbTitle = new JLabel("Gastos / Salidas");
+        JLabel lbTitle = new JLabel("Ingresos / Entradas");
         lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +12");
 
         // Tabla de 2 columnas
         String[] columns = {"Detalles", "Valor"};
         Object[][] data = {
-                {"Gasolina", "30.000"},
-                {"Gasolina", "30.000"},
-                {"Gasolina", "30.00"},
-                {"ENTREGA_", "400.000"},
-                {"Gasolina", "20.000"},
-                {"Ajuste crédito sergio", "40.000"}
+                {"Venta de producto", "2.500.000"},
+                {"Donación", "500.000"},
+                {"Servicio prestado", "1.200.000"},
+                {"Inversión", "3.000.000"},
+                {"Venta de producto", "1.800.000"},
+                {"Ajuste crédito", "400.000"}
         };
 
         DefaultTableModel model = new DefaultTableModel(data, columns) {
@@ -66,13 +66,12 @@ public class Overheads extends JPanel {
         scrollPane.setPreferredSize(new Dimension(750, 400));
 
         // Total
-        JLabel lblTotal = new JLabel("Total: $1.175");
+        JLabel lblTotal = new JLabel("Total: $9.400.000");
         lblTotal.putClientProperty(FlatClientProperties.STYLE, "font:bold +3");
 
         // Configuración de botones idénticos
-        // Botones (configuración mejorada)
-        JButton btnOpciones = new JButton("Agregar gasto");
-        JButton btnExportar = new JButton("Eliminar gasto");
+        JButton btnOpciones = new JButton("Agregar ingreso");
+        JButton btnExportar = new JButton("Eliminar ingreso");
 
         // Estilo botones
         String buttonStyle =
@@ -88,9 +87,9 @@ public class Overheads extends JPanel {
         btnOpciones.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                app.views.NewOverhead newOverhead = new NewOverhead();
-                JFrame frame = new JFrame("Agregar gasto");
-                frame.setContentPane(newOverhead);
+                app.view.NewIncome newIncome = new NewIncome();
+                JFrame frame = new JFrame("Agregar ingreso");
+                frame.setContentPane(newIncome);
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.pack();
                 frame.setLocationRelativeTo(null);
@@ -98,7 +97,7 @@ public class Overheads extends JPanel {
             }
         });
 
-        Dimension buttonSize = new Dimension(100, 20);
+        Dimension buttonSize = new Dimension(120, 20); // Aumenté el ancho para texto más largo
         btnOpciones.setPreferredSize(buttonSize);
         btnExportar.setPreferredSize(buttonSize);
 

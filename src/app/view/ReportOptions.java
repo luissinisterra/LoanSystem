@@ -1,14 +1,13 @@
-package app.views;
+package app.view;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import java.awt.*;
 
-public class NewOverhead extends JPanel {
+public class ReportOptions extends JPanel {
 
-    public NewOverhead () {
+    public ReportOptions() {
         init();
     }
 
@@ -26,28 +25,36 @@ public class NewOverhead extends JPanel {
         lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +16");
 
         // Componentes de filtrado
-        JComboBox<String> cbType = new JComboBox<>(new String[]{"Gastos", "Salida"});
-        JTextField txtDetail = createFormField("Detalle");
-        JTextField txtValue = createFormField("Valor gasto/salida");
+        JTextField txtClient = createFormField("Buscar por cliente");
+        JComboBox<String> cbStatus = new JComboBox<>(new String[]{"Todos", "Activo", "Inactivo", "Pagado"});
+        JTextField txtDateStart = createFormField("Fecha inicial (dd/mm/aaaa)");
+        JTextField txtDateEnd = createFormField("Fecha final (dd/mm/aaaa)");
+        JTextField txtMinAmount = createFormField("Monto mínimo");
+        JTextField txtMaxAmount = createFormField("Monto máximo");
 
         // Botones de acción
-        JButton btnAdd = createActionButton("Agregar");
-        JButton btnCancel = createActionButton("Cancelar");
+        JButton btnFilter = createActionButton("Aplicar Filtros");
+        JButton btnReset = createActionButton("Restablecer");
 
         // Agregar componentes al panel
         panel.add(lbTitle, "growx, wrap, gapbottom 15");
 
-        panel.add(new JLabel("Tipo de salida:"), "gapy 8");
-        panel.add(cbType, "growx, wrap");
+        panel.add(new JLabel("Cliente: (Opcional)"), "gapy 8");
+        panel.add(txtClient, "growx, wrap");
 
-        panel.add(new JLabel("Detalle:"), "gapy 8");
-        panel.add(txtDetail, "growx, wrap");
+        panel.add(new JLabel("Estado:"), "gapy 8");
+        panel.add(cbStatus, "growx, wrap");
 
-        panel.add(new JLabel("Valor gasto/salida:"), "gapy 8");
-        panel.add(txtValue, "growx, wrap");
+        panel.add(new JLabel("Rango de fechas:"), "gapy 8");
+        panel.add(txtDateStart, "split 2, growx");
+        panel.add(txtDateEnd, "growx, wrap");
 
-        panel.add(btnAdd, "split 2, gapy 20");
-        panel.add(btnCancel);
+        panel.add(new JLabel("Rango de montos:"), "gapy 8");
+        panel.add(txtMinAmount, "split 2, growx");
+        panel.add(txtMaxAmount, "growx, wrap");
+
+        panel.add(btnFilter, "split 3, gapy 20");
+        panel.add(btnReset);
 
         add(panel, "grow");
     }

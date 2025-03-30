@@ -1,4 +1,4 @@
-package app.views.menu.mode;
+package app.view.menu.mode;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatLaf;
@@ -48,8 +48,8 @@ public class LightDarkMode extends JPanel {
         putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:999;"
                 + "background:$Menu.lightdark.background");
-        buttonLight = new JButton("Light", new FlatSVGIcon("app/views/menu/mode/light.svg"));
-        buttonDark = new JButton("Dark", new FlatSVGIcon("app/views/menu/mode/dark.svg"));
+        buttonLight = new JButton("Light", new FlatSVGIcon("app/view/menu/mode/light.svg"));
+        buttonDark = new JButton("Dark", new FlatSVGIcon("app/view/menu/mode/dark.svg"));
         buttonLighDark = new JButton();
         buttonLighDark.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:999;"
@@ -101,9 +101,9 @@ public class LightDarkMode extends JPanel {
         addStyle(buttonLight, !isDark);
         addStyle(buttonDark, isDark);
         if (isDark) {
-            buttonLighDark.setIcon(new FlatSVGIcon("app/views/menu/mode/dark.svg"));
+            buttonLighDark.setIcon(new FlatSVGIcon("app/view/menu/mode/dark.svg"));
         } else {
-            buttonLighDark.setIcon(new FlatSVGIcon("app/views/menu/mode/light.svg"));
+            buttonLighDark.setIcon(new FlatSVGIcon("app/view/menu/mode/light.svg"));
         }
     }
 

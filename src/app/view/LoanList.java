@@ -1,7 +1,7 @@
-package app.views;
+package app.view;
 
-import app.views.forms.EditLoanForm;
-import app.views.forms.NewLoanForm;
+import app.view.forms.EditLoanForm;
+import app.view.forms.NewLoanForm;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 

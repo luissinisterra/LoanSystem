@@ -1,4 +1,4 @@
-package app.views.menu;
+package app.view.menu;
 
 import com.formdev.flatlaf.util.Animator;
 import java.util.HashMap;

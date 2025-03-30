@@ -1,4 +1,4 @@
-package app.views.menu;
+package app.view.menu;
 
 /**
  *

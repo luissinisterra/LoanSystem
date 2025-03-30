@@ -1,4 +1,4 @@
-package app.views.menu;
+package app.view.menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -77,7 +77,7 @@ public class MenuItem extends JPanel {
     private Icon getIcon() {
         Color lightColor = FlatUIUtils.getUIColor("Menu.icon.lightColor", Color.blue);
         Color darkColor = FlatUIUtils.getUIColor("Menu.icon.darkColor", Color.blue);
-        FlatSVGIcon icon = new FlatSVGIcon("app/views/menu/icon/" + menuIndex + ".svg");
+        FlatSVGIcon icon = new FlatSVGIcon("app/view/menu/icon/" + menuIndex + ".svg");
         FlatSVGIcon.ColorFilter f = new FlatSVGIcon.ColorFilter();
         f.add(Color.decode("#969696"), lightColor, darkColor);
         icon.setColorFilter(f);

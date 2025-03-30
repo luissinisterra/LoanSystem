@@ -1,6 +1,6 @@
-package app.views.menu;
+package app.view.menu;
 
-import app.views.menu.mode.LightDarkMode;
+import app.view.menu.mode.LightDarkMode;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import app.views.menu.mode.ToolBarAccentColor;
+import app.view.menu.mode.ToolBarAccentColor;
 
 /**
  *

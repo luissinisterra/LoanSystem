@@ -1,4 +1,4 @@
-package app.views;
+package app.view;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -100,7 +100,7 @@ public class FinancialReport extends JPanel {
         cmdSapa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                app.views.ReportOptions reportOptions = new ReportOptions();
+                app.view.ReportOptions reportOptions = new ReportOptions();
                 JFrame frame = new JFrame("Datos de reporte");
                 frame.setContentPane(reportOptions);
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

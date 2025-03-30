@@ -1,10 +1,9 @@
-package app.views;
+package app.view;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 

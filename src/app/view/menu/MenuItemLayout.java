@@ -1,4 +1,4 @@
-package app.views.menu;
+package app.view.menu;
 
 import com.formdev.flatlaf.util.UIScale;
 import java.awt.Component;
