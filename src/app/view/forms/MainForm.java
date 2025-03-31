@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import app.view.menu.Menu;
 import app.view.menu.MenuAction;
+import app.view.*;
 
 /**
  *
