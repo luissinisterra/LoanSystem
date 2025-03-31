@@ -35,7 +35,7 @@ public class Overheads extends JPanel {
                 {"Gasolina", "30.000"},
                 {"Gasolina", "30.000"},
                 {"Gasolina", "30.00"},
-                {"ENTREGA_", "400.000"},
+                {"ENTREGA", "400.000"},
                 {"Gasolina", "20.000"},
                 {"Ajuste crédito sergio", "40.000"}
         };
