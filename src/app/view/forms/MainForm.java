@@ -1,8 +1,7 @@
-package app.views.forms;
+package app.view.forms;
 
 import app.Application;
-import app.views.*;
-import app.views.FinancialReport;
+import app.view.FinancialReport;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
@@ -18,8 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import app.views.menu.Menu;
-import app.views.menu.MenuAction;
+import app.view.menu.Menu;
+import app.view.menu.MenuAction;
 
 /**
  *
