@@ -1,4 +1,4 @@
-package raven.component;
+package app.component;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatLaf;
