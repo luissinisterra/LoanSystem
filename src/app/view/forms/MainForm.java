@@ -71,6 +71,7 @@ public class MainForm extends JLayeredPane {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             if (index == 0) {
                 //Application.showForm(new Dashboard());
+                System.out.println("Dashboard");
             } else if (index == 1) {
                 if (subIndex == 1) {
                     Application.showForm(new LoanList());
@@ -79,7 +80,11 @@ public class MainForm extends JLayeredPane {
                 } else {
                     action.cancel();
                 }
-            } else if(index == 4) {
+            } else if(index == 2){
+                if(subIndex == 1){
+                    Application.showForm(new ClientListView());
+                }
+            }else if(index == 4) {
                 if (subIndex == 1) {
                     Application.showForm(new FinancialReport());
                 }
