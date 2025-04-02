@@ -2,8 +2,10 @@ package app.view.forms;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class EditLoanForm extends JPanel {
 
@@ -13,70 +15,72 @@ public class EditLoanForm extends JPanel {
     private JTextField txtTerm;
     private JComboBox<String> cbStatus;
     private JTextField txtDate;
+    private JButton cmdUpdate;
 
     public EditLoanForm(String client, String amount, String interestRate, String term, String status, String date) {
         init(client, amount, interestRate, term, status, date);
     }
 
     private void init(String client, String amount, String interestRate, String term, String status, String date) {
-        setLayout(new MigLayout("fill, insets 20", "[center]", "[center]"));
+        setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
 
         // Panel principal con bordes redondeados
-        JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 35 45 30 45", "[fill, 360]"));
+        JPanel panel = new JPanel(new MigLayout("wrap,fillx,insets 35 45 30 45", "[fill,360]"));
         panel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Menu.background;" +
-                "arc:20");
+                + "arc:20;" +
+                "[light]background:darken(@background,3%);" +
+                "[dark]background:lighten(@background,3%)");
 
         // Título
         JLabel lbTitle = new JLabel("Editar Préstamo");
-        lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:bold +16");
+        lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
 
-        // Campos del formulario
-        txtClient = createFormField("Cliente", client);
-        txtAmount = createFormField("Monto", amount);
-        txtInterestRate = createFormField("Tasa de Interés", interestRate);
-        txtTerm = createFormField("Plazo (meses)", term);
-        cbStatus = new JComboBox<>(new String[]{"Activo", "Inactivo", "Pagado"});
+        // Descripción
+        JLabel description = new JLabel("Actualice los datos del préstamo seleccionado.");
+        description.putClientProperty(FlatClientProperties.STYLE, ""
+                + "[light]foreground:lighten(@foreground,30%);" +
+                "[dark]foreground:darken(@foreground,30%)");
+
+        // Campos del formulario prellenados con los datos del préstamo
+        txtClient = createTextField("Cliente");
+        txtClient.setText(client);
+
+        txtAmount = createTextField("Monto");
+        txtAmount.setText(amount);
+
+        txtInterestRate = createTextField("Tasa de Interés");
+        txtInterestRate.setText(interestRate);
+
+        txtTerm = createTextField("Plazo (meses)");
+        txtTerm.setText(term);
+
+        cbStatus = createComboBox();
         cbStatus.setSelectedItem(status);
-        txtDate = createFormField("Fecha", date);
 
-        // Botones de acción
-        JButton btnSave = createActionButton("Guardar");
-        JButton btnCancel = createActionButton("Cancelar");
+        txtDate = createTextField("Fecha");
+        txtDate.setText(date);
 
-        // Acción para el botón Guardar
-        btnSave.addActionListener(e -> {
-            // Aquí puedes implementar la lógica para guardar los cambios
-            String updatedClient = txtClient.getText();
-            String updatedAmount = txtAmount.getText();
-            String updatedInterestRate = txtInterestRate.getText();
-            String updatedTerm = txtTerm.getText();
-            String updatedStatus = (String) cbStatus.getSelectedItem();
-            String updatedDate = txtDate.getText();
+        // Botón Actualizar
+        cmdUpdate = new JButton("Actualizar");
+        cmdUpdate.putClientProperty(FlatClientProperties.STYLE, ""
+                + "[light]background:darken(@background,10%);" +
+                "[dark]background:lighten(@background,10%);" +
+                "borderWidth:0;" +
+                "focusWidth:0;" +
+                "innerFocusWidth:0");
 
-            System.out.println("Préstamo actualizado:");
-            System.out.println("Cliente: " + updatedClient);
-            System.out.println("Monto: " + updatedAmount);
-            System.out.println("Tasa de Interés: " + updatedInterestRate);
-            System.out.println("Plazo: " + updatedTerm);
-            System.out.println("Estado: " + updatedStatus);
-            System.out.println("Fecha: " + updatedDate);
-
-            // Cerrar el formulario después de guardar
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            frame.dispose();
-        });
-
-        // Acción para el botón Cancelar
-        btnCancel.addActionListener(e -> {
-            // Cerrar el formulario sin guardar cambios
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            frame.dispose();
+        cmdUpdate.addActionListener(e -> {
+            if (validateFields()) {
+                updateLoan();
+                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo actualizado correctamente");
+            } else {
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Por favor complete todos los campos obligatorios");
+            }
         });
 
         // Agregar componentes al panel
         panel.add(lbTitle, "growx, wrap");
+        panel.add(description, "growx, wrap");
         panel.add(new JLabel("Cliente:"), "gapy 8");
         panel.add(txtClient, "growx, wrap");
         panel.add(new JLabel("Monto:"), "gapy 8");
@@ -89,32 +93,42 @@ public class EditLoanForm extends JPanel {
         panel.add(cbStatus, "growx, wrap");
         panel.add(new JLabel("Fecha:"), "gapy 8");
         panel.add(txtDate, "growx, wrap");
-        panel.add(btnSave, "split 2, gapy 20");
-        panel.add(btnCancel);
+        panel.add(cmdUpdate, "gapy 20");
 
-        add(panel, "grow");
+        add(panel);
     }
 
-    private JTextField createFormField(String placeholder, String initialValue) {
-        JTextField field = new JTextField(initialValue);
-        field.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:lighten(@background,5%);" +
-                "foreground:@foreground;" +
-                "arc:10");
+    private JTextField createTextField(String placeholder) {
+        JTextField field = new JTextField();
         field.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, placeholder);
         return field;
     }
 
-    private JButton createActionButton(String text) {
-        JButton button = new JButton(text);
-        button.putClientProperty(FlatClientProperties.STYLE, ""
-                + "[light]background:darken(@background,10%);" +
-                "[dark]background:lighten(@background,10%);" +
+    private JComboBox<String> createComboBox() {
+        JComboBox<String> comboBox = new JComboBox<>(new String[]{"Activo", "Inactivo", "Pagado"});
+        comboBox.putClientProperty(FlatClientProperties.STYLE, ""
+                + "background:lighten(@background,5%);" +
                 "foreground:@foreground;" +
-                "borderWidth:0;" +
-                "focusWidth:0;" +
-                "innerFocusWidth:0;" +
                 "arc:10");
-        return button;
+        return comboBox;
+    }
+
+    private boolean validateFields() {
+        return !txtClient.getText().isEmpty() &&
+                !txtAmount.getText().isEmpty() &&
+                !txtInterestRate.getText().isEmpty() &&
+                !txtTerm.getText().isEmpty() &&
+                !txtDate.getText().isEmpty();
+    }
+
+    private void updateLoan() {
+        // Aquí puedes agregar la lógica para actualizar el préstamo en la base de datos o en memoria
+        System.out.println("Actualizando préstamo...");
+        System.out.println("Cliente: " + txtClient.getText());
+        System.out.println("Monto: " + txtAmount.getText());
+        System.out.println("Tasa de Interés: " + txtInterestRate.getText());
+        System.out.println("Plazo: " + txtTerm.getText());
+        System.out.println("Estado: " + cbStatus.getSelectedItem());
+        System.out.println("Fecha: " + txtDate.getText());
     }
 }
