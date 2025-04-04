@@ -2,7 +2,6 @@ package app.controller;
 
 import app.model.Client;
 import app.service.ClientService;
-import retrofit2.Call;
 
 import java.util.List;
 
