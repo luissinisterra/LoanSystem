@@ -5,6 +5,7 @@ import app.model.Client;
 import app.view.forms.EditClientForm;
 import app.view.forms.NewClientForm;
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -45,10 +46,14 @@ public class ClientListView extends JPanel {
                 "background:lighten(@background,5%);" +
                 "foreground:@foreground;" +
                 "arc:10");
-        searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar clientes...");
-        JLabel searchIcon = new JLabel("🔍");
+
+        FlatSVGIcon searchIcon = new FlatSVGIcon("app/view/menu/icon/search-icon.svg").derive(20, 20);
+        FlatSVGIcon.ColorFilter f = new FlatSVGIcon.ColorFilter();
+        searchIcon.setColorFilter(f);
+
+        JLabel iconLabel = new JLabel(searchIcon);
         JPanel searchPanel = new JPanel(new BorderLayout());
-        searchPanel.add(searchIcon, BorderLayout.WEST);
+        searchPanel.add(iconLabel, BorderLayout.WEST);
         searchPanel.add(searchField, BorderLayout.CENTER);
         searchPanel.putClientProperty(FlatClientProperties.STYLE, ""
                 + "background:lighten(@background,5%);" +
@@ -89,11 +94,11 @@ public class ClientListView extends JPanel {
 
         // Estilo de la tabla
         table.setRowHeight(35); // Altura de las filas
-        table.getColumnModel().getColumn(0).setPreferredWidth(200); // Columna de nombre más ancha
-        table.getColumnModel().getColumn(1).setPreferredWidth(200); // Columna de correo
-        table.getColumnModel().getColumn(2).setPreferredWidth(200); // Columna de correo
-        table.getColumnModel().getColumn(3).setPreferredWidth(200); // Columna de teléfono
-        table.getColumnModel().getColumn(4).setPreferredWidth(200); // Columna de teléfono
+        table.getColumnModel().getColumn(0).setPreferredWidth(200);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        table.getColumnModel().getColumn(3).setPreferredWidth(200);
+        table.getColumnModel().getColumn(4).setPreferredWidth(200);
 
         table.putClientProperty(FlatClientProperties.STYLE,
                 "showHorizontalLines:true;" +
@@ -116,7 +121,7 @@ public class ClientListView extends JPanel {
                 + "background:$Menu.background;" +
                 "arc:10");
 
-        JButton newButton = createActionButton("Nuevo Cliente", "path/to/new_icon.png");
+        JButton newButton = createActionButton("Nuevo Cliente", "/app/icon/png/logo.png");
         JButton editButton = createActionButton("Editar Cliente", "path/to/edit_icon.png");
         JButton deleteButton = createActionButton("Eliminar Cliente", "path/to/delete_icon.png");
 
