@@ -10,7 +10,6 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.util.List;
 
@@ -69,7 +68,6 @@ public class ClientListView extends JPanel {
 
         // Modelo de la tabla
         List<Client> clients = this.clientController.getAllClients();
-
         model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Nombre");
@@ -84,40 +82,33 @@ public class ClientListView extends JPanel {
         // Crear la tabla con el modelo
         table = new JTable(model) {
             @Override
-            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-                Component comp = super.prepareRenderer(renderer, row, column);
-                if (!isRowSelected(row)) {
-                    comp.setBackground(row % 2 == 0 ? new Color(245, 245, 245, 150) : new Color(230, 230, 230, 150));
-                } else {
-                    comp.setBackground(new Color(0, 120, 215)); // Color de fila seleccionada
-                }
-                return comp;
-            }
-
-            @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Hacer que la tabla no sea editable
             }
         };
-        table.setRowHeight(40);
-        table.setShowHorizontalLines(true);
-        table.setShowVerticalLines(true);
-        table.setGridColor(new Color(230, 230, 230));
 
-        // Estilo del encabezado de la tabla
+        // Estilo de la tabla
+        table.setRowHeight(35); // Altura de las filas
+        table.getColumnModel().getColumn(0).setPreferredWidth(200); // Columna de nombre más ancha
+        table.getColumnModel().getColumn(1).setPreferredWidth(200); // Columna de correo
+        table.getColumnModel().getColumn(2).setPreferredWidth(200); // Columna de correo
+        table.getColumnModel().getColumn(3).setPreferredWidth(200); // Columna de teléfono
+        table.getColumnModel().getColumn(4).setPreferredWidth(200); // Columna de teléfono
+
+        table.putClientProperty(FlatClientProperties.STYLE,
+                "showHorizontalLines:true;" +
+                        "showVerticalLines:true;" +
+                        "font:+1");
+
+        // Header con estilo minimalista
         JTableHeader header = table.getTableHeader();
-        header.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Table.headerBackground;" +
-                "foreground:$Table.headerForeground;" +
-                "border:0,0,0,0");
+        header.putClientProperty(FlatClientProperties.STYLE,
+                "font:bold +1;" +
+                        "height:35");
 
-        // ScrollPane para la tabla (transparente)
+        // ScrollPane para la tabla
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.putClientProperty(FlatClientProperties.STYLE, ""
-                + "border:0,0,0,0;" +
-                "background:null"); // Fondo transparente
-        table.setOpaque(false); // Hacer la tabla transparente
-        ((JComponent) table.getDefaultRenderer(Object.class)).setOpaque(false); // Hacer celdas transparentes
+        scrollPane.setPreferredSize(new Dimension(750, 400));
 
         // Botones de acción
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -143,11 +134,9 @@ public class ClientListView extends JPanel {
         editButton.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                String id = (String) model.getValueAt(selectedRow, 0);
-                String name = (String) model.getValueAt(selectedRow, 1);
-                String email = (String) model.getValueAt(selectedRow, 2);
-                String phone = (String) model.getValueAt(selectedRow, 3);
-                String address = (String) model.getValueAt(selectedRow, 4);
+                String name = (String) model.getValueAt(selectedRow, 0);
+                String email = (String) model.getValueAt(selectedRow, 1);
+                String phone = (String) model.getValueAt(selectedRow, 2);
 
                 String firstName = name.split(" ")[0];
                 String secondName = name.split(" ").length > 1 ? name.split(" ")[1] : "";
@@ -157,7 +146,7 @@ public class ClientListView extends JPanel {
 
                 JFrame frame = new JFrame("Editar Cliente");
                 frame.setContentPane(new EditClientForm(
-                        id,
+                        "",
                         firstName,
                         secondName,
                         firstSurname,
@@ -165,7 +154,7 @@ public class ClientListView extends JPanel {
                         age,
                         email,
                         phone,
-                        address
+                        ""
                 ));
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.pack();
@@ -237,13 +226,4 @@ public class ClientListView extends JPanel {
         button.setFont(button.getFont().deriveFont(Font.BOLD, 14f));
         return button;
     }
-
-    /*public static void main(String[] args) {
-        JFrame frame = new JFrame("Gestión de Clientes");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 700);
-        frame.setLocationRelativeTo(null);
-        frame.setContentPane(new ClientListView());
-        frame.setVisible(true);
-    }*/
 }
