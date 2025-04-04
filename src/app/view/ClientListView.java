@@ -1,5 +1,6 @@
 package app.view;
 
+import app.controller.ClientController;
 import app.view.forms.EditClientForm;
 import app.view.forms.NewClientForm;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -13,11 +14,13 @@ import java.awt.*;
 
 public class ClientListView extends JPanel {
 
+    private ClientController clientController;
     private DefaultTableModel model;
     private JTable table;
 
     public ClientListView() {
         init();
+        this.clientController = new ClientController();
     }
 
     private void init() {
