@@ -50,9 +50,7 @@ public class ClientListView extends JPanel {
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar clientes...");
 
         //Icono para la baraa de busqueda
-        FlatSVGIcon searchIcon = new FlatSVGIcon("app/view/menu/icon/search-icon.svg").derive(20, 20);
-        FlatSVGIcon.ColorFilter f = new FlatSVGIcon.ColorFilter();
-        searchIcon.setColorFilter(f);
+        FlatSVGIcon searchIcon = new FlatSVGIcon("app/icon/svg/search-icon.svg").derive(20, 20);
 
         JLabel iconLabel = new JLabel(searchIcon);
         JPanel searchPanel = new JPanel(new BorderLayout());
@@ -69,12 +67,12 @@ public class ClientListView extends JPanel {
                 "arc:10");
 
         //Icono para la seccion de clientes totales
-        FlatSVGIcon totalClientsIcon = new FlatSVGIcon("app/view/menu/icon/people-icon.svg").derive(40, 40);
+        FlatSVGIcon totalClientsIcon = new FlatSVGIcon("app/icon/svg/people-icon.svg").derive(40, 40);
         JLabel totalClientsIconLabel = new JLabel(totalClientsIcon);
         JPanel totalClients = createStatCard("Total de Clientes", totalClientsIcon ," 120");
 
         //Icono para la seccion de clientes activos
-        FlatSVGIcon activesClientsIcon = new FlatSVGIcon("app/view/menu/icon/quality-icon.svg").derive(40, 40);
+        FlatSVGIcon activesClientsIcon = new FlatSVGIcon("app/icon/svg/quality-icon.svg").derive(40, 40);
         JLabel activesClientsIconLabel = new JLabel(totalClientsIcon);
         JPanel activeClients = createStatCard("Clientes Activos", activesClientsIcon," 90");
 
@@ -131,9 +129,9 @@ public class ClientListView extends JPanel {
                 + "background:$Menu.background;" +
                 "arc:10");
 
-        JButton newButton = createActionButton("Nuevo Cliente", "app/view/menu/icon/create-icon.svg");
-        JButton editButton = createActionButton("Editar Cliente", "app/view/menu/icon/update-icon.svg");
-        JButton deleteButton = createActionButton("Eliminar Cliente", "app/view/menu/icon/delete-icon.svg");
+        JButton newButton = createActionButton("Nuevo Cliente", "app/icon/svg/create-icon.svg");
+        JButton editButton = createActionButton("Editar Cliente", "app/icon/svg/update-icon.svg");
+        JButton deleteButton = createActionButton("Eliminar Cliente", "app/icon/svg/delete-icon.svg");
 
         // Acción para el botón Nuevo
         newButton.addActionListener(e -> {
@@ -207,26 +205,6 @@ public class ClientListView extends JPanel {
         add(panel, "grow");
     }
 
-    /*private JPanel createStatCard(String title, String value) {
-        JPanel card = new JPanel(new MigLayout("wrap, fillx, insets 10", "[grow]"));
-        card.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:lighten(@background,5%);" +
-                "arc:10");
-
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:bold +14");
-
-        JLabel valueLabel = new JLabel(value);
-        valueLabel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:bold +18");
-
-        card.add(titleLabel, "growx");
-        card.add(valueLabel, "growx");
-
-        return card;
-    }*/
-
     private JPanel createStatCard(String title, Icon icon, String value) {
         JPanel card = new JPanel(new MigLayout("wrap, fillx, insets 10", "[grow]"));
         card.putClientProperty(FlatClientProperties.STYLE,
@@ -254,21 +232,6 @@ public class ClientListView extends JPanel {
 
         return card;
     }
-
-    /*private JButton createActionButton(String text, String iconPath) {
-        JButton button = new JButton(text, new ImageIcon(iconPath));
-        button.putClientProperty(FlatClientProperties.STYLE, ""
-                + "[light]background:darken(@background,10%);" +
-                "[dark]background:lighten(@background,10%);" +
-                "foreground:@foreground;" +
-                "borderWidth:0;" +
-                "focusWidth:0;" +
-                "innerFocusWidth:0;" +
-                "arc:10");
-        button.setPreferredSize(new Dimension(180, 40));
-        button.setFont(button.getFont().deriveFont(Font.BOLD, 14f));
-        return button;
-    }*/
 
     private JButton createActionButton(String text, String iconPath) {
         JButton button = new JButton(text, new FlatSVGIcon(iconPath).derive(20, 20));
