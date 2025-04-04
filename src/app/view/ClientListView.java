@@ -81,9 +81,6 @@ public class ClientListView extends JPanel {
             model.addRow(new Object[]{client.getId(), client.getFirstName()+ " " + client.getFirstSurname(), client.getEmail(), client.getEmail(), client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode()});
         }
 
-        model.addRow(new Object[]{"2", "María López", "maria@example.com", "987654321", "Avenida 456"});
-        model.addRow(new Object[]{"3", "Carlos Gómez", "carlos@example.com", "555555555", "Plaza 789"});
-
         // Crear la tabla con el modelo
         table = new JTable(model) {
             @Override
