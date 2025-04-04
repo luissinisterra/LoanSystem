@@ -19,4 +19,8 @@ public class GastoController {
     public void removeGasto(String id){
         this.gastoService.remove(id);
     }
+
+    public Gasto addGasto(String tipo, String descripcion, double valor){
+        return gastoService.add(tipo, descripcion, valor);
+    }
 }

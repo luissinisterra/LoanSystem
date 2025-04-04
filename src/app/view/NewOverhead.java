@@ -1,41 +1,73 @@
 package app.view;
 
+import app.controller.GastoController;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class NewOverhead extends JPanel {
 
-    public NewOverhead () {
+    private JLabel lbTitle;
+    private JComboBox<String> cbType;
+    private JTextField txtDetail;
+    private JTextField txtValue;
+    private JButton btnAdd;
+    private JButton btnCancel;
+    private GastoController controller;
+    private Overheads over;
+
+    public NewOverhead(Overheads over) {
         init();
+        controller = new GastoController();
+        addOverhead();
+        this.over = over;
     }
 
     private void init() {
-        setLayout(new MigLayout("fill, insets 20", "[center]", "[center]"));
+        configureLayout();
+        createTitle();
+        createFilterComponents();
+        createActionButtons();
+        assemblePanel();
+    }
 
-        // Panel principal
+    // Configura el diseño principal
+    private void configureLayout() {
+        setLayout(new MigLayout("fill, insets 20", "[center]", "[center]"));
+    }
+
+    // Crea el título del panel
+    private void createTitle() {
+        lbTitle = new JLabel("Crear un gasto");
+        lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +16");
+    }
+
+    // Crea los componentes de filtrado
+    private void createFilterComponents() {
+        cbType = new JComboBox<>(new String[]{"Gastos", "Salida"});
+        txtDetail = createFormField("Detalle");
+        txtValue = createFormField("Valor gasto/salida");
+    }
+
+    // Crea los botones de acción
+    private void createActionButtons() {
+        btnAdd = createActionButton("Agregar");
+        btnCancel = createActionButton("Cancelar");
+    }
+
+    // Ensambla el panel principal
+    private void assemblePanel() {
         JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 35 45 30 45", "[fill, 600]"));
         panel.putClientProperty(FlatClientProperties.STYLE,
-                "background:$Menu.background;"
-                        + "arc:20");
+                "background:$Menu.background;" + "arc:20");
 
-        // Título
-        JLabel lbTitle = new JLabel("Opciones de Reporte de Préstamos");
-        lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +16");
-
-        // Componentes de filtrado
-        JComboBox<String> cbType = new JComboBox<>(new String[]{"Gastos", "Salida"});
-        JTextField txtDetail = createFormField("Detalle");
-        JTextField txtValue = createFormField("Valor gasto/salida");
-
-        // Botones de acción
-        JButton btnAdd = createActionButton("Agregar");
-        JButton btnCancel = createActionButton("Cancelar");
-
-        // Agregar componentes al panel
+        // Agregar título al panel
         panel.add(lbTitle, "growx, wrap, gapbottom 15");
 
+        // Agregar componentes de filtrado
         panel.add(new JLabel("Tipo de salida:"), "gapy 8");
         panel.add(cbType, "growx, wrap");
 
@@ -45,12 +77,15 @@ public class NewOverhead extends JPanel {
         panel.add(new JLabel("Valor gasto/salida:"), "gapy 8");
         panel.add(txtValue, "growx, wrap");
 
+        // Agregar botones de acción
         panel.add(btnAdd, "split 2, gapy 20");
         panel.add(btnCancel);
 
+        // Agregar el panel principal al contenedor
         add(panel, "grow");
     }
 
+    // Método auxiliar para crear campos de formulario
     private JTextField createFormField(String placeholder) {
         JTextField field = new JTextField();
         field.putClientProperty(FlatClientProperties.STYLE,
@@ -61,6 +96,7 @@ public class NewOverhead extends JPanel {
         return field;
     }
 
+    // Método auxiliar para crear botones de acción
     private JButton createActionButton(String text) {
         JButton button = new JButton(text);
         button.putClientProperty(FlatClientProperties.STYLE,
@@ -72,4 +108,17 @@ public class NewOverhead extends JPanel {
                         + "arc:10");
         return button;
     }
+
+    private void addOverhead(){
+        // Agregar el evento manualmente
+        btnAdd.addActionListener(e -> {
+            String type = cbType.getSelectedItem().toString();
+            String detail = txtDetail.getText();
+            String value = txtValue.getText();
+            controller.addGasto(type, detail, Double.parseDouble(value));
+            over.llenarTabla();
+            over.setTotal();
+        });
+    }
+
 }

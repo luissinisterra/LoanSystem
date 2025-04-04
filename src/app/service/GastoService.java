@@ -65,4 +65,20 @@ public class GastoService {
             ex.printStackTrace();
         }
     }
+
+    public Gasto add (String tipo, String descripcion, double valor){
+        try {
+            Gasto gasto = new Gasto(tipo, descripcion, valor);
+            Response<Gasto> response = apiService.createGasto(gasto).execute();
+            if (!response.isSuccessful()) {
+                System.out.println("Error: " + response.code());
+            }
+            else {
+                return gasto;
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }
