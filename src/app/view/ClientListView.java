@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ClientListView extends JPanel {
 
-    private ClientController clientController;
+    private ClientController clientController = new ClientController();
     private DefaultTableModel model;
     private JTable table;
 

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ClientService {
-    private String BASE_URL = "localhost:8080";
+    private String BASE_URL = "http://localhost:8080";
     private IClientService iClientService;
 
     public ClientService() {
