@@ -1,12 +1,17 @@
 package app.service;
 
+import app.helper.LocalDateAdapter;
 import app.model.Client;
 import app.service.imp.IClientService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ClientService {
@@ -18,6 +23,11 @@ public class ClientService {
     }
 
     private void setBaseURL() {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()) // Registra el adaptador
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
