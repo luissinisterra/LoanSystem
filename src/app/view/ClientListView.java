@@ -131,9 +131,9 @@ public class ClientListView extends JPanel {
                 + "background:$Menu.background;" +
                 "arc:10");
 
-        JButton newButton = createActionButton("Nuevo Cliente", "/app/icon/png/logo.png");
-        JButton editButton = createActionButton("Editar Cliente", "path/to/edit_icon.png");
-        JButton deleteButton = createActionButton("Eliminar Cliente", "path/to/delete_icon.png");
+        JButton newButton = createActionButton("Nuevo Cliente", "app/view/menu/icon/create-icon.svg");
+        JButton editButton = createActionButton("Editar Cliente", "app/view/menu/icon/update-icon.svg");
+        JButton deleteButton = createActionButton("Eliminar Cliente", "app/view/menu/icon/delete-icon.svg");
 
         // Acción para el botón Nuevo
         newButton.addActionListener(e -> {
@@ -255,7 +255,7 @@ public class ClientListView extends JPanel {
         return card;
     }
 
-    private JButton createActionButton(String text, String iconPath) {
+    /*private JButton createActionButton(String text, String iconPath) {
         JButton button = new JButton(text, new ImageIcon(iconPath));
         button.putClientProperty(FlatClientProperties.STYLE, ""
                 + "[light]background:darken(@background,10%);" +
@@ -265,6 +265,21 @@ public class ClientListView extends JPanel {
                 "focusWidth:0;" +
                 "innerFocusWidth:0;" +
                 "arc:10");
+        button.setPreferredSize(new Dimension(180, 40));
+        button.setFont(button.getFont().deriveFont(Font.BOLD, 14f));
+        return button;
+    }*/
+
+    private JButton createActionButton(String text, String iconPath) {
+        JButton button = new JButton(text, new FlatSVGIcon(iconPath).derive(20, 20));
+        button.putClientProperty(FlatClientProperties.STYLE,
+                "[light]background:darken(@background,10%);" +
+                        "[dark]background:lighten(@background,10%);" +
+                        "foreground:@foreground;" +
+                        "borderWidth:0;" +
+                        "focusWidth:0;" +
+                        "innerFocusWidth:0;" +
+                        "arc:10");
         button.setPreferredSize(new Dimension(180, 40));
         button.setFont(button.getFont().deriveFont(Font.BOLD, 14f));
         return button;
