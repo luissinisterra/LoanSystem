@@ -47,6 +47,9 @@ public class ClientListView extends JPanel {
                 "foreground:@foreground;" +
                 "arc:10");
 
+        searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar clientes...");
+
+        //Icono para la baraa de busqueda
         FlatSVGIcon searchIcon = new FlatSVGIcon("app/view/menu/icon/search-icon.svg").derive(20, 20);
         FlatSVGIcon.ColorFilter f = new FlatSVGIcon.ColorFilter();
         searchIcon.setColorFilter(f);
@@ -65,8 +68,15 @@ public class ClientListView extends JPanel {
                 + "background:$Menu.background;" +
                 "arc:10");
 
-        JPanel totalClients = createStatCard("Total de Clientes", "📊 120");
-        JPanel activeClients = createStatCard("Clientes Activos", "📊 90");
+        //Icono para la seccion de clientes totales
+        FlatSVGIcon totalClientsIcon = new FlatSVGIcon("app/view/menu/icon/people-icon.svg").derive(40, 40);
+        JLabel totalClientsIconLabel = new JLabel(totalClientsIcon);
+        JPanel totalClients = createStatCard("Total de Clientes", totalClientsIcon ," 120");
+
+        //Icono para la seccion de clientes activos
+        FlatSVGIcon activesClientsIcon = new FlatSVGIcon("app/view/menu/icon/quality-icon.svg").derive(40, 40);
+        JLabel activesClientsIconLabel = new JLabel(totalClientsIcon);
+        JPanel activeClients = createStatCard("Clientes Activos", activesClientsIcon," 90");
 
         statsPanel.add(totalClients);
         statsPanel.add(activeClients);
@@ -197,7 +207,7 @@ public class ClientListView extends JPanel {
         add(panel, "grow");
     }
 
-    private JPanel createStatCard(String title, String value) {
+    /*private JPanel createStatCard(String title, String value) {
         JPanel card = new JPanel(new MigLayout("wrap, fillx, insets 10", "[grow]"));
         card.putClientProperty(FlatClientProperties.STYLE, ""
                 + "background:lighten(@background,5%);" +
@@ -214,7 +224,35 @@ public class ClientListView extends JPanel {
         card.add(titleLabel, "growx");
         card.add(valueLabel, "growx");
 
-        return card; // Devolvemos el JPanel directamente
+        return card;
+    }*/
+
+    private JPanel createStatCard(String title, Icon icon, String value) {
+        JPanel card = new JPanel(new MigLayout("wrap, fillx, insets 10", "[grow]"));
+        card.putClientProperty(FlatClientProperties.STYLE,
+                "background:lighten(@background,5%);" +
+                        "arc:10");
+
+        // Título
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.putClientProperty(FlatClientProperties.STYLE,
+                "font:bold +14");
+
+        // Valor con ícono
+        JPanel valuePanel = new JPanel(new BorderLayout());
+        valuePanel.setOpaque(false); // Hacer el panel transparente
+        JLabel iconLabel = new JLabel(icon);
+        JLabel valueLabel = new JLabel(value);
+        valueLabel.putClientProperty(FlatClientProperties.STYLE,
+                "font:bold +18");
+
+        valuePanel.add(iconLabel, BorderLayout.WEST);
+        valuePanel.add(valueLabel, BorderLayout.CENTER);
+
+        card.add(titleLabel, "growx");
+        card.add(valuePanel, "growx");
+
+        return card;
     }
 
     private JButton createActionButton(String text, String iconPath) {
