@@ -1,5 +1,7 @@
 package app.view;
 
+import app.controller.ClientController;
+import app.model.Client;
 import app.view.forms.EditClientForm;
 import app.view.forms.NewClientForm;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -10,14 +12,17 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.util.List;
 
 public class ClientListView extends JPanel {
 
+    private ClientController clientController;
     private DefaultTableModel model;
     private JTable table;
 
     public ClientListView() {
         init();
+        this.clientController = new ClientController();
     }
 
     private void init() {
@@ -63,6 +68,8 @@ public class ClientListView extends JPanel {
         statsPanel.add(activeClients);
 
         // Modelo de la tabla
+        List<Client> clients = this.clientController.getAllClients();
+
         model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Nombre");
@@ -70,8 +77,10 @@ public class ClientListView extends JPanel {
         model.addColumn("Teléfono");
         model.addColumn("Dirección");
 
-        // Datos de ejemplo
-        model.addRow(new Object[]{"1", "Juan Pérez", "juan@example.com", "123456789", "Calle 123"});
+        for (Client client : clients) {
+            model.addRow(new Object[]{client.getId(), client.getFirstName()+ " " + client.getFirstSurname(), client.getEmail(), client.getEmail(), client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode()});
+        }
+
         model.addRow(new Object[]{"2", "María López", "maria@example.com", "987654321", "Avenida 456"});
         model.addRow(new Object[]{"3", "Carlos Gómez", "carlos@example.com", "555555555", "Plaza 789"});
 
