@@ -30,170 +30,20 @@ public class ClientListView extends JPanel {
 
         // Panel principal con bordes redondeados
         JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 20", "[grow]"));
-        panel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Menu.background;" +
-                "arc:20");
+        panel.putClientProperty(FlatClientProperties.STYLE,
+                "background:$Menu.background;" +
+                        "arc:20");
 
         // Título
         JLabel lbTitle = new JLabel("Gestión de Clientes");
-        lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:bold +18");
+        lbTitle.putClientProperty(FlatClientProperties.STYLE,
+                "font:bold +18");
 
-        // Búsqueda rápida
-        JTextField searchField = new JTextField();
-        searchField.putClientProperty(FlatClientProperties.STYLE, ""
-                + "showClearButton:true;" +
-                "background:lighten(@background,5%);" +
-                "foreground:@foreground;" +
-                "arc:10");
-
-        searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar clientes...");
-
-        //Icono para la baraa de busqueda
-        FlatSVGIcon searchIcon = new FlatSVGIcon("app/icon/svg/search-icon.svg").derive(20, 20);
-
-        JLabel iconLabel = new JLabel(searchIcon);
-        JPanel searchPanel = new JPanel(new BorderLayout());
-        searchPanel.add(iconLabel, BorderLayout.WEST);
-        searchPanel.add(searchField, BorderLayout.CENTER);
-        searchPanel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:lighten(@background,5%);" +
-                "arc:10");
-
-        // Tarjetas de resumen
-        JPanel statsPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-        statsPanel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Menu.background;" +
-                "arc:10");
-
-        //Icono para la seccion de clientes totales
-        FlatSVGIcon totalClientsIcon = new FlatSVGIcon("app/icon/svg/people-icon.svg").derive(40, 40);
-        JLabel totalClientsIconLabel = new JLabel(totalClientsIcon);
-        JPanel totalClients = createStatCard("Total de Clientes", totalClientsIcon ," 120");
-
-        //Icono para la seccion de clientes activos
-        FlatSVGIcon activesClientsIcon = new FlatSVGIcon("app/icon/svg/quality-icon.svg").derive(40, 40);
-        JLabel activesClientsIconLabel = new JLabel(totalClientsIcon);
-        JPanel activeClients = createStatCard("Clientes Activos", activesClientsIcon," 90");
-
-        statsPanel.add(totalClients);
-        statsPanel.add(activeClients);
-
-        // Modelo de la tabla
-        List<Client> clients = this.clientController.getAllClients();
-        model = new DefaultTableModel();
-        model.addColumn("ID");
-        model.addColumn("Nombre");
-        model.addColumn("Correo");
-        model.addColumn("Teléfono");
-        model.addColumn("Dirección");
-
-        for (Client client : clients) {
-            model.addRow(new Object[]{client.getId(), client.getFirstName()+ " " + client.getFirstSurname(), client.getEmail(), client.getEmail(), client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode()});
-        }
-
-        // Crear la tabla con el modelo
-        table = new JTable(model) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Hacer que la tabla no sea editable
-            }
-        };
-
-        // Estilo de la tabla
-        table.setRowHeight(35); // Altura de las filas
-        table.getColumnModel().getColumn(0).setPreferredWidth(200);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
-        table.getColumnModel().getColumn(2).setPreferredWidth(200);
-        table.getColumnModel().getColumn(3).setPreferredWidth(200);
-        table.getColumnModel().getColumn(4).setPreferredWidth(200);
-
-        table.putClientProperty(FlatClientProperties.STYLE,
-                "showHorizontalLines:true;" +
-                        "showVerticalLines:true;" +
-                        "font:+1");
-
-        // Header con estilo minimalista
-        JTableHeader header = table.getTableHeader();
-        header.putClientProperty(FlatClientProperties.STYLE,
-                "font:bold +1;" +
-                        "height:35");
-
-        // ScrollPane para la tabla
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(750, 400));
-
-        // Botones de acción
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        buttonPanel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Menu.background;" +
-                "arc:10");
-
-        JButton newButton = createActionButton("Nuevo Cliente", "app/icon/svg/create-icon.svg");
-        JButton editButton = createActionButton("Editar Cliente", "app/icon/svg/update-icon.svg");
-        JButton deleteButton = createActionButton("Eliminar Cliente", "app/icon/svg/delete-icon.svg");
-
-        // Acción para el botón Nuevo
-        newButton.addActionListener(e -> {
-            JFrame frame = new JFrame("Nuevo Cliente");
-            frame.setContentPane(new NewClientForm());
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-
-        // Acción para el botón Editar
-        editButton.addActionListener(e -> {
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow != -1) {
-                String name = (String) model.getValueAt(selectedRow, 0);
-                String email = (String) model.getValueAt(selectedRow, 1);
-                String phone = (String) model.getValueAt(selectedRow, 2);
-
-                String firstName = name.split(" ")[0];
-                String secondName = name.split(" ").length > 1 ? name.split(" ")[1] : "";
-                String firstSurname = ""; // Ajustar según datos
-                String secondSurname = ""; // Ajustar según datos
-                int age = 0; // Ajustar según datos
-
-                JFrame frame = new JFrame("Editar Cliente");
-                frame.setContentPane(new EditClientForm(
-                        "",
-                        firstName,
-                        secondName,
-                        firstSurname,
-                        secondSurname,
-                        age,
-                        email,
-                        phone,
-                        ""
-                ));
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un cliente para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
-        });
-
-        // Acción para el botón Eliminar
-        deleteButton.addActionListener(e -> {
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow != -1) {
-                int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este cliente?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
-                if (confirm == JOptionPane.YES_OPTION) {
-                    model.removeRow(selectedRow);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un cliente para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
-        });
-
-        buttonPanel.add(newButton);
-        buttonPanel.add(editButton);
-        buttonPanel.add(deleteButton);
+        // Componentes principales
+        JPanel searchPanel = createSearchBar();
+        JPanel statsPanel = createStatsPanel();
+        JScrollPane scrollPane = createTablePanel();
+        JPanel buttonPanel = createButtonPanel();
 
         // Agregar componentes al panel principal
         panel.add(lbTitle, "span, growx, wrap");
@@ -205,6 +55,51 @@ public class ClientListView extends JPanel {
         add(panel, "grow");
     }
 
+    // Método para crear la barra de búsqueda
+    private JPanel createSearchBar() {
+        JTextField searchField = new JTextField();
+        searchField.putClientProperty(FlatClientProperties.STYLE,
+                "showClearButton:true;" +
+                        "background:lighten(@background,5%);" +
+                        "foreground:@foreground;" +
+                        "arc:10");
+        searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar clientes...");
+
+        FlatSVGIcon searchIcon = new FlatSVGIcon("app/icon/svg/search-icon.svg").derive(20, 20);
+        JLabel iconLabel = new JLabel(searchIcon);
+
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.add(iconLabel, BorderLayout.WEST);
+        searchPanel.add(searchField, BorderLayout.CENTER);
+        searchPanel.putClientProperty(FlatClientProperties.STYLE,
+                "background:lighten(@background,5%);" +
+                        "arc:10");
+
+        return searchPanel;
+    }
+
+    // Método para crear las tarjetas de resumen
+    private JPanel createStatsPanel() {
+        JPanel statsPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        statsPanel.putClientProperty(FlatClientProperties.STYLE,
+                "background:$Menu.background;" +
+                        "arc:10");
+
+        // Icono para la sección de clientes totales
+        FlatSVGIcon totalClientsIcon = new FlatSVGIcon("app/icon/svg/people-icon.svg").derive(40, 40);
+        JPanel totalClients = createStatCard("Total de Clientes", totalClientsIcon, " 120");
+
+        // Icono para la sección de clientes activos
+        FlatSVGIcon activesClientsIcon = new FlatSVGIcon("app/icon/svg/quality-icon.svg").derive(40, 40);
+        JPanel activeClients = createStatCard("Clientes Activos", activesClientsIcon, " 90");
+
+        statsPanel.add(totalClients);
+        statsPanel.add(activeClients);
+
+        return statsPanel;
+    }
+
+    // Método para crear una tarjeta de estadísticas
     private JPanel createStatCard(String title, Icon icon, String value) {
         JPanel card = new JPanel(new MigLayout("wrap, fillx, insets 10", "[grow]"));
         card.putClientProperty(FlatClientProperties.STYLE,
@@ -233,6 +128,145 @@ public class ClientListView extends JPanel {
         return card;
     }
 
+    // Método para crear la tabla
+    private JScrollPane createTablePanel() {
+        List<Client> clients = this.clientController.getAllClients();
+        model = new DefaultTableModel();
+        model.addColumn("ID");
+        model.addColumn("Nombre");
+        model.addColumn("Correo");
+        model.addColumn("Teléfono");
+        model.addColumn("Dirección");
+
+        for (Client client : clients) {
+            model.addRow(new Object[]{
+                    client.getId(),
+                    client.getFirstName() + " " + client.getFirstSurname(),
+                    client.getEmail(),
+                    client.getPhone(),
+                    client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode()
+            });
+        }
+
+        table = new JTable(model) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hacer que la tabla no sea editable
+            }
+        };
+
+        // Estilo de la tabla
+        table.setRowHeight(35); // Altura de las filas
+        table.getColumnModel().getColumn(0).setPreferredWidth(200);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        table.getColumnModel().getColumn(3).setPreferredWidth(200);
+        table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        table.putClientProperty(FlatClientProperties.STYLE,
+                "showHorizontalLines:true;" +
+                        "showVerticalLines:true;" +
+                        "font:+1");
+
+        // Header con estilo minimalista
+        JTableHeader header = table.getTableHeader();
+        header.putClientProperty(FlatClientProperties.STYLE,
+                "font:bold +1;" +
+                        "height:35");
+
+        // ScrollPane para la tabla
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(750, 400));
+
+        return scrollPane;
+    }
+
+    // Método para crear el panel de botones
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        buttonPanel.putClientProperty(FlatClientProperties.STYLE,
+                "background:$Menu.background;" +
+                        "arc:10");
+
+        JButton newButton = createActionButton("Nuevo Cliente", "app/icon/svg/create-icon.svg");
+        JButton editButton = createActionButton("Editar Cliente", "app/icon/svg/update-icon.svg");
+        JButton deleteButton = createActionButton("Eliminar Cliente", "app/icon/svg/delete-icon.svg");
+
+        // Asignar acciones a los botones
+        setupNewButtonAction(newButton);
+        setupEditButtonAction(editButton);
+        setupDeleteButtonAction(deleteButton);
+
+        buttonPanel.add(newButton);
+        buttonPanel.add(editButton);
+        buttonPanel.add(deleteButton);
+
+        return buttonPanel;
+    }
+
+    // Método para configurar la acción del botón "Nuevo"
+    private void setupNewButtonAction(JButton button) {
+        button.addActionListener(e -> {
+            JFrame frame = new JFrame("Nuevo Cliente");
+            frame.setContentPane(new NewClientForm());
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+    }
+
+    // Método para configurar la acción del botón "Editar"
+    private void setupEditButtonAction(JButton button) {
+        button.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                String name = (String) model.getValueAt(selectedRow, 0);
+                String email = (String) model.getValueAt(selectedRow, 1);
+                String phone = (String) model.getValueAt(selectedRow, 2);
+                String firstName = name.split(" ")[0];
+                String secondName = name.split(" ").length > 1 ? name.split(" ")[1] : "";
+                String firstSurname = ""; // Ajustar según datos
+                String secondSurname = ""; // Ajustar según datos
+                int age = 0; // Ajustar según datos
+
+                JFrame frame = new JFrame("Editar Cliente");
+                frame.setContentPane(new EditClientForm(
+                        "",
+                        firstName,
+                        secondName,
+                        firstSurname,
+                        secondSurname,
+                        age,
+                        email,
+                        phone,
+                        ""
+                ));
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione un cliente para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+    }
+
+    // Método para configurar la acción del botón "Eliminar"
+    private void setupDeleteButtonAction(JButton button) {
+        button.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este cliente?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    model.removeRow(selectedRow);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione un cliente para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+    }
+
+    // Método para crear un botón con ícono
     private JButton createActionButton(String text, String iconPath) {
         JButton button = new JButton(text, new FlatSVGIcon(iconPath).derive(20, 20));
         button.putClientProperty(FlatClientProperties.STYLE,
