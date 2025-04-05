@@ -2,6 +2,8 @@ package app.view;
 
 import app.controller.GastoController;
 import app.model.Gasto;
+import app.view.forms.EditOverheadForm;
+import app.view.forms.NewOverheadForm;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 
@@ -19,6 +21,7 @@ public class Overheads extends JPanel {
     private JTable tablaGastos;
     private JButton btnAdd;
     private JButton btnEdit;
+    private JButton btnDetails;
     private JButton btnDelete;
     private JLabel lblTotalLabel;
 
@@ -28,6 +31,8 @@ public class Overheads extends JPanel {
         llenarTabla();
         addOverhead();
         removeOverhead();
+        editOverhead();
+        detailsOverhead();
         setTotal();
     }
 
@@ -35,11 +40,18 @@ public class Overheads extends JPanel {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         JPanel panel = createMainContentPanel();
 
+        // Agregar título y tabla
         panel.add(createTitleLabel(), "gapbottom 15, al center");
         panel.add(createTableComponent(), "grow, gapbottom 20");
-        panel.add(createTotalLabel(), "al right, pad 0 15 0 0, split 3, wmin 150");
-        panel.add(createEliminarButton(), "gapy 20");
-        panel.add(createAgregarButton(), "gapy 20, gapright push");
+
+        // Agregar el label del total
+        panel.add(createTotalLabel(), "al right, span, wrap"); // Alinea el total a la derecha y salta a la siguiente fila
+
+        // Agregar botones alineados horizontalmente
+        panel.add(createAgregarButton(), "split 4, growx, gapright 10"); // Botón "Eliminar gasto"
+        panel.add(createEliminarButton(), "growx, gapright 10"); // Botón "Editar gasto"
+        panel.add(createEditarButton(), "growx, gapright 10"); // Botón "Ver detalles"
+        panel.add(createDetallesButton(), "growx, wrap"); // Botón "Agregar gasto"
 
         add(panel);
     }
@@ -104,6 +116,18 @@ public class Overheads extends JPanel {
         return btn;
     }
 
+    private JButton createEditarButton() {
+        JButton btn = createStylizedButton("Editar gasto");
+        btnEdit = btn; // Asignar el botón a la variable de instancia
+        return btn;
+    }
+
+    private JButton createDetallesButton() {
+        JButton btn = createStylizedButton("Ver detalles");
+        btnDetails = btn;
+        return btn;
+    }
+
     private JButton createStylizedButton(String text) {
         JButton button = new JButton(text);
         button.putClientProperty(FlatClientProperties.STYLE,
@@ -132,9 +156,24 @@ public class Overheads extends JPanel {
     private void addOverhead(){
         // Agregar el evento manualmente
         btnAdd.addActionListener(e -> {
-            NewOverhead newOverhead = new NewOverhead(this);
+            NewOverheadForm newOverheadForm = new NewOverheadForm(this);
             JFrame frame = new JFrame("Agregar gasto");
-            frame.setContentPane(newOverhead);
+            frame.setContentPane(newOverheadForm);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+    }
+
+    private void editOverhead(){
+        // Agregar el evento manualmente
+        btnEdit.addActionListener(e -> {
+            String id = getIdGastoSeleccionado();
+            Gasto gasto = controller.getByID(id);
+            EditOverheadForm editOverheadForm = new EditOverheadForm(this, gasto);
+            JFrame frame = new JFrame("Editar gasto");
+            frame.setContentPane(editOverheadForm);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
@@ -152,6 +191,12 @@ public class Overheads extends JPanel {
                 llenarTabla();
                 setTotal();
             }
+        });
+    }
+
+    private void detailsOverhead(){
+        btnDetails.addActionListener(e -> {
+            JOptionPane.showMessageDialog(null, controller.getByID(getIdGastoSeleccionado()));
         });
     }
 

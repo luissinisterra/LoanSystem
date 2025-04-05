@@ -1,14 +1,15 @@
-package app.view;
+package app.view.forms;
 
 import app.controller.GastoController;
+import app.model.Gasto;
+import app.view.Overheads;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 
-public class NewOverhead extends JPanel {
+public class EditOverheadForm extends JPanel {
 
     private JLabel lbTitle;
     private JComboBox<String> cbType;
@@ -18,12 +19,16 @@ public class NewOverhead extends JPanel {
     private JButton btnCancel;
     private GastoController controller;
     private Overheads over;
+    private Gasto gasto;
 
-    public NewOverhead(Overheads over) {
+    public EditOverheadForm(Overheads over, Gasto gasto) {
         init();
         controller = new GastoController();
-        addOverhead();
+        editOverhead();
+        closeForm();
         this.over = over;
+        this.gasto = gasto;
+        setText(this.gasto);
     }
 
     private void init() {
@@ -49,12 +54,12 @@ public class NewOverhead extends JPanel {
     private void createFilterComponents() {
         cbType = new JComboBox<>(new String[]{"Gastos", "Salida"});
         txtDetail = createFormField("Detalle");
-        txtValue = createFormField("Valor gasto/salida");
+        txtValue = createFormField("");
     }
 
     // Crea los botones de acción
     private void createActionButtons() {
-        btnAdd = createActionButton("Agregar");
+        btnAdd = createActionButton("Editar");
         btnCancel = createActionButton("Cancelar");
     }
 
@@ -109,16 +114,48 @@ public class NewOverhead extends JPanel {
         return button;
     }
 
-    private void addOverhead(){
+    private void editOverhead(){
         // Agregar el evento manualmente
         btnAdd.addActionListener(e -> {
             String type = cbType.getSelectedItem().toString();
             String detail = txtDetail.getText();
             String value = txtValue.getText();
-            controller.addGasto(type, detail, Double.parseDouble(value));
+            String id = this.gasto.getIdGasto();
+            controller.updateGasto(id, type, detail, Double.parseDouble(value));
             over.llenarTabla();
             over.setTotal();
+            JOptionPane.showMessageDialog(null, "Gasto editado correctamente!",  "Gasto editado", JOptionPane.INFORMATION_MESSAGE);
+            Window window = SwingUtilities.getWindowAncestor(this);
+            if (window != null) {
+                window.dispose();
+            }
         });
+    }
+
+    private void closeForm(){
+        // Agregar el evento manualmente
+        btnCancel.addActionListener(e -> {
+            Window window = SwingUtilities.getWindowAncestor(this);
+            if (window != null) {
+                window.dispose();
+            }
+        });
+    }
+
+    private void setText(Gasto gasto) {
+        txtDetail.setText(gasto.getDescripcionGasto());
+        txtValue.setText(String.valueOf(gasto.getValorGasto()));
+        cbType.setSelectedIndex(getIndex(gasto.getTipoDeGasto()));
+    }
+
+    private int getIndex(String tipo){
+        if (tipo.equals("Gastos")){
+            return 0;
+        }
+        if (tipo.equals("Salida")){
+            return 1;
+        }
+        return -1;
     }
 
 }

@@ -63,11 +63,12 @@ public class Gasto {
 
     @Override
     public String toString() {
-        return "idGasto: '" + idGasto + '\'' +
-                ", tipoDeGasto: '" + tipoDeGasto + '\'' +
-                ", descripcionGasto: '" + descripcionGasto + '\'' +
-                ", valorGasto: " + valorGasto + '\'' +
-                ", fechaGasto: " + fechaGasto;
+        return "ID: '" + idGasto + "'\n" +
+                "Tipo de gasto: '" + tipoDeGasto + "'\n" +
+                "Descripción del gasto: '" + descripcionGasto + "'\n" +
+                "Valor del gasto: " + valorGasto + "\n" +
+                "Fecha de creación del gasto: " + fechaGasto;
     }
+
 }
 

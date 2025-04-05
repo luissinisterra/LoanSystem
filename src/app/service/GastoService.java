@@ -25,7 +25,7 @@ public class GastoService {
         setBaseUrl();
     }
 
-    private static void setBaseUrl() {
+    private void setBaseUrl() {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()) // Registra el adaptador
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
@@ -77,6 +77,36 @@ public class GastoService {
                 return gasto;
             }
         }catch (IOException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public Gasto getById(String id){
+        try {
+            Response<Gasto> response = apiService.getGastoById(id).execute();
+            if (!response.isSuccessful()) {
+                System.out.println("Error: " + response.code());
+            }
+            else {
+                return response.body();
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public Gasto update(String id, String tipo, String descripcion, double valor) {
+        try {
+            Gasto gasto = new Gasto(tipo, descripcion, valor);
+            Response<Gasto> response = apiService.updateGasto(id, gasto).execute();
+            if (!response.isSuccessful()) {
+                System.out.println("Error: " + response.code());
+            } else {
+                return gasto;
+            }
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return null;
