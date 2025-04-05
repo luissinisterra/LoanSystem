@@ -31,4 +31,8 @@ public interface ApiGastoService {
     //Remove
     @DELETE("/api/gastos/{id}")
     Call<Void> deleteGasto(@Path("id") String id);
+
+    //Put
+    @PUT("/api/gastos/{id}")
+    Call<Gasto> updateGasto(@Path("id") String id, @Body Gasto gasto);
 }
