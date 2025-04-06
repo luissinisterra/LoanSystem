@@ -1,23 +1,27 @@
 package app.view;
 
+import app.controller.LoanController;
+import app.model.Loan;
 import app.view.forms.EditLoanForm;
 import app.view.forms.NewLoanForm;
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.util.List;
 
-public class LoanList extends JPanel {
-
+public class LoanListView extends JPanel {
+    private LoanController loanController;
     private DefaultTableModel model;
     private JTable table;
 
-    public LoanList() {
+    public LoanListView() {
         init();
+        this.loanController = new LoanController();
     }
 
     private void init() {
@@ -25,158 +29,20 @@ public class LoanList extends JPanel {
 
         // Panel principal con bordes redondeados
         JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 20", "[grow]"));
-        panel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Menu.background;" +
-                "arc:20");
+        panel.putClientProperty(FlatClientProperties.STYLE,
+                "background:$Menu.background;" +
+                        "arc:20");
 
         // Título
         JLabel lbTitle = new JLabel("Gestión de Préstamos");
-        lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:bold +18");
+        lbTitle.putClientProperty(FlatClientProperties.STYLE,
+                "font:bold +18");
 
-        // Búsqueda rápida
-        JTextField searchField = new JTextField();
-        searchField.putClientProperty(FlatClientProperties.STYLE, ""
-                + "showClearButton:true;" +
-                "background:lighten(@background,5%);" +
-                "foreground:@foreground;" +
-                "arc:10");
-        searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar préstamos...");
-        JLabel searchIcon = new JLabel("🔍");
-        JPanel searchPanel = new JPanel(new BorderLayout());
-        searchPanel.add(searchIcon, BorderLayout.WEST);
-        searchPanel.add(searchField, BorderLayout.CENTER);
-        searchPanel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:lighten(@background,5%);" +
-                "arc:10");
-
-        // Tarjetas de resumen
-        JPanel statsPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-        statsPanel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Menu.background;" +
-                "arc:10");
-
-        JPanel totalLoans = createStatCard("Total de Préstamos", "📊 50");
-        JPanel activeLoans = createStatCard("Préstamos Activos", "📊 30");
-
-        statsPanel.add(totalLoans);
-        statsPanel.add(activeLoans);
-
-        // Modelo de la tabla
-        model = new DefaultTableModel();
-
-        // Columnas de la tabla
-        model.addColumn("ID");
-        model.addColumn("Cliente");
-        model.addColumn("Monto");
-        model.addColumn("Estado");
-        model.addColumn("Fecha");
-
-        // Datos de ejemplo
-        model.addRow(new Object[]{"1", "Juan Pérez", "$5,000", "Activo", "2023-10-01"});
-        model.addRow(new Object[]{"2", "María López", "$3,000", "Pagado", "2022-09-15"});
-        model.addRow(new Object[]{"3", "Carlos Sánchez", "$8,000", "Vencido", "2023-08-20"});
-
-        // Crear la tabla con el modelo
-        table = new JTable(model) {
-            @Override
-            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-                Component comp = super.prepareRenderer(renderer, row, column);
-                if (!isRowSelected(row)) {
-                    comp.setBackground(row % 2 == 0 ? new Color(245, 245, 245, 150) : new Color(230, 230, 230, 150));
-                } else {
-                    comp.setBackground(new Color(0, 120, 215)); // Color de fila seleccionada
-                }
-                return comp;
-            }
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Hacer que la tabla no sea editable
-            }
-        };
-        table.setRowHeight(40);
-        table.setShowHorizontalLines(true);
-        table.setShowVerticalLines(true);
-        table.setGridColor(new Color(230, 230, 230));
-
-        // Estilo del encabezado de la tabla
-        JTableHeader header = table.getTableHeader();
-        header.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Table.headerBackground;" +
-                "foreground:$Table.headerForeground;" +
-                "border:0,0,0,0");
-
-        // ScrollPane para la tabla (transparente)
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.putClientProperty(FlatClientProperties.STYLE, ""
-                + "border:0,0,0,0;" +
-                "background:null"); // Fondo transparente
-        table.setOpaque(false); // Hacer la tabla transparente
-        ((JComponent) table.getDefaultRenderer(Object.class)).setOpaque(false); // Hacer celdas transparentes
-
-        // Botones de acción
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        buttonPanel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Menu.background;" +
-                "arc:10");
-
-        JButton newButton = createActionButton("Nuevo Préstamo", "path/to/new_icon.png");
-        JButton editButton = createActionButton("Editar Préstamo", "path/to/edit_icon.png");
-        JButton deleteButton = createActionButton("Eliminar Préstamo", "path/to/delete_icon.png");
-
-        // Acción para el botón Nuevo
-        newButton.addActionListener(e -> {
-            JFrame frame = new JFrame("Nuevo Préstamo");
-            frame.setContentPane(new NewLoanForm());
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-
-        // Acción para el botón Editar
-        editButton.addActionListener(e -> {
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow != -1) {
-                // Obtener los datos del préstamo seleccionado
-                String client = (String) model.getValueAt(selectedRow, 0);
-                String amount = (String) model.getValueAt(selectedRow, 1);
-                String interestRate = (String) model.getValueAt(selectedRow, 2);
-                String term = (String) model.getValueAt(selectedRow, 3);
-                String status = (String) model.getValueAt(selectedRow, 4);
-                String date = (String) model.getValueAt(selectedRow, 5);
-
-                // Abrir el formulario de edición
-                EditLoanForm editLoanForm = new EditLoanForm(client, amount, interestRate, term, status, date);
-                JFrame frame = new JFrame("Editar Préstamo");
-                frame.setContentPane(editLoanForm);
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un préstamo para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
-        });
-
-
-        // Acción para el botón Eliminar
-        deleteButton.addActionListener(e -> {
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow != -1) {
-                int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este préstamo?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
-                if (confirm == JOptionPane.YES_OPTION) {
-                    model.removeRow(selectedRow);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un préstamo para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
-        });
-
-        buttonPanel.add(newButton);
-        buttonPanel.add(editButton);
-        buttonPanel.add(deleteButton);
+        // Componentes principales
+        JPanel searchPanel = createSearchBar();
+        JPanel statsPanel = createStatsPanel();
+        JScrollPane scrollPane = createTablePanel();
+        JPanel buttonPanel = createButtonPanel();
 
         // Agregar componentes al panel principal
         panel.add(lbTitle, "span, growx, wrap");
@@ -188,47 +54,304 @@ public class LoanList extends JPanel {
         add(panel, "grow");
     }
 
-    private JPanel createStatCard(String title, String value) {
-        JPanel card = new JPanel(new MigLayout("wrap, fillx, insets 10", "[grow]"));
-        card.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:lighten(@background,5%);" +
-                "arc:10");
+    // Método para crear la barra de búsqueda
+    private JPanel createSearchBar() {
+        JTextField searchField = new JTextField();
+        searchField.putClientProperty(FlatClientProperties.STYLE,
+                "showClearButton:true;" +
+                        "background:lighten(@background,5%);" +
+                        "foreground:@foreground;" +
+                        "arc:10");
+        searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar préstamos...");
 
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:bold +14");
+        // Botón de búsqueda
+        JButton searchButton = createActionButton("", "app/icon/svg/search-icon.svg");
+        searchButton.setPreferredSize(new Dimension(60, 30));
+        searchButton.addActionListener(e -> {
+            String query = searchField.getText();
+            this.filterTable(query);
+        });
 
-        JLabel valueLabel = new JLabel(value);
-        valueLabel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:bold +18");
+        // Botón de reset
+        JButton resetButton = createActionButton("", "app/icon/svg/reset-icon.svg");
+        resetButton.setPreferredSize(new Dimension(60, 30));
+        resetButton.addActionListener(e -> {
+            searchField.setText("");
+            this.resetTable();
+        });
 
-        card.add(titleLabel, "growx");
-        card.add(valueLabel, "growx");
+        // Panel principal para la barra de búsqueda
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.add(resetButton, BorderLayout.WEST);
+        searchPanel.add(searchField, BorderLayout.CENTER);
+        searchPanel.add(searchButton, BorderLayout.EAST);
+        searchPanel.putClientProperty(FlatClientProperties.STYLE,
+                "background:lighten(@background,5%);" +
+                        "arc:10");
 
-        return card; // Devolvemos el JPanel directamente
+        return searchPanel;
     }
 
+    // Método para filtrar la tabla
+    private void filterTable(String query) {
+        List<Loan> loans = this.loanController.searchLoansByQuery(query);
+        model.setRowCount(0); // Limpiar las filas actuales del modelo
+        boolean isEmpty = true;
+
+        if (loans != null && !loans.isEmpty()) {
+            for (Loan loan : loans) {
+                model.addRow(new Object[]{
+                        loan.getId(),
+                        loan.getClientName(),
+                        loan.getAmount(),
+                        loan.getStatus(),
+                        loan.getDate()
+                });
+            }
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamos encontrados.");
+            isEmpty = false;
+        }
+
+        if (isEmpty) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, "No se encontraron préstamos similares a tu búsqueda.");
+        }
+    }
+
+    // Método para resetear la tabla
+    private void resetTable() {
+        List<Loan> loans = this.loanController.getAllLoans();
+        model.setRowCount(0); // Limpiar las filas actuales del modelo
+
+        if (loans != null && !loans.isEmpty()) {
+            for (Loan loan : loans) {
+                model.addRow(new Object[]{
+                        loan.getId(),
+                        loan.getClientName(),
+                        loan.getAmount(),
+                        loan.getStatus(),
+                        loan.getDate()
+                });
+            }
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Tabla reseteada con éxito.");
+        }
+    }
+
+    // Método para actualizar la tabla
+    public void refreshTable() {
+        List<Loan> loans = this.loanController.getAllLoans();
+        model.setRowCount(0); // Limpiar las filas actuales del modelo
+
+        if (loans != null && !loans.isEmpty()) {
+            for (Loan loan : loans) {
+                model.addRow(new Object[]{
+                        loan.getId(),
+                        loan.getClientName(),
+                        loan.getAmount(),
+                        loan.getStatus(),
+                        loan.getDate()
+                });
+            }
+        }
+    }
+
+    // Método para crear las tarjetas de resumen
+    private JPanel createStatsPanel() {
+        JPanel statsPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        statsPanel.putClientProperty(FlatClientProperties.STYLE,
+                "background:$Menu.background;" +
+                        "arc:10");
+
+        // Icono para la sección de préstamos totales
+        FlatSVGIcon totalLoansIcon = new FlatSVGIcon("app/icon/svg/total-loans-icon.svg").derive(40, 40);
+        int totalLoansCount = this.loanController.getAllLoans().size();
+        JPanel totalLoans = createStatCard("Total de Préstamos", totalLoansIcon, String.valueOf(totalLoansCount));
+
+        // Icono para la sección de préstamos activos
+        FlatSVGIcon activeLoansIcon = new FlatSVGIcon("app/icon/svg/active-loans-icon.svg").derive(40, 40);
+        int activeLoansCount = this.loanController.getActiveLoansCount();
+        JPanel activeLoans = createStatCard("Préstamos Activos", activeLoansIcon, String.valueOf(activeLoansCount));
+
+        statsPanel.add(totalLoans);
+        statsPanel.add(activeLoans);
+
+        return statsPanel;
+    }
+
+    // Método para crear una tarjeta de estadísticas
+    private JPanel createStatCard(String title, Icon icon, String value) {
+        JPanel card = new JPanel(new MigLayout("wrap, fillx, insets 10", "[grow]"));
+        card.putClientProperty(FlatClientProperties.STYLE,
+                "background:lighten(@background,5%);" +
+                        "arc:10");
+
+        // Título
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.putClientProperty(FlatClientProperties.STYLE,
+                "font:bold +14");
+
+        // Valor con ícono
+        JPanel valuePanel = new JPanel(new BorderLayout());
+        valuePanel.setOpaque(false);
+        JLabel iconLabel = new JLabel(icon);
+        JLabel valueLabel = new JLabel(value);
+        valueLabel.putClientProperty(FlatClientProperties.STYLE,
+                "font:bold +18");
+
+        valuePanel.add(iconLabel, BorderLayout.WEST);
+        valuePanel.add(valueLabel, BorderLayout.CENTER);
+
+        card.add(titleLabel, "growx");
+        card.add(valuePanel, "growx");
+
+        return card;
+    }
+
+    // Método para crear la tabla
+    private JScrollPane createTablePanel() {
+        List<Loan> loans = this.loanController.getAllLoans();
+        model = new DefaultTableModel();
+        model.addColumn("ID");
+        model.addColumn("Cliente");
+        model.addColumn("Monto");
+        model.addColumn("Estado");
+        model.addColumn("Fecha");
+
+        if (loans != null && !loans.isEmpty()) {
+            for (Loan loan : loans) {
+                model.addRow(new Object[]{
+                        loan.getId(),
+                        loan.getClientName(),
+                        loan.getAmount(),
+                        loan.getStatus(),
+                        loan.getDate()
+                });
+            }
+        }
+
+        table = new JTable(model) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hacer que la tabla no sea editable
+            }
+        };
+
+        // Estilo de la tabla
+        table.setRowHeight(35);
+        table.getColumnModel().getColumn(0).setPreferredWidth(100);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        table.getColumnModel().getColumn(3).setPreferredWidth(100);
+        table.getColumnModel().getColumn(4).setPreferredWidth(100);
+        table.putClientProperty(FlatClientProperties.STYLE,
+                "showHorizontalLines:true;" +
+                        "showVerticalLines:true;" +
+                        "font:+1");
+
+        // Header con estilo minimalista
+        JTableHeader header = table.getTableHeader();
+        header.putClientProperty(FlatClientProperties.STYLE,
+                "font:bold +1;" +
+                        "height:35");
+
+        // ScrollPane para la tabla
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(750, 400));
+
+        return scrollPane;
+    }
+
+    // Método para crear el panel de botones
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        buttonPanel.putClientProperty(FlatClientProperties.STYLE,
+                "background:$Menu.background;" +
+                        "arc:10");
+
+        JButton newButton = createActionButton("Nuevo Préstamo", "app/icon/svg/create-icon.svg");
+        JButton editButton = createActionButton("Editar Préstamo", "app/icon/svg/update-icon.svg");
+        JButton deleteButton = createActionButton("Eliminar Préstamo", "app/icon/svg/delete-icon.svg");
+
+        // Asignar acciones a los botones
+        setupNewButtonAction(newButton);
+        setupEditButtonAction(editButton);
+        setupDeleteButtonAction(deleteButton);
+
+        buttonPanel.add(newButton);
+        buttonPanel.add(editButton);
+        buttonPanel.add(deleteButton);
+
+        return buttonPanel;
+    }
+
+    // Método para configurar la acción del botón "Nuevo"
+    private void setupNewButtonAction(JButton button) {
+        button.addActionListener(e -> {
+            JFrame frame = new JFrame("Nuevo Préstamo");
+            frame.setContentPane(new NewLoanForm(this));
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+    }
+
+    // Método para configurar la acción del botón "Editar"
+    private void setupEditButtonAction(JButton button) {
+        button.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                String id = (String) table.getValueAt(selectedRow, 0);
+                Loan loan = this.loanController.getLoanById(id);
+                JFrame frame = new JFrame("Editar Préstamo");
+                frame.setContentPane(new EditLoanForm(
+                        loan.getId(),
+                        loan.getClientName(),
+                        loan.getAmount(),
+                        loan.getStatus(),
+                        loan.getDate(),
+                        this
+                ));
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+            } else {
+                Notifications.getInstance().show(Notifications.Type.INFO, "Seleccione un préstamo para editar.");
+            }
+        });
+    }
+
+    // Método para configurar la acción del botón "Eliminar"
+    private void setupDeleteButtonAction(JButton button) {
+        button.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                String id = (String) table.getValueAt(selectedRow, 0);
+                int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este préstamo?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    this.loanController.deleteLoan(id);
+                    this.refreshTable();
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "El préstamo ha sido eliminado con éxito.");
+                }
+            } else {
+                Notifications.getInstance().show(Notifications.Type.INFO, "Seleccione un préstamo para eliminar.");
+            }
+        });
+    }
+
+    // Método para crear un botón con ícono
     private JButton createActionButton(String text, String iconPath) {
-        JButton button = new JButton(text, new ImageIcon(iconPath));
-        button.putClientProperty(FlatClientProperties.STYLE, ""
-                + "[light]background:darken(@background,10%);" +
-                "[dark]background:lighten(@background,10%);" +
-                "foreground:@foreground;" +
-                "borderWidth:0;" +
-                "focusWidth:0;" +
-                "innerFocusWidth:0;" +
-                "arc:10");
+        JButton button = new JButton(text, new FlatSVGIcon(iconPath).derive(20, 20));
+        button.putClientProperty(FlatClientProperties.STYLE,
+                "[light]background:darken(@background,10%);" +
+                        "[dark]background:lighten(@background,10%);" +
+                        "foreground:@foreground;" +
+                        "borderWidth:0;" +
+                        "focusWidth:0;" +
+                        "innerFocusWidth:0;" +
+                        "arc:10");
         button.setPreferredSize(new Dimension(180, 40));
         button.setFont(button.getFont().deriveFont(Font.BOLD, 14f));
         return button;
     }
-
-    /*public static void main(String[] args) {
-        JFrame frame = new JFrame("Gestión de Préstamos");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 700);
-        frame.setLocationRelativeTo(null);
-        frame.setContentPane(new LoanList());
-        frame.setVisible(true);
-    }*/
 }
