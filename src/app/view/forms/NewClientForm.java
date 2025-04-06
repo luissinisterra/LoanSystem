@@ -3,6 +3,7 @@ package app.view.forms;
 import app.controller.ClientController;
 import app.model.Address;
 import app.model.Client;
+import app.view.ClientListView;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import raven.toast.Notifications;
@@ -26,11 +27,13 @@ public class NewClientForm extends JPanel {
     private JTextField txtStreet;
     private JTextField txtPostalCode;
     private JButton cmdSave;
+    private ClientListView listView;
 
     private ClientController clientController;
 
-    public NewClientForm() {
+    public NewClientForm(ClientListView listView) {
         init();
+        this.listView = listView;
         this.clientController = new ClientController();
     }
 
@@ -72,6 +75,9 @@ public class NewClientForm extends JPanel {
             if (validateFields()) {
                 saveClient();
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Cliente guardado correctamente");
+
+                //Metodo para refrescar la tabla del padre
+                this.listView.refreshTable();
 
                 // Obtener la ventana padre y cerrarla
                 Window window = SwingUtilities.getWindowAncestor(this);
