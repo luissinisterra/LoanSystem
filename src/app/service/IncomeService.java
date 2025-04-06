@@ -2,8 +2,8 @@ package app.service;
 
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
-import app.model.Gasto;
-import app.service.imp.IGastoService;
+import app.model.Income;
+import app.service.imp.IIncomeService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import retrofit2.Response;
@@ -15,11 +15,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class GastoService {
+public class IncomeService {
     private static final String BASE_URL = "http://localhost:8080";
-    private static IGastoService apiService;
+    private static IIncomeService apiService;
 
-    public GastoService() {
+    public IncomeService() {
         setBaseUrl();
     }
 
@@ -32,17 +32,16 @@ public class GastoService {
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-        apiService = retrofit.create(IGastoService.class);
+        apiService = retrofit.create(IIncomeService.class);
     }
 
-    public List<Gasto> getGastos() {
+    public List<Income> getIncomes() {
         try {
-            Response<List<Gasto>> response = apiService.getAllGastos().execute();
+            Response<List<Income>> response = apiService.getIncomes().execute();
             if (!response.isSuccessful()) {
                 System.out.println("Error: " + response.code());
             } else {
-                List<Gasto> gastos = response.body();
-                return gastos;
+                return response.body();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,7 +51,7 @@ public class GastoService {
 
     public void remove (String id){
         try {
-            Response<Void> response = apiService.deleteGasto(id).execute();
+            Response<Void> response = apiService.deleteIncome(id).execute();
             if (!response.isSuccessful()) {
                 System.out.println("Error: " + response.code());
             }
@@ -64,15 +63,15 @@ public class GastoService {
         }
     }
 
-    public Gasto add (String tipo, String descripcion, double valor){
+    public Income add (String tipo, String descripcion, double valor){
         try {
-            Gasto gasto = new Gasto(tipo, descripcion, valor);
-            Response<Gasto> response = apiService.createGasto(gasto).execute();
+            Income i = new Income(tipo, descripcion, valor);
+            Response<Income> response = apiService.addIncome(i).execute();
             if (!response.isSuccessful()) {
                 System.out.println("Error: " + response.code());
             }
             else {
-                return gasto;
+                return i;
             }
         }catch (IOException ex){
             ex.printStackTrace();
@@ -80,9 +79,9 @@ public class GastoService {
         return null;
     }
 
-    public Gasto getById(String id){
+    public Income getById(String id){
         try {
-            Response<Gasto> response = apiService.getGastoById(id).execute();
+            Response<Income> response = apiService.getIncomeByID(id).execute();
             if (!response.isSuccessful()) {
                 System.out.println("Error: " + response.code());
             }
@@ -95,14 +94,14 @@ public class GastoService {
         return null;
     }
 
-    public Gasto update(String id, String tipo, String descripcion, double valor) {
+    public Income update(String id, String tipo, String descripcion, double valor) {
         try {
-            Gasto gasto = new Gasto(tipo, descripcion, valor);
-            Response<Gasto> response = apiService.updateGasto(id, gasto).execute();
+            Income i= new Income(tipo, descripcion, valor);
+            Response<Income> response = apiService.updateIncome(id, i).execute();
             if (!response.isSuccessful()) {
                 System.out.println("Error: " + response.code());
             } else {
-                return gasto;
+                return i;
             }
         } catch (IOException ex) {
             ex.printStackTrace();

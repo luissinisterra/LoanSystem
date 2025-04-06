@@ -1,7 +1,10 @@
 package app.view.forms;
 
 import app.controller.GastoController;
+import app.controller.IncomeController;
 import app.model.Gasto;
+import app.model.Income;
+import app.view.Incomes;
 import app.view.Overheads;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -9,7 +12,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.*;
 
-public class EditOverheadForm extends JPanel {
+public class EditIncomesForm extends JPanel {
 
     private JLabel lbTitle;
     private JComboBox<String> cbType;
@@ -17,18 +20,18 @@ public class EditOverheadForm extends JPanel {
     private JTextField txtValue;
     private JButton btnAdd;
     private JButton btnCancel;
-    private GastoController controller;
-    private Overheads over;
-    private Gasto gasto;
+    private IncomeController controller;
+    private Incomes over;
+    private Income income;
 
-    public EditOverheadForm(Overheads over, Gasto gasto) {
+    public EditIncomesForm(Incomes over, Income income) {
         init();
-        controller = new GastoController();
+        controller = new IncomeController();
         editOverhead();
         closeForm();
         this.over = over;
-        this.gasto = gasto;
-        setText(this.gasto);
+        this.income = income;
+        setText(this.income);
     }
 
     private void init() {
@@ -46,13 +49,13 @@ public class EditOverheadForm extends JPanel {
 
     // Crea el título del panel
     private void createTitle() {
-        lbTitle = new JLabel("Editar un gasto");
+        lbTitle = new JLabel("Editar un ingresos");
         lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +16");
     }
 
     // Crea los componentes de filtrado
     private void createFilterComponents() {
-        cbType = new JComboBox<>(new String[]{"Gastos", "Salida"});
+        cbType = new JComboBox<>(new String[]{"Ingreso", "Pago"});
         txtDetail = createFormField("Detalle");
         txtValue = createFormField("");
     }
@@ -73,13 +76,13 @@ public class EditOverheadForm extends JPanel {
         panel.add(lbTitle, "growx, wrap, gapbottom 15");
 
         // Agregar componentes de filtrado
-        panel.add(new JLabel("Tipo de salida:"), "gapy 8");
+        panel.add(new JLabel("Tipo de ingreso:"), "gapy 8");
         panel.add(cbType, "growx, wrap");
 
         panel.add(new JLabel("Detalle:"), "gapy 8");
         panel.add(txtDetail, "growx, wrap");
 
-        panel.add(new JLabel("Valor gasto/salida:"), "gapy 8");
+        panel.add(new JLabel("Valor Ingreso/Pago:"), "gapy 8");
         panel.add(txtValue, "growx, wrap");
 
         // Agregar botones de acción
@@ -120,11 +123,11 @@ public class EditOverheadForm extends JPanel {
             String type = cbType.getSelectedItem().toString();
             String detail = txtDetail.getText();
             String value = txtValue.getText();
-            String id = this.gasto.getIdGasto();
-            controller.updateGasto(id, type, detail, Double.parseDouble(value));
+            String id = this.income.getIncomeID();
+            controller.updateIncome(id, type, detail, Double.parseDouble(value));
             over.llenarTabla();
             over.setTotal();
-            JOptionPane.showMessageDialog(null, "Gasto editado correctamente!",  "Gasto editado", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "¡Ingreso editado correctamente!",  "Ingreso editado", JOptionPane.INFORMATION_MESSAGE);
             Window window = SwingUtilities.getWindowAncestor(this);
             if (window != null) {
                 window.dispose();
@@ -142,17 +145,17 @@ public class EditOverheadForm extends JPanel {
         });
     }
 
-    private void setText(Gasto gasto) {
-        txtDetail.setText(gasto.getDescripcionGasto());
-        txtValue.setText(String.valueOf(gasto.getValorGasto()));
-        cbType.setSelectedIndex(getIndex(gasto.getTipoDeGasto()));
+    private void setText(Income income) {
+        txtDetail.setText(income.getIncomeDescription());
+        txtValue.setText(String.valueOf(income.getIncomeAmount()));
+        cbType.setSelectedIndex(getIndex(income.getIncomeType()));
     }
 
     private int getIndex(String tipo){
-        if (tipo.equals("Gastos")){
+        if (tipo.equals("Ingreso")){
             return 0;
         }
-        if (tipo.equals("Salida")){
+        if (tipo.equals("Pago")){
             return 1;
         }
         return -1;
