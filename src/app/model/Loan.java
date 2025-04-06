@@ -7,6 +7,7 @@ public class Loan {
     private String id;
     private Client client;
     private double amount;
+    private boolean active;
     private LocalDate date;
 
     public Loan(String id, Client client, double amount, LocalDate date) {
@@ -14,6 +15,7 @@ public class Loan {
         this.client = client;
         this.amount = amount;
         this.date = date;
+        this.active = true;
     }
 
     public String getId() {
@@ -38,6 +40,14 @@ public class Loan {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public LocalDate getDate() {
