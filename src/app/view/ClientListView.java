@@ -8,7 +8,9 @@ import app.view.forms.NewClientForm;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
+import javax.crypto.spec.PSource;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -66,17 +68,39 @@ public class ClientListView extends JPanel {
                         "arc:10");
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar clientes...");
 
-        FlatSVGIcon searchIcon = new FlatSVGIcon("app/icon/svg/search-icon.svg").derive(20, 20);
-        JLabel iconLabel = new JLabel(searchIcon);
+        // Botón de búsqueda
+        JButton searchButton = createActionButton("", "app/icon/svg/search-icon.svg");
+        searchButton.setPreferredSize(new Dimension(100, 35));
 
+        searchButton.putClientProperty(FlatClientProperties.STYLE,
+                "[light]background:darken(@background,10%);" +
+                        "[dark]background:lighten(@background,10%);" +
+                        "foreground:@foreground;" +
+                        "borderWidth:0;" +
+                        "focusWidth:0;" +
+                        "innerFocusWidth:0;" +
+                        "arc:10");
+
+        searchButton.setFont(searchButton.getFont().deriveFont(Font.BOLD, 14f));
+        searchButton.addActionListener(e -> {
+            String query = searchField.getText(); // Obtener el texto del campo de búsqueda
+            filterTable(query); // Filtrar la tabla con el texto actual
+        });
+
+        // Panel principal para la barra de búsqueda
         JPanel searchPanel = new JPanel(new BorderLayout());
-        searchPanel.add(iconLabel, BorderLayout.WEST);
+        //searchPanel.add(iconLabel, BorderLayout.WEST);
         searchPanel.add(searchField, BorderLayout.CENTER);
+        searchPanel.add(searchButton, BorderLayout.EAST); // Agregar el botón al lado derecho
         searchPanel.putClientProperty(FlatClientProperties.STYLE,
                 "background:lighten(@background,5%);" +
                         "arc:10");
 
         return searchPanel;
+    }
+
+    private void filterTable(String query) {
+        JOptionPane.showMessageDialog(null, query);
     }
 
     // Método para crear las tarjetas de resumen
@@ -141,15 +165,17 @@ public class ClientListView extends JPanel {
         model.addColumn("Activo");
 
 
-        for (Client client : clients) {
-            model.addRow(new Object[]{
-                    client.getId(),
-                    client.getFirstName() + " " + client.getFirstSurname(),
-                    client.getEmail(),
-                    client.getPhone(),
-                    client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode(),
-                    client.isActive() ? "Activo" : "Inactivo"
-            });
+        if (clients != null && !clients.isEmpty()) {
+            for (Client client : clients) {
+                model.addRow(new Object[]{
+                        client.getId(),
+                        client.getFirstName() + " " + client.getFirstSurname(),
+                        client.getEmail(),
+                        client.getPhone(),
+                        client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode(),
+                        client.isActive() ? "Activo" : "Inactivo"
+                });
+            }
         }
 
         table = new JTable(model) {
@@ -274,12 +300,14 @@ public class ClientListView extends JPanel {
         button.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
+                String id = (String) table.getValueAt(selectedRow, 0);
                 int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este cliente?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    model.removeRow(selectedRow);
+                    this.clientController.deleteClient(id);
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "El cliente ha sido eliminado con éxito.");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un cliente para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un cliente para eliminar. Advertencia");
             }
         });
     }
