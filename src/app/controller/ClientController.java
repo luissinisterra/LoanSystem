@@ -37,4 +37,8 @@ public class ClientController {
         return this.clientService.searchClientsByQuery(query);
     }
 
+    public int getActiveClientsCount() {
+        return this.clientService.getActiveClientsCount();
+    }
+
 }

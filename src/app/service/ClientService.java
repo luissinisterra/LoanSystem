@@ -94,4 +94,14 @@ public class ClientService {
         }
     }
 
+    public int getActiveClientsCount() {
+        int activeClientsCount = 0;
+        for (Client client : getAllClients()) {
+            if (client.isActive()){
+                activeClientsCount++;
+            }
+        }
+        return activeClientsCount;
+    }
+
 }
