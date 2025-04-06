@@ -48,6 +48,17 @@ public class ClientService {
         }
     }
 
+    public Client getClientById(String id) {
+        try{
+            Response<Client> response = this.iClientService.getClientById(id).execute();
+            Client client = response.body();
+            return client;
+        } catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void createClient(Client client) {
         try{
             Response<Void> response = this.iClientService.createClient(client).execute();

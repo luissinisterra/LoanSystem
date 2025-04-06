@@ -1,6 +1,7 @@
 package app.view;
 
 import app.controller.ClientController;
+import app.model.Address;
 import app.model.Client;
 import app.view.forms.EditClientForm;
 import app.view.forms.NewClientForm;
@@ -129,14 +130,16 @@ public class ClientListView extends JPanel {
     }
 
     // Método para crear la tabla
-    private JScrollPane createTablePanel() {
+    public JScrollPane createTablePanel() {
         List<Client> clients = this.clientController.getAllClients();
         model = new DefaultTableModel();
-        model.addColumn("ID");
+        model.addColumn("Documento");
         model.addColumn("Nombre");
         model.addColumn("Correo");
         model.addColumn("Teléfono");
         model.addColumn("Dirección");
+        model.addColumn("Activo");
+
 
         for (Client client : clients) {
             model.addRow(new Object[]{
@@ -144,7 +147,8 @@ public class ClientListView extends JPanel {
                     client.getFirstName() + " " + client.getFirstSurname(),
                     client.getEmail(),
                     client.getPhone(),
-                    client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode()
+                    client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode(),
+                    client.isActive() ? "Activo" : "Inactivo"
             });
         }
 
@@ -162,6 +166,7 @@ public class ClientListView extends JPanel {
         table.getColumnModel().getColumn(2).setPreferredWidth(200);
         table.getColumnModel().getColumn(3).setPreferredWidth(200);
         table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        table.getColumnModel().getColumn(5).setPreferredWidth(200);
         table.putClientProperty(FlatClientProperties.STYLE,
                 "showHorizontalLines:true;" +
                         "showVerticalLines:true;" +
@@ -220,18 +225,30 @@ public class ClientListView extends JPanel {
         button.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                String name = (String) model.getValueAt(selectedRow, 0);
-                String email = (String) model.getValueAt(selectedRow, 1);
-                String phone = (String) model.getValueAt(selectedRow, 2);
-                String firstName = name.split(" ")[0];
-                String secondName = name.split(" ").length > 1 ? name.split(" ")[1] : "";
-                String firstSurname = ""; // Ajustar según datos
-                String secondSurname = ""; // Ajustar según datos
-                int age = 0; // Ajustar según datos
+                String id = (String) table.getValueAt(selectedRow, 0);
+
+                Client client = this.clientController.getClientById(id);
+                String firstName = client.getFirstName();
+                String secondName = client.getFirstSurname();
+                String firstSurname = client.getFirstSurname();
+                String secondSurname = client.getSecondSurname();
+                int age = client.getAge();
+                String email = client.getEmail();
+                String phone = client.getPhone();
+
+                String country = client.getAddress().getCountry();
+                String deparment = client.getAddress().getDeparment();
+                String city = client.getAddress().getCity();
+                String street = client.getAddress().getStreet();
+                String postalCode = client.getAddress().getPostalCode();
+
+                Address address = new Address(country, deparment, city, street, postalCode);
+
+                String status = client.isActive() ? "Activo" : "Inactivo";
 
                 JFrame frame = new JFrame("Editar Cliente");
                 frame.setContentPane(new EditClientForm(
-                        "",
+                        id,
                         firstName,
                         secondName,
                         firstSurname,
@@ -239,7 +256,8 @@ public class ClientListView extends JPanel {
                         age,
                         email,
                         phone,
-                        ""
+                        address,
+                        status
                 ));
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.pack();

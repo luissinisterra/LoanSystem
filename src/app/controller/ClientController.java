@@ -17,6 +17,10 @@ public class ClientController {
         return this.clientService.getAllClients();
     }
 
+    public Client getClientById(String id) {
+        return this.clientService.getClientById(id);
+    }
+
     public void createClient(Client client) {
         this.clientService.createClient(client);
     }

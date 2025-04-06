@@ -27,7 +27,7 @@ public class NewClientForm extends JPanel {
     private JTextField txtPostalCode;
     private JButton cmdSave;
 
-    ClientController clientController;
+    private ClientController clientController;
 
     public NewClientForm() {
         init();
@@ -72,6 +72,12 @@ public class NewClientForm extends JPanel {
             if (validateFields()) {
                 saveClient();
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Cliente guardado correctamente");
+
+                // Obtener la ventana padre y cerrarla
+                Window window = SwingUtilities.getWindowAncestor(this);
+                if (window != null) {
+                    window.dispose();
+                }
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "Por favor complete todos los campos obligatorios");
             }
