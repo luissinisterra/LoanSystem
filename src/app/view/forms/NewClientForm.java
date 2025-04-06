@@ -1,6 +1,8 @@
 package app.view.forms;
 
+import app.controller.ClientController;
 import app.model.Address;
+import app.model.Client;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import raven.toast.Notifications;
@@ -25,8 +27,11 @@ public class NewClientForm extends JPanel {
     private JTextField txtPostalCode;
     private JButton cmdSave;
 
+    private ClientController clientController;
+
     public NewClientForm() {
         init();
+        this.clientController = new ClientController();
     }
 
     private void init() {
@@ -67,6 +72,12 @@ public class NewClientForm extends JPanel {
             if (validateFields()) {
                 saveClient();
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Cliente guardado correctamente");
+
+                // Obtener la ventana padre y cerrarla
+                Window window = SwingUtilities.getWindowAncestor(this);
+                if (window != null) {
+                    window.dispose();
+                }
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "Por favor complete todos los campos obligatorios");
             }
@@ -133,28 +144,23 @@ public class NewClientForm extends JPanel {
     }
 
     private void saveClient() {
-        // Crear un objeto Address con los datos ingresados
-        Address address = new Address(
-                txtCountry.getText(),
-                txtDepartment.getText(),
-                txtCity.getText(),
-                txtStreet.getText(),
-                txtPostalCode.getText()
-        );
+        String id = txtId.getText();
+        String firstName = txtFirstName.getText();
+        String secondName = txtSecondName.getText();
+        String firstSurname = txtFirstSurname.getText();
+        String secondSurname = txtSecondSurname.getText();
+        int age = Integer.parseInt(txtAge.getText());
+        String email = txtEmail.getText();
+        String phone = txtPhone.getText();
+        String country = txtCountry.getText();
+        String department = txtDepartment.getText();
+        String city = txtCity.getText();
+        String street = txtStreet.getText();
+        String postalCode = txtPostalCode.getText();
 
-        // Aquí puedes agregar la lógica para guardar el cliente en la base de datos o en memoria
-        System.out.println("Guardando cliente...");
-        System.out.println("ID: " + txtId.getText());
-        System.out.println("Nombre: " + txtFirstName.getText() + " " + txtSecondName.getText());
-        System.out.println("Apellidos: " + txtFirstSurname.getText() + " " + txtSecondSurname.getText());
-        System.out.println("Edad: " + txtAge.getText());
-        System.out.println("Correo: " + txtEmail.getText());
-        System.out.println("Teléfono: " + txtPhone.getText());
-        System.out.println("Dirección:");
-        System.out.println("  País: " + address.getCountry());
-        System.out.println("  Departamento: " + address.getDeparment());
-        System.out.println("  Ciudad: " + address.getCity());
-        System.out.println("  Calle: " + address.getStreet());
-        System.out.println("  Código postal: " + address.getPostalCode());
+        Address address = new Address(country, department, city, street, postalCode);
+       Client client = new Client(id, firstName, secondName, firstSurname, secondSurname, age, email, phone, address);
+
+        this.clientController.createClient(client);
     }
 }

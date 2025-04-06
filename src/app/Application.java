@@ -27,6 +27,7 @@ public class Application extends JFrame {
         FormsManager.getInstance().initApplication(this);
 
         mainForm = new MainForm();
+
         loginForm = new Login();
         setContentPane(loginForm);
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);

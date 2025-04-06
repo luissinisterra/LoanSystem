@@ -1,12 +1,14 @@
 package app.view;
 
 import app.controller.ClientController;
+import app.model.Address;
 import app.model.Client;
 import app.view.forms.EditClientForm;
 import app.view.forms.NewClientForm;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -26,6 +28,8 @@ public class ClientListView extends JPanel {
     }
 
     private void init() {
+        List<Client> clients = clientController.getAllClients();
+
         setLayout(new MigLayout("fill, insets 20", "[grow]", "[grow]"));
 
         // Panel principal con bordes redondeados
@@ -42,7 +46,7 @@ public class ClientListView extends JPanel {
         // Componentes principales
         JPanel searchPanel = createSearchBar();
         JPanel statsPanel = createStatsPanel();
-        JScrollPane scrollPane = createTablePanel();
+        JScrollPane scrollPane = createTablePanel(clients);
         JPanel buttonPanel = createButtonPanel();
 
         // Agregar componentes al panel principal
@@ -56,6 +60,47 @@ public class ClientListView extends JPanel {
     }
 
     // Método para crear la barra de búsqueda
+    /*private JPanel createSearchBar() {
+        JTextField searchField = new JTextField();
+        searchField.putClientProperty(FlatClientProperties.STYLE,
+                "showClearButton:true;" +
+                        "background:lighten(@background,5%);" +
+                        "foreground:@foreground;" +
+                        "arc:10");
+        searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar clientes...");
+
+        // Botón de búsqueda
+        JButton searchButton = createActionButton("", "app/icon/svg/search-icon.svg");
+        searchButton.setPreferredSize(new Dimension(80, 40));
+        searchButton.addActionListener(e -> {
+            String query = searchField.getText(); // Obtener el texto del campo de búsqueda
+            this.filterTable(query); // Filtrar la tabla con el texto actual
+        });
+
+        // Botón de reset
+        JButton resetButton = createActionButton("", "app/icon/svg/reset-icon.svg"); // Cambia el ícono si es necesario
+        resetButton.setPreferredSize(new Dimension(80, 40));
+        resetButton.addActionListener(e -> {
+            this.resetTable(); // Resetear la tabla (mostrar todos los clientes)
+        });
+
+        // Panel para agrupar los botones
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0)); // Espaciado horizontal entre botones
+        buttonPanel.setOpaque(false); // Hacer el panel transparente
+        buttonPanel.add(searchButton);
+        buttonPanel.add(resetButton);
+
+        // Panel principal para la barra de búsqueda
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.add(searchField, BorderLayout.CENTER); // Campo de búsqueda en el centro
+        searchPanel.add(buttonPanel, BorderLayout.EAST); // Botones agrupados en el lado derecho
+        searchPanel.putClientProperty(FlatClientProperties.STYLE,
+                "background:lighten(@background,5%);" +
+                        "arc:10");
+
+        return searchPanel;
+    }*/
+
     private JPanel createSearchBar() {
         JTextField searchField = new JTextField();
         searchField.putClientProperty(FlatClientProperties.STYLE,
@@ -65,17 +110,90 @@ public class ClientListView extends JPanel {
                         "arc:10");
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar clientes...");
 
-        FlatSVGIcon searchIcon = new FlatSVGIcon("app/icon/svg/search-icon.svg").derive(20, 20);
-        JLabel iconLabel = new JLabel(searchIcon);
+        // Botón de búsqueda
+        JButton searchButton = createActionButton("", "app/icon/svg/search-icon.svg");
+        searchButton.setPreferredSize(new Dimension(60, 30));
 
+        searchButton.addActionListener(e -> {
+            String query = searchField.getText(); // Obtener el texto del campo de búsqueda
+            this.filterTable(query); // Filtrar la tabla con el texto actual
+        });
+
+        // Botón de búsqueda
+        JButton resetButton = createActionButton("", "app/icon/svg/reset-icon.svg"); // Cambia el ícono si es necesario
+        resetButton.setPreferredSize(new Dimension(60, 30));
+        resetButton.addActionListener(e -> {
+            searchField.setText("");
+            this.resetTable(); // Resetear la tabla (mostrar todos los clientes)
+        });
+
+        searchButton.putClientProperty(FlatClientProperties.STYLE,
+                "[light]background:darken(@background,10%);" +
+                        "[dark]background:lighten(@background,10%);" +
+                        "foreground:@foreground;" +
+                        "borderWidth:0;" +
+                        "focusWidth:0;" +
+                        "innerFocusWidth:0;" +
+                        "arc:10");
+
+
+        // Panel principal para la barra de búsqueda
         JPanel searchPanel = new JPanel(new BorderLayout());
-        searchPanel.add(iconLabel, BorderLayout.WEST);
+        searchPanel.add(resetButton, BorderLayout.WEST); // Agregar el botón al lado izquierdo
         searchPanel.add(searchField, BorderLayout.CENTER);
+        searchPanel.add(searchButton, BorderLayout.EAST); // Agregar el botón al lado derecho
         searchPanel.putClientProperty(FlatClientProperties.STYLE,
                 "background:lighten(@background,5%);" +
                         "arc:10");
 
         return searchPanel;
+    }
+
+    //Metodo para filtrado de clientes
+    private void filterTable(String query) {
+        List<Client> clients = this.clientController.searchClientsByQuery(query);
+        model.setRowCount(0); // Limpiar las filas actuales del modelo
+
+        boolean isEmpty = true;
+
+        if (clients != null && !clients.isEmpty()) {
+            for (Client client : clients) {
+                model.addRow(new Object[]{
+                        client.getId(),
+                        client.getFirstName() + " " + client.getFirstSurname(),
+                        client.getEmail(),
+                        client.getPhone(),
+                        client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode(),
+                        client.isActive() ? "Activo" : "Inactivo"
+                });
+            }
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Clientes encontrados.");
+            isEmpty = false;
+        }
+
+        if (isEmpty) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, "No se encontraron el/los cliente/s similar/es a tu sentencia de busqueda.");
+        }
+    }
+
+    //Metodo para filtrado de clientes
+    private void resetTable() {
+        List<Client> clients = this.clientController.getAllClients();
+        model.setRowCount(0); // Limpiar las filas actuales del modelo
+
+        if (clients != null && !clients.isEmpty()) {
+            for (Client client : clients) {
+                model.addRow(new Object[]{
+                        client.getId(),
+                        client.getFirstName() + " " + client.getFirstSurname(),
+                        client.getEmail(),
+                        client.getPhone(),
+                        client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode(),
+                        client.isActive() ? "Activo" : "Inactivo"
+                });
+            }
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Tabla reseteada con éxito.");
+        }
     }
 
     // Método para crear las tarjetas de resumen
@@ -87,11 +205,13 @@ public class ClientListView extends JPanel {
 
         // Icono para la sección de clientes totales
         FlatSVGIcon totalClientsIcon = new FlatSVGIcon("app/icon/svg/people-icon.svg").derive(40, 40);
-        JPanel totalClients = createStatCard("Total de Clientes", totalClientsIcon, " 120");
+        int totalClientsCompletes = this.clientController.getAllClients().size();
+        JPanel totalClients = createStatCard("Total de Clientes", totalClientsIcon, String.valueOf(" " + totalClientsCompletes));
 
         // Icono para la sección de clientes activos
         FlatSVGIcon activesClientsIcon = new FlatSVGIcon("app/icon/svg/quality-icon.svg").derive(40, 40);
-        JPanel activeClients = createStatCard("Clientes Activos", activesClientsIcon, " 90");
+        int activesClientsCompletes = this.clientController.getActiveClientsCount();
+        JPanel activeClients = createStatCard("Clientes Activos", activesClientsIcon, String.valueOf(" " + activesClientsCompletes));
 
         statsPanel.add(totalClients);
         statsPanel.add(activeClients);
@@ -129,23 +249,27 @@ public class ClientListView extends JPanel {
     }
 
     // Método para crear la tabla
-    private JScrollPane createTablePanel() {
-        List<Client> clients = this.clientController.getAllClients();
+    public JScrollPane createTablePanel(List<Client> clients) {
         model = new DefaultTableModel();
-        model.addColumn("ID");
+        model.addColumn("Documento");
         model.addColumn("Nombre");
         model.addColumn("Correo");
         model.addColumn("Teléfono");
         model.addColumn("Dirección");
+        model.addColumn("Activo");
 
-        for (Client client : clients) {
-            model.addRow(new Object[]{
-                    client.getId(),
-                    client.getFirstName() + " " + client.getFirstSurname(),
-                    client.getEmail(),
-                    client.getPhone(),
-                    client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode()
-            });
+
+        if (clients != null && !clients.isEmpty()) {
+            for (Client client : clients) {
+                model.addRow(new Object[]{
+                        client.getId(),
+                        client.getFirstName() + " " + client.getFirstSurname(),
+                        client.getEmail(),
+                        client.getPhone(),
+                        client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode(),
+                        client.isActive() ? "Activo" : "Inactivo"
+                });
+            }
         }
 
         table = new JTable(model) {
@@ -162,6 +286,7 @@ public class ClientListView extends JPanel {
         table.getColumnModel().getColumn(2).setPreferredWidth(200);
         table.getColumnModel().getColumn(3).setPreferredWidth(200);
         table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        table.getColumnModel().getColumn(5).setPreferredWidth(200);
         table.putClientProperty(FlatClientProperties.STYLE,
                 "showHorizontalLines:true;" +
                         "showVerticalLines:true;" +
@@ -220,18 +345,30 @@ public class ClientListView extends JPanel {
         button.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                String name = (String) model.getValueAt(selectedRow, 0);
-                String email = (String) model.getValueAt(selectedRow, 1);
-                String phone = (String) model.getValueAt(selectedRow, 2);
-                String firstName = name.split(" ")[0];
-                String secondName = name.split(" ").length > 1 ? name.split(" ")[1] : "";
-                String firstSurname = ""; // Ajustar según datos
-                String secondSurname = ""; // Ajustar según datos
-                int age = 0; // Ajustar según datos
+                String id = (String) table.getValueAt(selectedRow, 0);
+
+                Client client = this.clientController.getClientById(id);
+                String firstName = client.getFirstName();
+                String secondName = client.getFirstSurname();
+                String firstSurname = client.getFirstSurname();
+                String secondSurname = client.getSecondSurname();
+                int age = client.getAge();
+                String email = client.getEmail();
+                String phone = client.getPhone();
+
+                String country = client.getAddress().getCountry();
+                String deparment = client.getAddress().getDeparment();
+                String city = client.getAddress().getCity();
+                String street = client.getAddress().getStreet();
+                String postalCode = client.getAddress().getPostalCode();
+
+                Address address = new Address(country, deparment, city, street, postalCode);
+
+                String status = client.isActive() ? "Activo" : "Inactivo";
 
                 JFrame frame = new JFrame("Editar Cliente");
                 frame.setContentPane(new EditClientForm(
-                        "",
+                        id,
                         firstName,
                         secondName,
                         firstSurname,
@@ -239,14 +376,16 @@ public class ClientListView extends JPanel {
                         age,
                         email,
                         phone,
-                        ""
+                        address,
+                        status
                 ));
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un cliente para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                Notifications.getInstance().show(Notifications.Type.INFO, "Seleccione un cliente para editar.");
+
             }
         });
     }
@@ -256,12 +395,14 @@ public class ClientListView extends JPanel {
         button.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
+                String id = (String) table.getValueAt(selectedRow, 0);
                 int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este cliente?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    model.removeRow(selectedRow);
+                    this.clientController.deleteClient(id);
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "El cliente ha sido eliminado con éxito.");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un cliente para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                Notifications.getInstance().show(Notifications.Type.INFO, "Seleccione un cliente para eliminar.");
             }
         });
     }
