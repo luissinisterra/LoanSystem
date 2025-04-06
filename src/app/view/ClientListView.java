@@ -27,9 +27,7 @@ public class ClientListView extends JPanel {
         this.clientController = new ClientController();
     }
 
-    private void init() {
-        List<Client> clients = clientController.getAllClients();
-
+    public void init() {
         setLayout(new MigLayout("fill, insets 20", "[grow]", "[grow]"));
 
         // Panel principal con bordes redondeados
@@ -46,7 +44,7 @@ public class ClientListView extends JPanel {
         // Componentes principales
         JPanel searchPanel = createSearchBar();
         JPanel statsPanel = createStatsPanel();
-        JScrollPane scrollPane = createTablePanel(clients);
+        JScrollPane scrollPane = createTablePanel();
         JPanel buttonPanel = createButtonPanel();
 
         // Agregar componentes al panel principal
@@ -196,6 +194,24 @@ public class ClientListView extends JPanel {
         }
     }
 
+    public void refreshTable() {
+        List<Client> clients = this.clientController.getAllClients();
+        model.setRowCount(0); // Limpiar las filas actuales del modelo
+
+        if (clients != null && !clients.isEmpty()) {
+            for (Client client : clients) {
+                model.addRow(new Object[]{
+                        client.getId(),
+                        client.getFirstName() + " " + client.getFirstSurname(),
+                        client.getEmail(),
+                        client.getPhone(),
+                        client.getAddress().getCity() + " " + client.getAddress().getStreet() + " " + client.getAddress().getPostalCode(),
+                        client.isActive() ? "Activo" : "Inactivo"
+                });
+            }
+        }
+    }
+
     // Método para crear las tarjetas de resumen
     private JPanel createStatsPanel() {
         JPanel statsPanel = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -249,7 +265,9 @@ public class ClientListView extends JPanel {
     }
 
     // Método para crear la tabla
-    public JScrollPane createTablePanel(List<Client> clients) {
+    private JScrollPane createTablePanel() {
+        this.createStatsPanel();
+        List<Client> clients = this.clientController.getAllClients();
         model = new DefaultTableModel();
         model.addColumn("Documento");
         model.addColumn("Nombre");
@@ -332,7 +350,7 @@ public class ClientListView extends JPanel {
     private void setupNewButtonAction(JButton button) {
         button.addActionListener(e -> {
             JFrame frame = new JFrame("Nuevo Cliente");
-            frame.setContentPane(new NewClientForm());
+            frame.setContentPane(new NewClientForm(this));
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
@@ -377,7 +395,8 @@ public class ClientListView extends JPanel {
                         email,
                         phone,
                         address,
-                        status
+                        status,
+                        this
                 ));
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.pack();
@@ -399,6 +418,7 @@ public class ClientListView extends JPanel {
                 int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este cliente?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
                     this.clientController.deleteClient(id);
+                    this.refreshTable();
                     Notifications.getInstance().show(Notifications.Type.SUCCESS, "El cliente ha sido eliminado con éxito.");
                 }
             } else {

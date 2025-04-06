@@ -29,11 +29,13 @@ public class EditClientForm extends JPanel {
     private JButton cmdUpdate;
     private JComboBox<String> cbStatus;
     private ClientController clientController;
+    private ClientListView listView;
 
     public EditClientForm(String id, String firstName, String secondName, String firstSurname, String secondSurname,
-                          int age, String email, String phone, Address address, String status) {
+                          int age, String email, String phone, Address address, String status, ClientListView listView) {
         init(id, firstName, secondName, firstSurname, secondSurname, age, email, phone, address, status);
         this.clientController = new ClientController();
+        this.listView = listView;
     }
 
     private void init(String id, String firstName, String secondName, String firstSurname, String secondSurname,
@@ -104,6 +106,9 @@ public class EditClientForm extends JPanel {
             if (validateFields()) {
                 updateClient();
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Cliente actualizado correctamente");
+
+                //Metodo para refrescar la tabla del padre
+                this.listView.refreshTable();
 
                 // Obtener la ventana padre y cerrarla
                 Window window = SwingUtilities.getWindowAncestor(this);
