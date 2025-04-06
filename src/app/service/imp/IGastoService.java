@@ -7,7 +7,7 @@ import retrofit2.http.*;
 import java.util.List;
 
 
-public interface ApiGastoService {
+public interface IGastoService {
 
     //Listar
     @GET("/api/gastos")
