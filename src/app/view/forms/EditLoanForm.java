@@ -1,98 +1,104 @@
 package app.view.forms;
 
+import app.controller.LoanController;
+import app.model.Loan;
+import app.view.LoanListView;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import raven.toast.Notifications;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class EditLoanForm extends JPanel {
-
-    private JTextField txtClient;
+    private JTextField txtId;
+    private JTextField txtClientName;
     private JTextField txtAmount;
-    private JTextField txtInterestRate;
-    private JTextField txtTerm;
-    private JComboBox<String> cbStatus;
     private JTextField txtDate;
-    private JButton cmdUpdate;
+    private JComboBox<String> cbStatus;
+    private LoanController loanController;
+    private LoanListView listView;
 
-    public EditLoanForm(String client, String amount, String interestRate, String term, String status, String date) {
-        init(client, amount, interestRate, term, status, date);
+    public EditLoanForm(String id, String clientName, double amount, String status, String date, LoanListView listView) {
+        init(id, clientName, amount, status, date);
+        this.loanController = new LoanController();
+        this.listView = listView;
     }
 
-    private void init(String client, String amount, String interestRate, String term, String status, String date) {
+    private void init(String id, String clientName, double amount, String status, String date) {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
 
-        // Panel principal con bordes redondeados
+        // Panel principal
         JPanel panel = new JPanel(new MigLayout("wrap,fillx,insets 35 45 30 45", "[fill,360]"));
-        panel.putClientProperty(FlatClientProperties.STYLE, ""
-                + "arc:20;" +
-                "[light]background:darken(@background,3%);" +
-                "[dark]background:lighten(@background,3%)");
+        panel.putClientProperty(FlatClientProperties.STYLE,
+                "arc:20;" +
+                        "[light]background:darken(@background,3%);" +
+                        "[dark]background:lighten(@background,3%)");
 
-        // Título
-        JLabel lbTitle = new JLabel("Editar Préstamo");
-        lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
+        // Campos de texto prellenados con los datos del préstamo
+        txtId = createTextField("ID del préstamo");
+        txtId.setText(id);
+        txtId.setEditable(false); // El ID no debe ser editable
 
-        // Descripción
-        JLabel description = new JLabel("Actualice los datos del préstamo seleccionado.");
-        description.putClientProperty(FlatClientProperties.STYLE, ""
-                + "[light]foreground:lighten(@foreground,30%);" +
-                "[dark]foreground:darken(@foreground,30%)");
-
-        // Campos del formulario prellenados con los datos del préstamo
-        txtClient = createTextField("Cliente");
-        txtClient.setText(client);
+        txtClientName = createTextField("Nombre del cliente");
+        txtClientName.setText(clientName);
 
         txtAmount = createTextField("Monto");
-        txtAmount.setText(amount);
+        txtAmount.setText(String.valueOf(amount));
 
-        txtInterestRate = createTextField("Tasa de Interés");
-        txtInterestRate.setText(interestRate);
-
-        txtTerm = createTextField("Plazo (meses)");
-        txtTerm.setText(term);
+        txtDate = createTextField("Fecha (YYYY-MM-DD)");
+        txtDate.setText(date);
 
         cbStatus = createComboBox();
         cbStatus.setSelectedItem(status);
 
-        txtDate = createTextField("Fecha");
-        txtDate.setText(date);
-
         // Botón Actualizar
-        cmdUpdate = new JButton("Actualizar");
-        cmdUpdate.putClientProperty(FlatClientProperties.STYLE, ""
-                + "[light]background:darken(@background,10%);" +
-                "[dark]background:lighten(@background,10%);" +
-                "borderWidth:0;" +
-                "focusWidth:0;" +
-                "innerFocusWidth:0");
-
+        JButton cmdUpdate = new JButton("Actualizar");
+        cmdUpdate.putClientProperty(FlatClientProperties.STYLE,
+                "[light]background:darken(@background,10%);" +
+                        "[dark]background:lighten(@background,10%);" +
+                        "borderWidth:0;" +
+                        "focusWidth:0;" +
+                        "innerFocusWidth:0");
         cmdUpdate.addActionListener(e -> {
             if (validateFields()) {
                 updateLoan();
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo actualizado correctamente");
+                // Método para refrescar la tabla del padre
+                this.listView.refreshTable();
+                // Obtener la ventana padre y cerrarla
+                Window window = SwingUtilities.getWindowAncestor(this);
+                if (window != null) {
+                    window.dispose();
+                }
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "Por favor complete todos los campos obligatorios");
             }
         });
 
+        // Título y descripción
+        JLabel lbTitle = new JLabel("Editar Préstamo");
+        JLabel description = new JLabel("Actualice los datos del préstamo seleccionado.");
+        lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
+        description.putClientProperty(FlatClientProperties.STYLE,
+                "[light]foreground:lighten(@foreground,30%);" +
+                        "[dark]foreground:darken(@foreground,30%)");
+
         // Agregar componentes al panel
-        panel.add(lbTitle, "growx, wrap");
-        panel.add(description, "growx, wrap");
-        panel.add(new JLabel("Cliente:"), "gapy 8");
-        panel.add(txtClient, "growx, wrap");
-        panel.add(new JLabel("Monto:"), "gapy 8");
-        panel.add(txtAmount, "growx, wrap");
-        panel.add(new JLabel("Tasa de Interés:"), "gapy 8");
-        panel.add(txtInterestRate, "growx, wrap");
-        panel.add(new JLabel("Plazo (meses):"), "gapy 8");
-        panel.add(txtTerm, "growx, wrap");
+        panel.add(lbTitle);
+        panel.add(description);
+        panel.add(new JLabel("ID"), "gapy 10");
+        panel.add(txtId);
+        panel.add(new JLabel("Nombre del cliente"), "gapy 8");
+        panel.add(txtClientName);
+        panel.add(new JLabel("Monto"), "gapy 8");
+        panel.add(txtAmount);
+        panel.add(new JLabel("Fecha"), "gapy 8");
+        panel.add(txtDate);
         panel.add(new JLabel("Estado:"), "gapy 8");
         panel.add(cbStatus, "growx, wrap");
-        panel.add(new JLabel("Fecha:"), "gapy 8");
-        panel.add(txtDate, "growx, wrap");
         panel.add(cmdUpdate, "gapy 20");
 
         add(panel);
@@ -104,31 +110,55 @@ public class EditLoanForm extends JPanel {
         return field;
     }
 
-    private JComboBox<String> createComboBox() {
-        JComboBox<String> comboBox = new JComboBox<>(new String[]{"Activo", "Inactivo", "Pagado"});
-        comboBox.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:lighten(@background,5%);" +
-                "foreground:@foreground;" +
-                "arc:10");
-        return comboBox;
-    }
-
     private boolean validateFields() {
-        return !txtClient.getText().isEmpty() &&
+        return !txtClientName.getText().isEmpty() &&
                 !txtAmount.getText().isEmpty() &&
-                !txtInterestRate.getText().isEmpty() &&
-                !txtTerm.getText().isEmpty() &&
                 !txtDate.getText().isEmpty();
     }
 
+    private JComboBox<String> createComboBox() {
+        JComboBox<String> comboBox = new JComboBox<>(new String[]{"Activo", "Inactivo", "Pagado"});
+        comboBox.putClientProperty(FlatClientProperties.STYLE,
+                "background:lighten(@background,5%);" +
+                        "foreground:@foreground;" +
+                        "arc:10");
+        return comboBox;
+    }
+
     private void updateLoan() {
-        // Aquí puedes agregar la lógica para actualizar el préstamo en la base de datos o en memoria
-        System.out.println("Actualizando préstamo...");
-        System.out.println("Cliente: " + txtClient.getText());
-        System.out.println("Monto: " + txtAmount.getText());
-        System.out.println("Tasa de Interés: " + txtInterestRate.getText());
-        System.out.println("Plazo: " + txtTerm.getText());
-        System.out.println("Estado: " + cbStatus.getSelectedItem());
-        System.out.println("Fecha: " + txtDate.getText());
+        try {
+            // Convertir el texto de la fecha a LocalDate
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato esperado
+            LocalDate date = LocalDate.parse(txtDate.getText(), formatter);
+
+            // Crear un objeto Loan con los datos actualizados
+            Loan loan = new Loan(
+                    txtId.getText(),
+                    null, // Aquí iría el cliente, se asignará después cuando lo usemos en Client
+                    Double.parseDouble(txtAmount.getText()),
+                    date // Usar el LocalDate convertido
+            );
+
+            String status = cbStatus.getSelectedItem().toString();
+            loan.setActive("Activo".equals(status));
+
+            // Actualizar el préstamo en la base de datos o en memoria
+            this.loanController.updateLoan(txtId.getText(), loan);
+
+            // Mostrar notificación de éxito
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo actualizado correctamente");
+
+            // Refrescar la tabla del padre
+            this.listView.refreshTable();
+
+            // Cerrar la ventana
+            Window window = SwingUtilities.getWindowAncestor(this);
+            if (window != null) {
+                window.dispose();
+            }
+        } catch (Exception e) {
+            // Manejar errores de formato de fecha o campos inválidos
+            Notifications.getInstance().show(Notifications.Type.ERROR, "Error: Verifique el formato de la fecha (YYYY-MM-DD).");
+        }
     }
 }

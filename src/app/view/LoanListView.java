@@ -11,17 +11,19 @@ import raven.toast.Notifications;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.List;
 
 public class LoanListView extends JPanel {
+
     private LoanController loanController;
     private DefaultTableModel model;
     private JTable table;
 
     public LoanListView() {
-        init();
         this.loanController = new LoanController();
+        init();
     }
 
     private void init() {
@@ -102,9 +104,9 @@ public class LoanListView extends JPanel {
             for (Loan loan : loans) {
                 model.addRow(new Object[]{
                         loan.getId(),
-                        loan.getClientName(),
+                        loan.getClient().getFirstName(),
                         loan.getAmount(),
-                        loan.getStatus(),
+                        loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate()
                 });
             }
@@ -126,9 +128,9 @@ public class LoanListView extends JPanel {
             for (Loan loan : loans) {
                 model.addRow(new Object[]{
                         loan.getId(),
-                        loan.getClientName(),
+                        loan.getClient().getFirstName(),
                         loan.getAmount(),
-                        loan.getStatus(),
+                        loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate()
                 });
             }
@@ -145,9 +147,9 @@ public class LoanListView extends JPanel {
             for (Loan loan : loans) {
                 model.addRow(new Object[]{
                         loan.getId(),
-                        loan.getClientName(),
+                        loan.getClient().getFirstName(),
                         loan.getAmount(),
-                        loan.getStatus(),
+                        loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate()
                 });
             }
@@ -220,9 +222,9 @@ public class LoanListView extends JPanel {
             for (Loan loan : loans) {
                 model.addRow(new Object[]{
                         loan.getId(),
-                        loan.getClientName(),
+                        loan.getClient() != null ? loan.getClient().getFirstName() : "Beto",
                         loan.getAmount(),
-                        loan.getStatus(),
+                        loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate()
                 });
             }
@@ -305,10 +307,10 @@ public class LoanListView extends JPanel {
                 JFrame frame = new JFrame("Editar Préstamo");
                 frame.setContentPane(new EditLoanForm(
                         loan.getId(),
-                        loan.getClientName(),
+                        loan.getClient() != null ? loan.getClient().getFirstName() : "Beto",
                         loan.getAmount(),
-                        loan.getStatus(),
-                        loan.getDate(),
+                        loan.isActive() ? "Activo" : "Inactivo",
+                        loan.getDate().toString(),
                         this
                 ));
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

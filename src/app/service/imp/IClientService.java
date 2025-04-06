@@ -7,21 +7,21 @@ import retrofit2.http.*;
 import java.util.List;
 
 public interface IClientService {
-    @GET("/clients")
+    @GET("/api/clients")
     Call<List<Client>> getAllClients();
 
-    @GET("/clients/{id}")
+    @GET("/api/clients/{id}")
     Call<Client> getClientById(@Path("id") String id);
 
-    @POST("/clients")
+    @POST("/api/clients")
     Call<Void> createClient(@Body Client client);
 
-    @PUT("/clients/{id}")
+    @PUT("/api/clients/{id}")
     Call<Void> updateClient(@Path("id") String id, @Body Client client);
 
-    @DELETE("/clients/{id}")
+    @DELETE("/api/clients/{id}")
     Call<Void> deleteClient(@Path("id") String id);
 
-    @GET("/clients/search")
+    @GET("/api/clients/search")
     Call<List<Client>> searchClientsByQuery(@Query("query") String query);
 }

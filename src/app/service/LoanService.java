@@ -108,7 +108,7 @@ public class LoanService {
         List<Loan> loans = getAllLoans();
         if (loans != null) {
             for (Loan loan : loans) {
-                if (loan.getStatus().equalsIgnoreCase("Activo")) {
+                if (loan.isActive()) {
                     activeLoansCount++;
                 }
             }
