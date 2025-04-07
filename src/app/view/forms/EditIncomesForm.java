@@ -57,7 +57,7 @@ public class EditIncomesForm extends JPanel {
     private void createFilterComponents() {
         cbType = new JComboBox<>(new String[]{"Ingreso", "Pago"});
         txtDetail = createFormField("Detalle");
-        txtValue = createFormField("");
+        txtValue = createFormField("Monto del ingreso");
     }
 
     // Crea los botones de acción
