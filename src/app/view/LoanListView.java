@@ -147,7 +147,7 @@ public class LoanListView extends JPanel {
             for (Loan loan : loans) {
                 model.addRow(new Object[]{
                         loan.getId(),
-                        loan.getClient().getFirstName(),
+                        loan.getClient().getFirstName() + " " + loan.getClient().getFirstSurname(),
                         loan.getAmount(),
                         loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate()
@@ -165,12 +165,13 @@ public class LoanListView extends JPanel {
 
         // Icono para la sección de préstamos totales
         FlatSVGIcon totalLoansIcon = new FlatSVGIcon("app/icon/svg/bank-money-icon.svg").derive(50, 50);
-        int totalLoansCount = this.loanController.getAllLoans().size();
+        List<Loan> allLoans = this.loanController.getAllLoans(); // Obtener la lista de préstamos
+        int totalLoansCount = (allLoans == null || allLoans.isEmpty()) ? 0 : allLoans.size();
         JPanel totalLoans = createStatCard("Total de Préstamos", totalLoansIcon, String.valueOf("  " + totalLoansCount));
 
         // Icono para la sección de préstamos activos
         FlatSVGIcon activeLoansIcon = new FlatSVGIcon("app/icon/svg/money-icon.svg").derive(50, 50);
-        int activeLoansCount = this.loanController.getActiveLoansCount();
+        int activeLoansCount = this.loanController.getActiveLoansCount() == 0 ? 0 : this.loanController.getActiveLoansCount();
         JPanel activeLoans = createStatCard("Préstamos Activos", activeLoansIcon, String.valueOf("  " + activeLoansCount));
 
         statsPanel.add(totalLoans);
@@ -307,8 +308,10 @@ public class LoanListView extends JPanel {
                 JFrame frame = new JFrame("Editar Préstamo");
                 frame.setContentPane(new EditLoanForm(
                         loan.getId(),
-                        loan.getClient().getFirstName() + " " + loan.getClient().getFirstSurname(),
+                        loan.getClient(),
                         loan.getAmount(),
+                        loan.getInterestRate(),
+                        loan.getTerm(),
                         loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate().toString(),
                         this

@@ -221,12 +221,13 @@ public class ClientListView extends JPanel {
 
         // Icono para la sección de clientes totales
         FlatSVGIcon totalClientsIcon = new FlatSVGIcon("app/icon/svg/people-icon.svg").derive(50, 50);
-        int totalClientsCompletes = this.clientController.getAllClients().size();
+        List<Client> allClients = this.clientController.getAllClients();
+        int totalClientsCompletes = (allClients == null || allClients.isEmpty()) ? 0 : allClients.size();
         JPanel totalClients = createStatCard("Total de Clientes", totalClientsIcon, String.valueOf("  " + totalClientsCompletes));
 
         // Icono para la sección de clientes activos
         FlatSVGIcon activesClientsIcon = new FlatSVGIcon("app/icon/svg/quality-icon.svg").derive(50, 50);
-        int activesClientsCompletes = this.clientController.getActiveClientsCount();
+        int activesClientsCompletes = this.clientController.getActiveClientsCount() == 0 ? 0 : this.clientController.getActiveClientsCount();
         JPanel activeClients = createStatCard("Clientes Activos", activesClientsIcon, String.valueOf("  " + activesClientsCompletes));
 
         statsPanel.add(totalClients);
@@ -364,7 +365,6 @@ public class ClientListView extends JPanel {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
                 String id = (String) table.getValueAt(selectedRow, 0);
-
                 Client client = this.clientController.getClientById(id);
                 String firstName = client.getFirstName();
                 String secondName = client.getFirstSurname();

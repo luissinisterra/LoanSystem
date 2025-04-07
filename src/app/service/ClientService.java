@@ -12,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientService {
@@ -44,7 +45,7 @@ public class ClientService {
             return clients;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -96,12 +97,16 @@ public class ClientService {
 
     public int getActiveClientsCount() {
         int activeClientsCount = 0;
-        for (Client client : getAllClients()) {
-            if (client.isActive()){
-                activeClientsCount++;
+        List<Client> clients = getAllClients();
+        if (clients != null) {
+            for (Client client : clients) {
+                if (client.isActive()){
+                    activeClientsCount++;
+                }
             }
+            return activeClientsCount;
         }
-        return activeClientsCount;
+        return 0;
     }
 
 }

@@ -19,7 +19,6 @@ public class NewLoanForm extends JPanel {
     private JTextField txtAmount;
     private JTextField txtInterestRate;
     private JTextField txtTerm;
-    private JComboBox<String> cbStatus;
     private JTextField txtDate;
     private JButton cmdSave;
     private LoanListView listView;
@@ -59,7 +58,6 @@ public class NewLoanForm extends JPanel {
         txtAmount = createTextField("Monto");
         txtInterestRate = createTextField("Tasa de Interés (%)");
         txtTerm = createTextField("Plazo (meses)");
-        cbStatus = createComboBox();
         txtDate = createTextField("Fecha (YYYY-MM-DD)");
 
 // Botón "Buscar Cliente"
@@ -118,8 +116,6 @@ public class NewLoanForm extends JPanel {
         panel.add(txtInterestRate, "growx, wrap");
         panel.add(new JLabel("Plazo (meses):"), "gapy 8");
         panel.add(txtTerm, "growx, wrap");
-        panel.add(new JLabel("Estado:"), "gapy 8");
-        panel.add(cbStatus, "growx, wrap");
         panel.add(new JLabel("Fecha:"), "gapy 8");
         panel.add(txtDate, "growx, wrap");
         panel.add(cmdSave, "gapy 20");
@@ -177,7 +173,6 @@ public class NewLoanForm extends JPanel {
         double amount = Double.parseDouble(txtAmount.getText()); // Monto del préstamo
         double interestRate = Double.parseDouble(txtInterestRate.getText()); // Tasa de interés
         int term = Integer.parseInt(txtTerm.getText()); // Plazo en meses
-        String status = cbStatus.getSelectedItem().toString(); // Estado del préstamo
         LocalDate date = LocalDate.parse(txtDate.getText()); // Fecha del préstamo
 
         // Crear un objeto Loan con los datos ingresados
@@ -186,7 +181,6 @@ public class NewLoanForm extends JPanel {
                 amount,
                 interestRate,
                 term,
-                status.equals("Activo"),
                 date
         );
 

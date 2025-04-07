@@ -17,13 +17,13 @@ public class Loan {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Loan(Client client, double amount, double interestRate, double term, boolean active, LocalDate date) {
+    public Loan(Client client, double amount, double interestRate, double term, LocalDate date) {
         this.id = UUID.randomUUID().toString();
         this.client = client;
         this.amount = amount;
         this.interestRate = interestRate;
         this.term = term;
-        this.active = active;
+        this.active = true;
         this.date = date;
     }
 
