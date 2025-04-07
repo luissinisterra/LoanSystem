@@ -18,22 +18,10 @@ import java.util.List;
 public class Incomes extends JPanel {
 
     private IncomeController controller;
-    private JTable incomesTable;
-    private JButton btnAdd;
-    private JButton btnEdit;
-    private JButton btnDetails;
-    private JButton btnDelete;
-    private JLabel lblTotalLabel;
 
     public Incomes() {
         controller = new IncomeController();
         init();
-        llenarTabla();
-        addIncome();
-        removeIncome();
-        updateIncome();
-        incomeDetails();
-        setTotal();
     }
 
     private void init() {
@@ -54,6 +42,12 @@ public class Incomes extends JPanel {
         panel.add(createDetallesButton(), "growx, wrap"); // Botón "Agregar gasto"
 
         add(panel);
+        llenarTabla();
+        addIncome();
+        removeIncome();
+        updateIncome();
+        incomeDetails();
+        setTotal();
     }
 
     // --- Componentes separados ---
@@ -220,4 +214,11 @@ public class Incomes extends JPanel {
         }
         lblTotalLabel.setText("Total: "  + total);
     }
+
+    private JTable incomesTable;
+    private JButton btnAdd;
+    private JButton btnEdit;
+    private JButton btnDetails;
+    private JButton btnDelete;
+    private JLabel lblTotalLabel;
 }
