@@ -164,14 +164,14 @@ public class LoanListView extends JPanel {
                         "arc:10");
 
         // Icono para la sección de préstamos totales
-        FlatSVGIcon totalLoansIcon = new FlatSVGIcon("app/icon/svg/total-loans-icon.svg").derive(40, 40);
+        FlatSVGIcon totalLoansIcon = new FlatSVGIcon("app/icon/svg/bank-money-icon.svg").derive(50, 50);
         int totalLoansCount = this.loanController.getAllLoans().size();
-        JPanel totalLoans = createStatCard("Total de Préstamos", totalLoansIcon, String.valueOf(totalLoansCount));
+        JPanel totalLoans = createStatCard("Total de Préstamos", totalLoansIcon, String.valueOf("  " + totalLoansCount));
 
         // Icono para la sección de préstamos activos
-        FlatSVGIcon activeLoansIcon = new FlatSVGIcon("app/icon/svg/active-loans-icon.svg").derive(40, 40);
+        FlatSVGIcon activeLoansIcon = new FlatSVGIcon("app/icon/svg/money-icon.svg").derive(50, 50);
         int activeLoansCount = this.loanController.getActiveLoansCount();
-        JPanel activeLoans = createStatCard("Préstamos Activos", activeLoansIcon, String.valueOf(activeLoansCount));
+        JPanel activeLoans = createStatCard("Préstamos Activos", activeLoansIcon, String.valueOf("  " + activeLoansCount));
 
         statsPanel.add(totalLoans);
         statsPanel.add(activeLoans);
@@ -222,7 +222,7 @@ public class LoanListView extends JPanel {
             for (Loan loan : loans) {
                 model.addRow(new Object[]{
                         loan.getId(),
-                        loan.getClient() != null ? loan.getClient().getFirstName() : "Beto",
+                        loan.getClient().getFirstName() + " " + loan.getClient().getFirstSurname(),
                         loan.getAmount(),
                         loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate()
@@ -307,7 +307,7 @@ public class LoanListView extends JPanel {
                 JFrame frame = new JFrame("Editar Préstamo");
                 frame.setContentPane(new EditLoanForm(
                         loan.getId(),
-                        loan.getClient() != null ? loan.getClient().getFirstName() : "Beto",
+                        loan.getClient().getFirstName() + " " + loan.getClient().getFirstSurname(),
                         loan.getAmount(),
                         loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate().toString(),

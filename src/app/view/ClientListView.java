@@ -220,14 +220,14 @@ public class ClientListView extends JPanel {
                         "arc:10");
 
         // Icono para la sección de clientes totales
-        FlatSVGIcon totalClientsIcon = new FlatSVGIcon("app/icon/svg/people-icon.svg").derive(40, 40);
+        FlatSVGIcon totalClientsIcon = new FlatSVGIcon("app/icon/svg/people-icon.svg").derive(50, 50);
         int totalClientsCompletes = this.clientController.getAllClients().size();
-        JPanel totalClients = createStatCard("Total de Clientes", totalClientsIcon, String.valueOf(" " + totalClientsCompletes));
+        JPanel totalClients = createStatCard("Total de Clientes", totalClientsIcon, String.valueOf("  " + totalClientsCompletes));
 
         // Icono para la sección de clientes activos
-        FlatSVGIcon activesClientsIcon = new FlatSVGIcon("app/icon/svg/quality-icon.svg").derive(40, 40);
+        FlatSVGIcon activesClientsIcon = new FlatSVGIcon("app/icon/svg/quality-icon.svg").derive(50, 50);
         int activesClientsCompletes = this.clientController.getActiveClientsCount();
-        JPanel activeClients = createStatCard("Clientes Activos", activesClientsIcon, String.valueOf(" " + activesClientsCompletes));
+        JPanel activeClients = createStatCard("Clientes Activos", activesClientsIcon, String.valueOf("  " + activesClientsCompletes));
 
         statsPanel.add(totalClients);
         statsPanel.add(activeClients);

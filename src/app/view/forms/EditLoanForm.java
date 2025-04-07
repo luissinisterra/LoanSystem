@@ -64,7 +64,7 @@ public class EditLoanForm extends JPanel {
                         "innerFocusWidth:0");
         cmdUpdate.addActionListener(e -> {
             if (validateFields()) {
-                updateLoan();
+                //updateLoan();
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo actualizado correctamente");
                 // Método para refrescar la tabla del padre
                 this.listView.refreshTable();
@@ -125,7 +125,7 @@ public class EditLoanForm extends JPanel {
         return comboBox;
     }
 
-    private void updateLoan() {
+    /*private void updateLoan() {
         try {
             // Convertir el texto de la fecha a LocalDate
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato esperado
@@ -160,5 +160,5 @@ public class EditLoanForm extends JPanel {
             // Manejar errores de formato de fecha o campos inválidos
             Notifications.getInstance().show(Notifications.Type.ERROR, "Error: Verifique el formato de la fecha (YYYY-MM-DD).");
         }
-    }
+    }*/
 }
