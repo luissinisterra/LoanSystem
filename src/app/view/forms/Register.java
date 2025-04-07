@@ -1,5 +1,6 @@
 package app.view.forms;
 
+import app.controller.UserController;
 import app.manager.FormsManager;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -9,26 +10,21 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Register extends JPanel {
+    private UserController userController;
     public Register() {
         init();
+        this.userController = new UserController();
     }
 
     private void init() {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         txtFirstName = new JTextField();
         txtLastName = new JTextField();
+        txtEmail = new JTextField();
         txtUsername = new JTextField();
         txtPassword = new JPasswordField();
         txtConfirmPassword = new JPasswordField();
         cmdRegister = new JButton("Registrate");
-
-        cmdRegister.addActionListener(e -> {
-            if (isMatchPassword()) {
-                //  Do something here
-            } else {
-                Notifications.getInstance().show(Notifications.Type.ERROR, "Las contraseñas no coinciden");
-            }
-        });
 
         JPanel panel = new JPanel(new MigLayout("wrap,fillx,insets 35 45 30 45", "[fill,360]"));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -38,6 +34,7 @@ public class Register extends JPanel {
 
         txtFirstName.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nombres");
         txtLastName.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Apellidos");
+        txtEmail.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ingresa tu correo");
         txtUsername.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ingresa tu usuario");
         txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ingresa tu clave");
         txtConfirmPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Vuelve a ingresar tu clave");
@@ -70,6 +67,8 @@ public class Register extends JPanel {
         panel.add(new JLabel("Genero"), "gapy 8");
         panel.add(createGenderPanel());
         panel.add(new JSeparator(), "gapy 5 5");
+        panel.add(new JLabel("Correo electronico"), "gapy 10");
+        panel.add(txtEmail);
         panel.add(new JLabel("Nombre de usuario"));
         panel.add(txtUsername);
         panel.add(new JLabel("Clave"), "gapy 8");
@@ -79,6 +78,7 @@ public class Register extends JPanel {
         panel.add(cmdRegister, "gapy 20");
         panel.add(createLoginLabel(), "gapy 10");
         add(panel);
+        registerUser();
     }
 
     private Component createGenderPanel() {
@@ -123,11 +123,51 @@ public class Register extends JPanel {
         return password.equals(confirmPassword);
     }
 
+    private void registerUser() {
+        cmdRegister.addActionListener(e -> {
+            if (isMatchPassword()) {
+                String password = String.valueOf(txtPassword.getPassword());
+                String names = txtFirstName.getText();
+                String surnames = txtLastName.getText();
+                String email = txtEmail.getText();
+                String username = txtUsername.getText();
+                String gender = getGender();
+                userController.saveUser(names, surnames, email, password, username, gender);
+                limpiarCampos();
+                JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Las contraseñas no coinciden");
+            }
+        });
+    }
+
+    private String getGender() {
+        ButtonGroup groupGender = new ButtonGroup();
+        groupGender.add(jrMale);
+        groupGender.add(jrFemale);
+        if (jrMale.isSelected()) {
+            return "M";
+        }
+        if (jrFemale.isSelected()) {
+            return "F";
+        }
+        return "";
+    }
+
+    private void limpiarCampos() {
+        txtFirstName.setText("");
+        txtLastName.setText("");
+        txtEmail.setText("");
+        txtUsername.setText("");
+        txtPassword.setText("");
+        txtConfirmPassword.setText("");
+    }
     private JTextField txtFirstName;
     private JTextField txtLastName;
     private JRadioButton jrMale;
     private JRadioButton jrFemale;
     private JTextField txtUsername;
+    private JTextField txtEmail;
     private JPasswordField txtPassword;
     private JPasswordField txtConfirmPassword;
     private ButtonGroup groupGender;

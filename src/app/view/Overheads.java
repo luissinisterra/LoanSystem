@@ -18,22 +18,10 @@ import java.util.List;
 public class Overheads extends JPanel {
 
     private GastoController controller;
-    private JTable tablaGastos;
-    private JButton btnAdd;
-    private JButton btnEdit;
-    private JButton btnDetails;
-    private JButton btnDelete;
-    private JLabel lblTotalLabel;
 
     public Overheads() {
         controller = new GastoController();
         init();
-        llenarTabla();
-        addOverhead();
-        removeOverhead();
-        editOverhead();
-        detailsOverhead();
-        setTotal();
     }
 
     private void init() {
@@ -54,6 +42,12 @@ public class Overheads extends JPanel {
         panel.add(createDetallesButton(), "growx, wrap"); // Botón "Agregar gasto"
 
         add(panel);
+        llenarTabla();
+        addOverhead();
+        removeOverhead();
+        editOverhead();
+        detailsOverhead();
+        setTotal();
     }
 
     // --- Componentes separados ---
@@ -220,4 +214,12 @@ public class Overheads extends JPanel {
         }
         lblTotalLabel.setText("Total: "  + total);
     }
+
+
+    private JTable tablaGastos;
+    private JButton btnAdd;
+    private JButton btnEdit;
+    private JButton btnDetails;
+    private JButton btnDelete;
+    private JLabel lblTotalLabel;
 }
