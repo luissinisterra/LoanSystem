@@ -1,21 +1,30 @@
 package app.model;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 
 public class Loan {
     private String id;
     private Client client;
     private double amount;
+    private double interestRate;
+    private double term;
     private boolean active;
     private LocalDate date;
 
-    public Loan(String id, Client client, double amount, LocalDate date) {
-        this.id = id;
+    public Loan(){
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public Loan(Client client, double amount, double interestRate, double term, LocalDate date) {
+        this.id = UUID.randomUUID().toString();
         this.client = client;
         this.amount = amount;
-        this.date = date;
+        this.interestRate = interestRate;
+        this.term = term;
         this.active = true;
+        this.date = date;
     }
 
     public String getId() {
@@ -40,6 +49,22 @@ public class Loan {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public double getTerm() {
+        return term;
+    }
+
+    public void setTerm(double term) {
+        this.term = term;
     }
 
     public boolean isActive() {

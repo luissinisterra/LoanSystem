@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.controller.LoanController;
+import app.model.Client;
 import app.model.Loan;
 import app.view.LoanListView;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -16,18 +17,20 @@ public class EditLoanForm extends JPanel {
     private JTextField txtId;
     private JTextField txtClientName;
     private JTextField txtAmount;
+    private JTextField txtInterestRate;
+    private JTextField txtTerm;
     private JTextField txtDate;
     private JComboBox<String> cbStatus;
     private LoanController loanController;
     private LoanListView listView;
 
-    public EditLoanForm(String id, String clientName, double amount, String status, String date, LoanListView listView) {
-        init(id, clientName, amount, status, date);
+    public EditLoanForm(String id, Client client, double amount, double interestRate, double term, String status, String date, LoanListView listView) {
+        init(id, client, amount, interestRate, term, status, date);
         this.loanController = new LoanController();
         this.listView = listView;
     }
 
-    private void init(String id, String clientName, double amount, String status, String date) {
+    private void init(String id, Client client, double amount, double interestRate, double term, String status, String date) {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
 
         // Panel principal
@@ -43,10 +46,17 @@ public class EditLoanForm extends JPanel {
         txtId.setEditable(false); // El ID no debe ser editable
 
         txtClientName = createTextField("Nombre del cliente");
-        txtClientName.setText(clientName);
+        txtClientName.setText(client.getFirstName() + " " + client.getFirstSurname());
+        txtClientName.setEditable(false);
 
         txtAmount = createTextField("Monto");
         txtAmount.setText(String.valueOf(amount));
+
+        txtInterestRate = createTextField("Tasa de Interés (%)");
+        txtInterestRate.setText(String.valueOf(interestRate));
+
+        txtTerm = createTextField("Plazo (meses)");
+        txtTerm.setText(String.valueOf(term));
 
         txtDate = createTextField("Fecha (YYYY-MM-DD)");
         txtDate.setText(date);
@@ -64,10 +74,12 @@ public class EditLoanForm extends JPanel {
                         "innerFocusWidth:0");
         cmdUpdate.addActionListener(e -> {
             if (validateFields()) {
-                updateLoan();
+                updateLoan(client);
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo actualizado correctamente");
+
                 // Método para refrescar la tabla del padre
                 this.listView.refreshTable();
+
                 // Obtener la ventana padre y cerrarla
                 Window window = SwingUtilities.getWindowAncestor(this);
                 if (window != null) {
@@ -125,7 +137,7 @@ public class EditLoanForm extends JPanel {
         return comboBox;
     }
 
-    private void updateLoan() {
+    private void updateLoan(Client client) {
         try {
             // Convertir el texto de la fecha a LocalDate
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato esperado
@@ -133,10 +145,11 @@ public class EditLoanForm extends JPanel {
 
             // Crear un objeto Loan con los datos actualizados
             Loan loan = new Loan(
-                    txtId.getText(),
-                    null, // Aquí iría el cliente, se asignará después cuando lo usemos en Client
+                    client,
                     Double.parseDouble(txtAmount.getText()),
-                    date // Usar el LocalDate convertido
+                    Double.parseDouble(txtInterestRate.getText()),
+                    Double.parseDouble(txtTerm.getText()),
+                    date
             );
 
             String status = cbStatus.getSelectedItem().toString();
@@ -144,18 +157,6 @@ public class EditLoanForm extends JPanel {
 
             // Actualizar el préstamo en la base de datos o en memoria
             this.loanController.updateLoan(txtId.getText(), loan);
-
-            // Mostrar notificación de éxito
-            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo actualizado correctamente");
-
-            // Refrescar la tabla del padre
-            this.listView.refreshTable();
-
-            // Cerrar la ventana
-            Window window = SwingUtilities.getWindowAncestor(this);
-            if (window != null) {
-                window.dispose();
-            }
         } catch (Exception e) {
             // Manejar errores de formato de fecha o campos inválidos
             Notifications.getInstance().show(Notifications.Type.ERROR, "Error: Verifique el formato de la fecha (YYYY-MM-DD).");

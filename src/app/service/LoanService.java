@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoanService {
@@ -47,7 +48,7 @@ public class LoanService {
             return loans;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -112,7 +113,8 @@ public class LoanService {
                     activeLoansCount++;
                 }
             }
+            return activeLoansCount;
         }
-        return activeLoansCount;
+        return 0;
     }
 }
