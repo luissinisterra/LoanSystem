@@ -71,7 +71,6 @@ public class MainForm extends JLayeredPane {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             if (index == 0) {
                 //Application.showForm(new Dashboard());
-                System.out.println("Dashboard");
             } else if (index == 1) {
                 if (subIndex == 1) {
                     Application.showForm(new LoanListView());

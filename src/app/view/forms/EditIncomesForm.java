@@ -1,13 +1,11 @@
 package app.view.forms;
 
-import app.controller.GastoController;
 import app.controller.IncomeController;
-import app.model.Gasto;
 import app.model.Income;
 import app.view.Incomes;
-import app.view.Overheads;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +25,7 @@ public class EditIncomesForm extends JPanel {
     public EditIncomesForm(Incomes over, Income income) {
         init();
         controller = new IncomeController();
-        editOverhead();
+        editIncome();
         closeForm();
         this.over = over;
         this.income = income;
@@ -117,7 +115,7 @@ public class EditIncomesForm extends JPanel {
         return button;
     }
 
-    private void editOverhead(){
+    private void editIncome(){
         // Agregar el evento manualmente
         btnAdd.addActionListener(e -> {
             String type = cbType.getSelectedItem().toString();
@@ -127,7 +125,7 @@ public class EditIncomesForm extends JPanel {
             controller.updateIncome(id, type, detail, Double.parseDouble(value));
             over.llenarTabla();
             over.setTotal();
-            JOptionPane.showMessageDialog(null, "¡Ingreso editado correctamente!",  "Ingreso editado", JOptionPane.INFORMATION_MESSAGE);
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Ingreso editado correctamente");
             Window window = SwingUtilities.getWindowAncestor(this);
             if (window != null) {
                 window.dispose();

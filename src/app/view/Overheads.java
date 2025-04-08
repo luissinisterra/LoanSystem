@@ -6,7 +6,9 @@ import app.view.forms.EditOverheadForm;
 import app.view.forms.NewOverheadForm;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
+import javax.management.Notification;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -164,14 +166,19 @@ public class Overheads extends JPanel {
         // Agregar el evento manualmente
         btnEdit.addActionListener(e -> {
             String id = getIdGastoSeleccionado();
-            Gasto gasto = controller.getByID(id);
-            EditOverheadForm editOverheadForm = new EditOverheadForm(this, gasto);
-            JFrame frame = new JFrame("Editar gasto");
-            frame.setContentPane(editOverheadForm);
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
+            if (id == null) {
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un gasto para editar");
+            }
+            else {
+                Gasto gasto = controller.getByID(id);
+                EditOverheadForm editOverheadForm = new EditOverheadForm(this, gasto);
+                JFrame frame = new JFrame("Editar gasto");
+                frame.setContentPane(editOverheadForm);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+            }
         });
     }
 
@@ -181,9 +188,14 @@ public class Overheads extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String id = getIdGastoSeleccionado();
-                controller.removeGasto(id);
-                llenarTabla();
-                setTotal();
+                if (id == null) {
+                    Notifications.getInstance().show(Notifications.Type.ERROR, "Selecciona un gasto de la tabla");
+                }
+                else {
+                    controller.removeGasto(id);
+                    llenarTabla();
+                    setTotal();
+                }
             }
         });
     }
