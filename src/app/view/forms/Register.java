@@ -1,5 +1,6 @@
 package app.view.forms;
 
+import app.Application;
 import app.controller.UserController;
 import app.manager.FormsManager;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -11,6 +12,7 @@ import java.awt.*;
 
 public class Register extends JPanel {
     private UserController userController;
+
     public Register() {
         init();
         this.userController = new UserController();
@@ -78,7 +80,7 @@ public class Register extends JPanel {
         panel.add(cmdRegister, "gapy 20");
         panel.add(createLoginLabel(), "gapy 10");
         add(panel);
-        registerUser();
+        register();
     }
 
     private Component createGenderPanel() {
@@ -123,7 +125,7 @@ public class Register extends JPanel {
         return password.equals(confirmPassword);
     }
 
-    private void registerUser() {
+    private void register() {
         cmdRegister.addActionListener(e -> {
             if (isMatchPassword()) {
                 String password = String.valueOf(txtPassword.getPassword());
@@ -132,14 +134,21 @@ public class Register extends JPanel {
                 String email = txtEmail.getText();
                 String username = txtUsername.getText();
                 String gender = getGender();
+
                 userController.saveUser(names, surnames, email, password, username, gender);
-                limpiarCampos();
-                JOptionPane.showMessageDialog(null, "Registro exitoso", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+
+                // Mostrar notificación
+                Notifications.getInstance().show(Notifications.Type.SUCCESS, "¡Registro exitoso!");
+
+                // Cambiar al formulario principal (mainForm)
+                Application.login();
+
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "Las contraseñas no coinciden");
             }
         });
     }
+
 
     private String getGender() {
         ButtonGroup groupGender = new ButtonGroup();
@@ -154,14 +163,6 @@ public class Register extends JPanel {
         return "";
     }
 
-    private void limpiarCampos() {
-        txtFirstName.setText("");
-        txtLastName.setText("");
-        txtEmail.setText("");
-        txtUsername.setText("");
-        txtPassword.setText("");
-        txtConfirmPassword.setText("");
-    }
     private JTextField txtFirstName;
     private JTextField txtLastName;
     private JRadioButton jrMale;
