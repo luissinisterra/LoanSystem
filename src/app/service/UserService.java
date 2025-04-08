@@ -1,12 +1,11 @@
 package app.service;
 
+import app.exception.ApiException;
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
-import app.model.Client;
-import app.model.Income;
 import app.model.User;
-import app.service.imp.IClientService;
 import app.service.imp.IUserService;
+import app.util.ApiErrorUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import retrofit2.Response;
@@ -16,8 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class UserService {
     private String BASE_URL = "http://localhost:8080";
@@ -46,7 +44,7 @@ public class UserService {
             User user = new User(names, surnames, email, password, username, gender);
             Response<User> response = apiService.createUser(user).execute();
             if (!response.isSuccessful()) {
-                System.out.println("Error: " + response.code());
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
             else {
                 return response.body();

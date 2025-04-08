@@ -2,6 +2,7 @@ package app.view.forms;
 
 import app.Application;
 import app.controller.UserController;
+import app.exception.ApiException;
 import app.manager.FormsManager;
 import app.model.User;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -127,29 +128,57 @@ public class Register extends JPanel {
     }
 
     private void register() {
-        cmdRegister.addActionListener(e -> {
-            if (isMatchPassword()) {
-                String password = String.valueOf(txtPassword.getPassword());
-                String names = txtFirstName.getText();
-                String surnames = txtLastName.getText();
-                String email = txtEmail.getText();
-                String username = txtUsername.getText();
-                String gender = getGender();
-                if(password.trim().isEmpty() || names.trim().isEmpty() || surnames.trim().isEmpty() || email.trim().isEmpty() || username.trim().isEmpty() || gender.isEmpty()) {
-                        Notifications.getInstance().show(Notifications.Type.WARNING, "Hay algunos campos vacios");
-                }
-                else {
-                    User user = userController.saveUser(names, surnames, email, password, username, gender);
-                    Application.setUserToMainForm(user);
-                    Application.login();
-                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "¡Registro exitoso!");
-                }
-            } else {
-                Notifications.getInstance().show(Notifications.Type.ERROR, "Las contraseñas no coinciden");
-            }
-        });
+        cmdRegister.addActionListener(e -> ejecutarRegistro());
     }
 
+    private void ejecutarRegistro() {
+        try {
+            // Obtener datos
+            String password = String.valueOf(txtPassword.getPassword());
+            String names = txtFirstName.getText();
+            String surnames = txtLastName.getText();
+            String email = txtEmail.getText();
+            String username = txtUsername.getText();
+            String gender = getGender();
+
+            // Validaciones
+            if (hayCamposVacios(password, names, surnames, email, username, gender)) {
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Hay algunos campos vacíos");
+                return;
+            }
+
+            if (!isMatchPassword()) {
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Las contraseñas no coinciden");
+                return;
+            }
+
+            // Registro
+            User user = userController.saveUser(names, surnames, email, password, username, gender);
+
+            // Login automático
+            login(user);
+
+            // Confirmación
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "¡Registro exitoso!");
+
+        } catch (ApiException ex) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, ex.getMessage());
+        }
+    }
+
+    private void login(User user) {
+        Application.setUserToMainForm(user);
+        Application.login();
+    }
+
+    private boolean hayCamposVacios(String... campos) {
+        for (String campo : campos) {
+            if (campo == null || campo.trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private String getGender() {
         ButtonGroup groupGender = new ButtonGroup();
