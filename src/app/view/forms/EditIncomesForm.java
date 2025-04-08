@@ -122,13 +122,21 @@ public class EditIncomesForm extends JPanel {
             String detail = txtDetail.getText();
             String value = txtValue.getText();
             String id = this.income.getIncomeID();
-            controller.updateIncome(id, type, detail, Double.parseDouble(value));
-            over.llenarTabla();
-            over.setTotal();
-            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Ingreso editado correctamente");
-            Window window = SwingUtilities.getWindowAncestor(this);
-            if (window != null) {
-                window.dispose();
+            if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacios");
+            }
+            if (value.matches(".*[a-zA-Z].*")){
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
+            }
+            else {
+                controller.updateIncome(id, type, detail, Double.parseDouble(value));
+                over.llenarTabla();
+                over.setTotal();
+                Window window = SwingUtilities.getWindowAncestor(this);
+                if (window != null) {
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Ingreso editado correctamente");
+                    window.dispose();
+                }
             }
         });
     }

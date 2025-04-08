@@ -5,6 +5,7 @@ import app.model.Gasto;
 import app.view.Overheads;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 import javax.swing.*;
 import java.awt.*;
@@ -121,13 +122,21 @@ public class EditOverheadForm extends JPanel {
             String detail = txtDetail.getText();
             String value = txtValue.getText();
             String id = this.gasto.getIdGasto();
-            controller.updateGasto(id, type, detail, Double.parseDouble(value));
-            over.llenarTabla();
-            over.setTotal();
-            JOptionPane.showMessageDialog(null, "Gasto editado correctamente!",  "Gasto editado", JOptionPane.INFORMATION_MESSAGE);
-            Window window = SwingUtilities.getWindowAncestor(this);
-            if (window != null) {
-                window.dispose();
+            if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacios");
+            }
+            if (value.matches(".*[a-zA-Z].*")){
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
+            }
+            else {
+                controller.updateGasto(id, type, detail, Double.parseDouble(value));
+                over.llenarTabla();
+                over.setTotal();
+                Window window = SwingUtilities.getWindowAncestor(this);
+                if (window != null) {
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Gasto editado correctamente");
+                    window.dispose();
+                }
             }
         });
     }

@@ -6,6 +6,7 @@ import app.view.forms.EditIncomesForm;
 import app.view.forms.NewIncomeForm;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -157,6 +158,7 @@ public class Incomes extends JPanel {
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
+            frame.setAlwaysOnTop(true);
         });
     }
 
@@ -164,14 +166,20 @@ public class Incomes extends JPanel {
         // Agregar el evento manualmente
         btnEdit.addActionListener(e -> {
             String id = getSelectedIncomeID();
-            Income i = controller.getIncomeByID(id);
-            EditIncomesForm form = new EditIncomesForm(this, i);
-            JFrame frame = new JFrame("Editar gasto");
-            frame.setContentPane(form);
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
+            if (id == null){
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un ingreso para editar");
+            }
+            else  {
+                Income i = controller.getIncomeByID(id);
+                EditIncomesForm form = new EditIncomesForm(this, i);
+                JFrame frame = new JFrame("Editar gasto");
+                frame.setContentPane(form);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+                frame.setAlwaysOnTop(true);
+            }
         });
     }
 
@@ -181,16 +189,25 @@ public class Incomes extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String id = getSelectedIncomeID();
-                controller.removeIncome(id);
-                llenarTabla();
-                setTotal();
+                if (id == null){
+                    Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un ingreso para eliminar");
+                }
+                else {
+                    controller.removeIncome(id);
+                    llenarTabla();
+                    setTotal();
+                }
             }
         });
     }
 
     private void incomeDetails(){
         btnDetails.addActionListener(e -> {
-            JOptionPane.showMessageDialog(null, controller.getIncomeByID(getSelectedIncomeID()));
+            String id = getSelectedIncomeID();
+            if (id == null){
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un ingreso para ver sus detalles");
+            }
+            JOptionPane.showMessageDialog(null, controller.getIncomeByID(id));
         });
     }
 
