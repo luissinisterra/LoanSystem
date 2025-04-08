@@ -135,16 +135,14 @@ public class Register extends JPanel {
                 String email = txtEmail.getText();
                 String username = txtUsername.getText();
                 String gender = getGender();
-                if(password.trim().isEmpty() || names.trim().isEmpty() || surnames.trim().isEmpty() || email.trim().isEmpty()
-                        || username.trim().isEmpty() || gender.isEmpty()) {
+                if(password.trim().isEmpty() || names.trim().isEmpty() || surnames.trim().isEmpty() || email.trim().isEmpty() || username.trim().isEmpty() || gender.isEmpty()) {
                         Notifications.getInstance().show(Notifications.Type.WARNING, "Hay algunos campos vacios");
                 }
                 else {
-                    User u = userController.saveUser(names, surnames, email, password, username, gender);
-                    // Mostrar notificación
-                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "¡Registro exitoso!");
-                    // Cambiar al formulario principal (mainForm)
+                    User user = userController.saveUser(names, surnames, email, password, username, gender);
+                    Application.setUserToMainForm(user);
                     Application.login();
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "¡Registro exitoso!");
                 }
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "Las contraseñas no coinciden");

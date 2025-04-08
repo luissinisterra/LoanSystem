@@ -1,6 +1,7 @@
 package app;
 
 import app.manager.FormsManager;
+import app.model.User;
 import app.view.forms.Login;
 import app.view.forms.MainForm;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -16,7 +17,7 @@ import raven.toast.Notifications;
 public class Application extends JFrame {
 
     private static Application app;
-    private final MainForm mainForm;
+    private static MainForm mainForm;
     private final Login loginForm;
 
     public Application() {
@@ -32,6 +33,10 @@ public class Application extends JFrame {
         setContentPane(loginForm);
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
         Notifications.getInstance().setJFrame(this);
+    }
+
+    public static void setUserToMainForm(User user) {
+        mainForm.setUser(user);
     }
 
     public static void showForm(Component component) {
