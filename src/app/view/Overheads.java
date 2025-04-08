@@ -159,6 +159,7 @@ public class Overheads extends JPanel {
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
+            frame.setAlwaysOnTop(true);
         });
     }
 
@@ -178,6 +179,7 @@ public class Overheads extends JPanel {
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
+                frame.setAlwaysOnTop(true);
             }
         });
     }
@@ -189,7 +191,7 @@ public class Overheads extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String id = getIdGastoSeleccionado();
                 if (id == null) {
-                    Notifications.getInstance().show(Notifications.Type.ERROR, "Selecciona un gasto de la tabla");
+                    Notifications.getInstance().show(Notifications.Type.ERROR, "Selecciona un gasto para eliminar");
                 }
                 else {
                     controller.removeGasto(id);
@@ -202,7 +204,13 @@ public class Overheads extends JPanel {
 
     private void detailsOverhead(){
         btnDetails.addActionListener(e -> {
-            JOptionPane.showMessageDialog(null, controller.getByID(getIdGastoSeleccionado()));
+            String id = getIdGastoSeleccionado();
+            if  (id == null) {
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Selecciona un gasto para ver sus detalles");
+            }
+            else {
+                JOptionPane.showMessageDialog(null, controller.getByID(id));
+            }
         });
     }
 

@@ -4,6 +4,7 @@ import app.controller.IncomeController;
 import app.view.Incomes;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 import javax.swing.*;
 import java.awt.*;
@@ -116,13 +117,21 @@ public class NewIncomeForm extends JPanel {
             String type = cbType.getSelectedItem().toString();
             String detail = txtDetail.getText();
             String value = txtValue.getText();
-            controller.addIncome(type, detail, Double.parseDouble(value));
-            over.llenarTabla();
-            over.setTotal();
-            JOptionPane.showMessageDialog(null, "¡Ingreso creado correctamente!",  "Ingreso creado", JOptionPane.INFORMATION_MESSAGE);
-            Window window = SwingUtilities.getWindowAncestor(this);
-            if (window != null) {
-                window.dispose();
+            if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacios");
+            }
+            else if (value.matches(".*[a-zA-Z].*")){
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
+            }
+            else {
+                controller.addIncome(type, detail, Double.parseDouble(value));
+                over.llenarTabla();
+                over.setTotal();
+                Window window = SwingUtilities.getWindowAncestor(this);
+                if (window != null) {
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Ingreso creado correctamente");
+                    window.dispose();
+                }
             }
         });
     }

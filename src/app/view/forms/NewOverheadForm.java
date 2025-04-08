@@ -4,6 +4,7 @@ import app.controller.GastoController;
 import app.view.Overheads;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +49,7 @@ public class NewOverheadForm extends JPanel {
 
     // Crea los componentes de filtrado
     private void createFilterComponents() {
-        cbType = new JComboBox<>(new String[]{"Gastos", "Salida"});
+        cbType = new JComboBox<>(new String[]{"Gasto", "Salida"});
         txtDetail = createFormField("Detalle");
         txtValue = createFormField("Valor gasto/salida");
     }
@@ -116,13 +117,21 @@ public class NewOverheadForm extends JPanel {
             String type = cbType.getSelectedItem().toString();
             String detail = txtDetail.getText();
             String value = txtValue.getText();
-            controller.addGasto(type, detail, Double.parseDouble(value));
-            over.llenarTabla();
-            over.setTotal();
-            JOptionPane.showMessageDialog(null, "Gasto creado correctamente!",  "Gasto editado", JOptionPane.INFORMATION_MESSAGE);
-            Window window = SwingUtilities.getWindowAncestor(this);
-            if (window != null) {
-                window.dispose();
+            if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacios");
+            }
+            else if (value.matches(".*[a-zA-Z].*")){
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
+            }
+            else {
+                controller.addGasto(type, detail, Double.parseDouble(value));
+                over.llenarTabla();
+                over.setTotal();
+                Window window = SwingUtilities.getWindowAncestor(this);
+                if (window != null) {
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Gasto agregado correctamente");
+                    window.dispose();
+                }
             }
         });
     }
