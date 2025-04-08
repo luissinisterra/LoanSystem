@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.controller.GastoController;
+import app.exception.ApiException;
 import app.model.Gasto;
 import app.view.Overheads;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -12,25 +13,20 @@ import java.awt.*;
 
 public class EditOverheadForm extends JPanel {
 
-    private JLabel lbTitle;
-    private JComboBox<String> cbType;
-    private JTextField txtDetail;
-    private JTextField txtValue;
-    private JButton btnAdd;
-    private JButton btnCancel;
-    private GastoController controller;
+    private final GastoController controller = new GastoController();
     private Overheads over;
     private Gasto gasto;
 
     public EditOverheadForm(Overheads over, Gasto gasto) {
         init();
-        controller = new GastoController();
-        editOverhead();
-        closeForm();
         this.over = over;
         this.gasto = gasto;
         setText(this.gasto);
     }
+
+    // ==============================
+    // Inicialización
+    // ==============================
 
     private void init() {
         configureLayout();
@@ -38,33 +34,38 @@ public class EditOverheadForm extends JPanel {
         createFilterComponents();
         createActionButtons();
         assemblePanel();
+        initButtons();
     }
 
-    // Configura el diseño principal
+    private void initButtons(){
+        btnAdd.addActionListener(e -> editOverhead());
+        btnCancel.addActionListener(e -> closeForm());
+    }
+
+    // ==============================
+    // Construcción visual
+    // ==============================
+
     private void configureLayout() {
         setLayout(new MigLayout("fill, insets 20", "[center]", "[center]"));
     }
 
-    // Crea el título del panel
     private void createTitle() {
         lbTitle = new JLabel("Editar un gasto");
         lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +16");
     }
 
-    // Crea los componentes de filtrado
     private void createFilterComponents() {
         cbType = new JComboBox<>(new String[]{"Gasto", "Salida"});
         txtDetail = createFormField("Detalle");
         txtValue = createFormField("");
     }
 
-    // Crea los botones de acción
     private void createActionButtons() {
         btnAdd = createActionButton("Editar");
         btnCancel = createActionButton("Cancelar");
     }
 
-    // Ensambla el panel principal
     private void assemblePanel() {
         JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 35 45 30 45", "[fill, 600]"));
         panel.putClientProperty(FlatClientProperties.STYLE,
@@ -91,7 +92,46 @@ public class EditOverheadForm extends JPanel {
         add(panel, "grow");
     }
 
-    // Método auxiliar para crear campos de formulario
+    // ==============================
+    // Funcionalidad de botones
+    // ==============================
+
+    private void editOverhead() {
+        try {
+            String type = cbType.getSelectedItem().toString();
+            String detail = txtDetail.getText();
+            String value = txtValue.getText();
+            String id = this.gasto.getIdGasto();
+            if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacios");
+            } else if (value.matches(".*[a-zA-Z].*")) {
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
+            } else {
+                controller.updateGasto(id, type, detail, Double.parseDouble(value));
+                over.llenarTabla();
+                over.setTotal();
+                Window window = SwingUtilities.getWindowAncestor(this);
+                if (window != null) {
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Gasto editado correctamente");
+                    window.dispose();
+                }
+            }
+        }catch (ApiException ex){
+            Notifications.getInstance().show(Notifications.Type.ERROR, ex.getMessage());
+        }
+    }
+
+    private void closeForm() {
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose();
+        }
+    }
+
+    // ==============================
+    // Helpers UI
+    // ==============================
+
     private JTextField createFormField(String placeholder) {
         JTextField field = new JTextField();
         field.putClientProperty(FlatClientProperties.STYLE,
@@ -102,7 +142,6 @@ public class EditOverheadForm extends JPanel {
         return field;
     }
 
-    // Método auxiliar para crear botones de acción
     private JButton createActionButton(String text) {
         JButton button = new JButton(text);
         button.putClientProperty(FlatClientProperties.STYLE,
@@ -113,42 +152,6 @@ public class EditOverheadForm extends JPanel {
                         + "innerFocusWidth:0;"
                         + "arc:10");
         return button;
-    }
-
-    private void editOverhead(){
-        // Agregar el evento manualmente
-        btnAdd.addActionListener(e -> {
-            String type = cbType.getSelectedItem().toString();
-            String detail = txtDetail.getText();
-            String value = txtValue.getText();
-            String id = this.gasto.getIdGasto();
-            if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
-                Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacios");
-            }
-            else if (value.matches(".*[a-zA-Z].*")){
-                Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
-            }
-            else {
-                controller.updateGasto(id, type, detail, Double.parseDouble(value));
-                over.llenarTabla();
-                over.setTotal();
-                Window window = SwingUtilities.getWindowAncestor(this);
-                if (window != null) {
-                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Gasto editado correctamente");
-                    window.dispose();
-                }
-            }
-        });
-    }
-
-    private void closeForm(){
-        // Agregar el evento manualmente
-        btnCancel.addActionListener(e -> {
-            Window window = SwingUtilities.getWindowAncestor(this);
-            if (window != null) {
-                window.dispose();
-            }
-        });
     }
 
     private void setText(Gasto gasto) {
@@ -167,4 +170,14 @@ public class EditOverheadForm extends JPanel {
         return -1;
     }
 
+    // ==============================
+    // Atributos
+    // ==============================
+
+    private JLabel lbTitle;
+    private JComboBox<String> cbType;
+    private JTextField txtDetail;
+    private JTextField txtValue;
+    private JButton btnAdd;
+    private JButton btnCancel;
 }
