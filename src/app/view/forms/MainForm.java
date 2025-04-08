@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.Application;
+import app.model.User;
 import app.view.FinancialReport;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -26,9 +27,14 @@ import app.view.*;
  * @author Raven
  */
 public class MainForm extends JLayeredPane {
+    private User user;
 
     public MainForm() {
         init();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     private void init() {
@@ -81,7 +87,7 @@ public class MainForm extends JLayeredPane {
                 }
             } else if(index == 2){
                 if(subIndex == 1){
-                    Application.showForm(new ClientListView());
+                    Application.showForm(new ClientListView(user));
                 } else if(subIndex == 2){
                     Application.showForm(new AllClientsView());
                 }

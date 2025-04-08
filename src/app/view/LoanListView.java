@@ -295,6 +295,7 @@ public class LoanListView extends JPanel {
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
+            //frame.isAlwaysOnTop(true);
         });
     }
 
