@@ -120,7 +120,7 @@ public class NewOverheadForm extends JPanel {
             if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacios");
             }
-            if (value.matches(".*[a-zA-Z].*")){
+            else if (value.matches(".*[a-zA-Z].*")){
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
             }
             else {

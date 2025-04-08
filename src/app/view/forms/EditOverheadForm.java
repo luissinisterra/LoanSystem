@@ -53,7 +53,7 @@ public class EditOverheadForm extends JPanel {
 
     // Crea los componentes de filtrado
     private void createFilterComponents() {
-        cbType = new JComboBox<>(new String[]{"Gastos", "Salida"});
+        cbType = new JComboBox<>(new String[]{"Gasto", "Salida"});
         txtDetail = createFormField("Detalle");
         txtValue = createFormField("");
     }
@@ -125,7 +125,7 @@ public class EditOverheadForm extends JPanel {
             if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacios");
             }
-            if (value.matches(".*[a-zA-Z].*")){
+            else if (value.matches(".*[a-zA-Z].*")){
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
             }
             else {
@@ -158,7 +158,7 @@ public class EditOverheadForm extends JPanel {
     }
 
     private int getIndex(String tipo){
-        if (tipo.equals("Gastos")){
+        if (tipo.equals("Gasto")){
             return 0;
         }
         if (tipo.equals("Salida")){
