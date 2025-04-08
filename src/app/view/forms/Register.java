@@ -3,6 +3,7 @@ package app.view.forms;
 import app.Application;
 import app.controller.UserController;
 import app.manager.FormsManager;
+import app.model.User;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import raven.toast.Notifications;
@@ -134,15 +135,17 @@ public class Register extends JPanel {
                 String email = txtEmail.getText();
                 String username = txtUsername.getText();
                 String gender = getGender();
-
-                userController.saveUser(names, surnames, email, password, username, gender);
-
-                // Mostrar notificación
-                Notifications.getInstance().show(Notifications.Type.SUCCESS, "¡Registro exitoso!");
-
-                // Cambiar al formulario principal (mainForm)
-                Application.login();
-
+                if(password.trim().isEmpty() || names.trim().isEmpty() || surnames.trim().isEmpty() || email.trim().isEmpty()
+                        || username.trim().isEmpty() || gender.isEmpty()) {
+                        Notifications.getInstance().show(Notifications.Type.WARNING, "Hay algunos campos vacios");
+                }
+                else {
+                    User u = userController.saveUser(names, surnames, email, password, username, gender);
+                    // Mostrar notificación
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "¡Registro exitoso!");
+                    // Cambiar al formulario principal (mainForm)
+                    Application.login();
+                }
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "Las contraseñas no coinciden");
             }
