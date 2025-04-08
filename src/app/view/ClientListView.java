@@ -3,6 +3,7 @@ package app.view;
 import app.controller.ClientController;
 import app.model.Address;
 import app.model.Client;
+import app.model.User;
 import app.view.forms.EditClientForm;
 import app.view.forms.NewClientForm;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -21,14 +22,17 @@ public class ClientListView extends JPanel {
     private ClientController clientController = new ClientController();
     private DefaultTableModel model;
     private JTable table;
+    private User user;
 
-    public ClientListView() {
-        init();
+    public ClientListView(User user) {
+        this.user = user;
         this.clientController = new ClientController();
+        init();
     }
 
     public void init() {
         setLayout(new MigLayout("fill, insets 20", "[grow]", "[grow]"));
+        System.out.println("Nombre de usuario: " + this.user.getNames());
 
         // Panel principal con bordes redondeados
         JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 20", "[grow]"));
@@ -56,48 +60,6 @@ public class ClientListView extends JPanel {
 
         add(panel, "grow");
     }
-
-    // Método para crear la barra de búsqueda
-    /*private JPanel createSearchBar() {
-        JTextField searchField = new JTextField();
-        searchField.putClientProperty(FlatClientProperties.STYLE,
-                "showClearButton:true;" +
-                        "background:lighten(@background,5%);" +
-                        "foreground:@foreground;" +
-                        "arc:10");
-        searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar clientes...");
-
-        // Botón de búsqueda
-        JButton searchButton = createActionButton("", "app/icon/svg/search-icon.svg");
-        searchButton.setPreferredSize(new Dimension(80, 40));
-        searchButton.addActionListener(e -> {
-            String query = searchField.getText(); // Obtener el texto del campo de búsqueda
-            this.filterTable(query); // Filtrar la tabla con el texto actual
-        });
-
-        // Botón de reset
-        JButton resetButton = createActionButton("", "app/icon/svg/reset-icon.svg"); // Cambia el ícono si es necesario
-        resetButton.setPreferredSize(new Dimension(80, 40));
-        resetButton.addActionListener(e -> {
-            this.resetTable(); // Resetear la tabla (mostrar todos los clientes)
-        });
-
-        // Panel para agrupar los botones
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0)); // Espaciado horizontal entre botones
-        buttonPanel.setOpaque(false); // Hacer el panel transparente
-        buttonPanel.add(searchButton);
-        buttonPanel.add(resetButton);
-
-        // Panel principal para la barra de búsqueda
-        JPanel searchPanel = new JPanel(new BorderLayout());
-        searchPanel.add(searchField, BorderLayout.CENTER); // Campo de búsqueda en el centro
-        searchPanel.add(buttonPanel, BorderLayout.EAST); // Botones agrupados en el lado derecho
-        searchPanel.putClientProperty(FlatClientProperties.STYLE,
-                "background:lighten(@background,5%);" +
-                        "arc:10");
-
-        return searchPanel;
-    }*/
 
     private JPanel createSearchBar() {
         JTextField searchField = new JTextField();
