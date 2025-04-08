@@ -61,6 +61,10 @@ public class Application extends JFrame {
         app.mainForm.setSelectedMenu(index, subIndex);
     }
 
+    public static Application getInstance() {
+        return app;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
