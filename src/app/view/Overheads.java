@@ -238,6 +238,7 @@ public class Overheads extends JPanel {
             controller.removeGasto(id);
             llenarTabla();
             setTotal();
+            Notifications.getInstance().show(Notifications.Type.INFO, "Gasto eliminado correctamente");
         }
     }
 

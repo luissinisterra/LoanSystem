@@ -208,6 +208,7 @@ public class Incomes extends JPanel {
             controller.removeIncome(id);
             llenarTabla();
             setTotal();
+            Notifications.getInstance().show(Notifications.Type.INFO, "Ingreso eliminado correctamente");
         }
     }
 
