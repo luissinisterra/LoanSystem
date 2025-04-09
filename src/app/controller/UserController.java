@@ -13,4 +13,8 @@ public class UserController {
     public User saveUser(String names, String surnames, String email, String password, String username, String gender) {
         return this.userService.saveUser(names, surnames, email, password, username, gender);
     }
+
+    public User loadUser(String username, String password) {
+        return this.userService.loadUser(username, password);
+    }
 }

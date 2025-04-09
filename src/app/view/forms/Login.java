@@ -1,6 +1,8 @@
 package app.view.forms;
 
 import app.Application;
+import app.controller.UserController;
+import app.model.User;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import app.manager.FormsManager;
@@ -9,9 +11,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Login extends JPanel {
+    private UserController userController;
 
     public Login() {
         init();
+        this.userController = new UserController();
     }
 
     private void init() {
@@ -22,7 +26,16 @@ public class Login extends JPanel {
         cmdLogin = new JButton("Iniciar sesión");
 
         cmdLogin.addActionListener(e -> {
-            Application.login();
+            String username = txtUsername.getText();
+            String password = txtPassword.getText();
+
+            if (txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "gay");
+            } else {
+                User user = this.userController.loadUser(username, password);
+                System.out.println(user.getNames());
+                Application.login();
+            }
         });
 
         JPanel panel = new JPanel(new MigLayout("wrap,fillx,insets 35 45 30 45", "fill,250:280"));
@@ -83,7 +96,6 @@ public class Login extends JPanel {
         panel.add(cmdRegister);
         return panel;
     }
-
 
     private JTextField txtUsername;
     private JPasswordField txtPassword;

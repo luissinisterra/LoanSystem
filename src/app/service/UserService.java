@@ -46,9 +46,21 @@ public class UserService {
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
-            else {
-                return response.body();
+            return response.body();
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public User loadUser(String username, String password) {
+        try {
+            Response<User> response = apiService.loadUser(username, password).execute();
+            User user = response.body();
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
+            return user;
         }catch (IOException ex){
             ex.printStackTrace();
         }
