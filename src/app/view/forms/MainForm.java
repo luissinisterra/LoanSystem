@@ -80,8 +80,6 @@ public class MainForm extends JLayeredPane {
             } else if (index == 1) {
                 if (subIndex == 1) {
                     Application.showForm(new LoanListView());
-                } else if (subIndex == 2) {
-                    Application.showForm(new LoanDetails());
                 } else {
                     action.cancel();
                 }
