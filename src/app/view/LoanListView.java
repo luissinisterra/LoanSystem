@@ -106,6 +106,8 @@ public class LoanListView extends JPanel {
                         loan.getId(),
                         loan.getClient().getFirstName(),
                         loan.getAmount(),
+                        loan.getInterestRate(),
+                        loan.getTerm(),
                         loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate()
                 });
@@ -130,6 +132,8 @@ public class LoanListView extends JPanel {
                         loan.getId(),
                         loan.getClient().getFirstName(),
                         loan.getAmount(),
+                        loan.getInterestRate(),
+                        loan.getTerm(),
                         loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate()
                 });
@@ -149,6 +153,8 @@ public class LoanListView extends JPanel {
                         loan.getId(),
                         loan.getClient().getFirstName() + " " + loan.getClient().getFirstSurname(),
                         loan.getAmount(),
+                        loan.getInterestRate(),
+                        loan.getTerm(),
                         loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate()
                 });
@@ -216,6 +222,8 @@ public class LoanListView extends JPanel {
         model.addColumn("ID");
         model.addColumn("Cliente");
         model.addColumn("Monto");
+        model.addColumn("Tasa de interes");
+        model.addColumn("Plazo");
         model.addColumn("Estado");
         model.addColumn("Fecha");
 
@@ -225,6 +233,8 @@ public class LoanListView extends JPanel {
                         loan.getId(),
                         loan.getClient().getFirstName() + " " + loan.getClient().getFirstSurname(),
                         loan.getAmount(),
+                        loan.getInterestRate(),
+                        loan.getTerm(),
                         loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate()
                 });
@@ -245,6 +255,8 @@ public class LoanListView extends JPanel {
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
         table.getColumnModel().getColumn(3).setPreferredWidth(100);
         table.getColumnModel().getColumn(4).setPreferredWidth(100);
+        table.getColumnModel().getColumn(5).setPreferredWidth(100);
+        table.getColumnModel().getColumn(6).setPreferredWidth(100);
         table.putClientProperty(FlatClientProperties.STYLE,
                 "showHorizontalLines:true;" +
                         "showVerticalLines:true;" +
