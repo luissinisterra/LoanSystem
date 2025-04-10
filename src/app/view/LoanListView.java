@@ -317,6 +317,7 @@ public class LoanListView extends JPanel {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
                 String id = (String) table.getValueAt(selectedRow, 0);
+                System.out.println(id);
                 Loan loan = this.loanController.getLoanById(id);
                 JFrame frame = new JFrame("Editar Préstamo");
                 frame.setContentPane(new EditLoanForm(
