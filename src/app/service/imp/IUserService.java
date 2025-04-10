@@ -8,6 +8,6 @@ public interface IUserService {
 
     @POST("/api/users")
     Call<User> createUser(@Body User user);
-    @GET("/api/load/{username}/{password}")
+    @GET("/api/users/load/{username}/{password}")
     Call<User> loadUser(@Path("username") String username, @Path("password") String password);
 }

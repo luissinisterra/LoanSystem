@@ -9,6 +9,7 @@ import app.manager.FormsManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class Login extends JPanel {
     private UserController userController;
@@ -33,7 +34,7 @@ public class Login extends JPanel {
                 JOptionPane.showMessageDialog(null, "gay");
             } else {
                 User user = this.userController.loadUser(username, password);
-                System.out.println(user.getNames());
+                Application.setUserToMainForm(user);
                 Application.login();
             }
         });

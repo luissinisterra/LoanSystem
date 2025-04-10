@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.controller.ClientController;
+import app.exception.ApiException;
 import app.model.Address;
 import app.model.Client;
 import app.view.ClientListView;
@@ -72,21 +73,18 @@ public class NewClientForm extends JPanel {
                 "innerFocusWidth:0");
 
         cmdSave.addActionListener(e -> {
-            if (validateFields()) {
-                saveClient();
-                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Cliente guardado correctamente");
+            saveClient();
 
-                //Metodo para refrescar la tabla del padre
-                this.listView.refreshTable();
+            //Metodo para refrescar la tabla del padre
+            this.listView.refreshTable();
 
-                // Obtener la ventana padre y cerrarla
-                Window window = SwingUtilities.getWindowAncestor(this);
-                if (window != null) {
-                    window.dispose();
-                }
-            } else {
-                Notifications.getInstance().show(Notifications.Type.ERROR, "Por favor complete todos los campos obligatorios");
+            // Obtener la ventana padre y cerrarla
+            Window window = SwingUtilities.getWindowAncestor(this);
+            if (window != null) {
+                window.dispose();
             }
+
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Cliente guardado correctamente");
         });
 
         // Título y descripción
@@ -135,38 +133,28 @@ public class NewClientForm extends JPanel {
         return field;
     }
 
-    private boolean validateFields() {
-        return !txtId.getText().isEmpty() &&
-                !txtFirstName.getText().isEmpty() &&
-                !txtFirstSurname.getText().isEmpty() &&
-                !txtAge.getText().isEmpty() &&
-                !txtEmail.getText().isEmpty() &&
-                !txtPhone.getText().isEmpty() &&
-                !txtCountry.getText().isEmpty() &&
-                !txtDepartment.getText().isEmpty() &&
-                !txtCity.getText().isEmpty() &&
-                !txtStreet.getText().isEmpty() &&
-                !txtPostalCode.getText().isEmpty();
-    }
-
     private void saveClient() {
-        String id = txtId.getText();
-        String firstName = txtFirstName.getText();
-        String secondName = txtSecondName.getText();
-        String firstSurname = txtFirstSurname.getText();
-        String secondSurname = txtSecondSurname.getText();
-        int age = Integer.parseInt(txtAge.getText());
-        String email = txtEmail.getText();
-        String phone = txtPhone.getText();
-        String country = txtCountry.getText();
-        String department = txtDepartment.getText();
-        String city = txtCity.getText();
-        String street = txtStreet.getText();
-        String postalCode = txtPostalCode.getText();
+        try{
+            String id = txtId.getText();
+            String firstName = txtFirstName.getText();
+            String secondName = txtSecondName.getText();
+            String firstSurname = txtFirstSurname.getText();
+            String secondSurname = txtSecondSurname.getText();
+            int age = (txtAge.getText().length() > 0) ? Integer.parseInt(txtAge.getText()) : 0;
+            String email = txtEmail.getText();
+            String phone = txtPhone.getText();
+            String country = txtCountry.getText();
+            String department = txtDepartment.getText();
+            String city = txtCity.getText();
+            String street = txtStreet.getText();
+            String postalCode = txtPostalCode.getText();
 
-        Address address = new Address(country, department, city, street, postalCode);
-       Client client = new Client(id, firstName, secondName, firstSurname, secondSurname, age, email, phone, address);
+            Address address = new Address(country, department, city, street, postalCode);
+            Client client = new Client(id, firstName, secondName, firstSurname, secondSurname, age, email, phone, address);
 
-        this.clientController.createClient(client);
+            this.clientController.createClient(client);
+        } catch (ApiException ex) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, ex.getMessage());
+        }
     }
 }
