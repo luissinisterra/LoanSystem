@@ -210,7 +210,7 @@ public class Dashboard extends JPanel {
 
 
     private JLabel createHelloLabel() {
-        JLabel lb = new JLabel("¡Hola, usuario!");
+        JLabel lb = new JLabel("¡Hola de nuevo!");
         lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +20");
         helloLabel = lb;
         return lb;
