@@ -32,7 +32,6 @@ public class ClientListView extends JPanel {
 
     public void init() {
         setLayout(new MigLayout("fill, insets 20", "[grow]", "[grow]"));
-        System.out.println("Nombre de usuario: " + this.user.getNames());
 
         // Panel principal con bordes redondeados
         JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 20", "[grow]"));

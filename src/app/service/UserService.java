@@ -57,7 +57,8 @@ public class UserService {
             Response<User> response = apiService.loadUser(username, password).execute();
             User user = response.body();
             if (!response.isSuccessful()) {
-                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+                System.out.println(response.body());
+                //throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
             return user;
         }catch (IOException ex){

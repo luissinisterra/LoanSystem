@@ -107,6 +107,10 @@ public class EditLoanForm extends JPanel {
         panel.add(txtClientName);
         panel.add(new JLabel("Monto"), "gapy 8");
         panel.add(txtAmount);
+        panel.add(new JLabel("Tasa de interes"), "gapy 8");
+        panel.add(txtInterestRate);
+        panel.add(new JLabel("Plazo"), "gapy 8");
+        panel.add(txtTerm);
         panel.add(new JLabel("Fecha"), "gapy 8");
         panel.add(txtDate);
         panel.add(new JLabel("Estado:"), "gapy 8");
@@ -152,6 +156,7 @@ public class EditLoanForm extends JPanel {
                     date
             );
 
+            loan.setId(txtId.getText());
             String status = cbStatus.getSelectedItem().toString();
             loan.setActive("Activo".equals(status));
 
