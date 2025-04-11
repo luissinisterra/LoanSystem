@@ -48,9 +48,8 @@ public class UserService {
             }
             return response.body();
         }catch (IOException ex){
-            ex.printStackTrace();
+            throw new ApiException("Error de conexión");
         }
-        return null;
     }
 
     public User loadUser(String username, String password) {
