@@ -329,7 +329,7 @@ public class LoanListView extends JPanel {
                         loan.isActive() ? "Activo" : "Inactivo",
                         loan.getDate().toString(),
                         loan.getClientId(),
-                        loan.getUserId(),
+                        loan.getUserId()
                         this
                 ));
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

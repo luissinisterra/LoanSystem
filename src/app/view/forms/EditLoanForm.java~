@@ -30,7 +30,7 @@ public class EditLoanForm extends JPanel {
         this.listView = listView;
     }
 
-    private void init(int id, double amount, double interestRate, double term, String status, String date, int clientId, int userId) {
+    private void init(int id, double amount, double interestRate, double term, String status, String date int clientId, int userId) {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
 
         // Panel principal
