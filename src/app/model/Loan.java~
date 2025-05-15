@@ -11,18 +11,18 @@ public class Loan {
     private double term;
     private boolean active;
     private LocalDate date;
-    private int clientId;
-    private int userId;
+    private Client client;
+    private User user;
 
-    public Loan(int id, double amount, double interestRate, double term, boolean active, LocalDate date, int clientId, int userId) {
+    public Loan(int id, double amount, double interestRate, double term, boolean active, LocalDate date, Client client, User user) {
         this.id = id;
         this.amount = amount;
         this.interestRate = interestRate;
         this.term = term;
         this.active = active;
         this.date = date;
-        this.clientId = clientId;
-        this.userId = userId;
+        this.client = client;
+        this.user = user;
     }
 
     public int getId() {
@@ -73,19 +73,19 @@ public class Loan {
         this.date = date;
     }
 
-    public int getClientId() {
-        return clientId;
+    public Client getClient() {
+        return client;
     }
 
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
