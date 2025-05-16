@@ -10,9 +10,6 @@ public interface ILoanService {
     @GET("/api/loans")
     Call<List<Loan>> getAllLoans();
 
-    @GET("/api/loans/user/{id}")
-    Call<List<Loan>> getLoansByUserId(@Path("id") String id);
-
     @GET("/api/loans/{id}")
     Call<Loan> getLoanById(@Path("id") String id);
 
