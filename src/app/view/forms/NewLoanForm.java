@@ -28,11 +28,11 @@ public class NewLoanForm extends JPanel {
     private User user;
 
     public NewLoanForm(User user, LoanListView listView) {
-        init();
+        this.user = user;
         this.listView = listView;
         this.loanController = new LoanController();
         this.clientController = new ClientController();
-        this.user = user;
+        init();
     }
 
     private void init() {
@@ -75,7 +75,7 @@ public class NewLoanForm extends JPanel {
             List<Client> clients = this.clientController.getAllClients();
             ClientSelectorDialog dialog = new ClientSelectorDialog((JFrame) SwingUtilities.getWindowAncestor(this), clients);
             dialog.setVisible(true);
-            String selectedClientId = dialog.getSelectedClientId() + ":" + dialog.getName();
+            String selectedClientId = dialog.getSelectedClientId();
             if (selectedClientId != null) {
                 txtClient.setText(selectedClientId); // Asignar el ID del cliente seleccionado
             }
@@ -142,13 +142,8 @@ public class NewLoanForm extends JPanel {
     }
 
     private boolean validateFields() {
-       /*return !txtClient.getText().isEmpty() &&
+       return !txtClient.getText().isEmpty() &&
                 !txtAmount.getText().isEmpty() &&
-                !txtInterestRate.getText().isEmpty() &&
-                !txtTerm.getText().isEmpty() &&
-                !txtDate.getText().isEmpty();*/
-
-        return  !txtAmount.getText().isEmpty() &&
                 !txtInterestRate.getText().isEmpty() &&
                 !txtTerm.getText().isEmpty() &&
                 !txtDate.getText().isEmpty();

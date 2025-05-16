@@ -21,7 +21,7 @@ public class LoanListView extends JPanel {
     private LoanController loanController;
     private DefaultTableModel model;
     private JTable table;
-    private User user
+    private User user;
 
     public LoanListView(User user) {
         this.loanController = new LoanController();

@@ -32,6 +32,8 @@ public class LoanListView extends JPanel {
     private void init() {
         setLayout(new MigLayout("fill, insets 20", "[grow]", "[grow]"));
 
+        System.out.println(this.user.getNames());
+
         // Panel principal con bordes redondeados
         JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 20", "[grow]"));
         panel.putClientProperty(FlatClientProperties.STYLE,
