@@ -32,8 +32,6 @@ public class LoanListView extends JPanel {
     private void init() {
         setLayout(new MigLayout("fill, insets 20", "[grow]", "[grow]"));
 
-        System.out.println(this.user.getNames());
-
         // Panel principal con bordes redondeados
         JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 20", "[grow]"));
         panel.putClientProperty(FlatClientProperties.STYLE,
@@ -315,7 +313,8 @@ public class LoanListView extends JPanel {
         button.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                String id = (String) table.getValueAt(selectedRow, 0);
+                String id = table.getValueAt(selectedRow, 0).toString();
+
                 System.out.println(id);
                 Loan loan = this.loanController.getLoanById(id);
                 JFrame frame = new JFrame("Editar Préstamo");
@@ -328,6 +327,7 @@ public class LoanListView extends JPanel {
                         loan.getDate().toString(),
                         loan.getClientId(),
                         loan.getUserId(),
+                        this.user,
                         this
                 ));
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -345,7 +345,8 @@ public class LoanListView extends JPanel {
         button.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                String id = (String) table.getValueAt(selectedRow, 0);
+                String id = table.getValueAt(selectedRow, 0).toString();
+
                 int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este préstamo?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
                     this.loanController.deleteLoan(id);

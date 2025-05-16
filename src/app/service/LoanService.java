@@ -74,7 +74,7 @@ public class LoanService {
     }
 
     // Actualizar un préstamo existente
-    public void updateLoan(String id, Loan loan) {
+    public void updateLoan(int id, Loan loan) {
         try {
             Response<Void> response = this.iLoanService.updateLoan(id, loan).execute();
         } catch (IOException e) {
