@@ -91,7 +91,7 @@ public class NewLoanForm extends JPanel {
                         "innerFocusWidth:0");
         cmdSave.addActionListener(e -> {
             if (validateFields()) {
-                //saveLoan();
+                saveLoan();
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo guardado correctamente");
 
                 // Cerrar la ventana después de guardar

@@ -45,9 +45,9 @@ public class EditLoanForm extends JPanel {
         txtId.setText(String.valueOf(id));
         txtId.setEditable(false); // El ID no debe ser editable
 
-        txtClientName = createTextField("Nombre del cliente");
+        /*txtClientName = createTextField("Nombre del cliente");
         txtClientName.setText(client.getFirstName() + " " + client.getFirstSurname());
-        txtClientName.setEditable(false);
+        txtClientName.setEditable(false);*/
 
         txtAmount = createTextField("Monto");
         txtAmount.setText(String.valueOf(amount));
@@ -74,7 +74,7 @@ public class EditLoanForm extends JPanel {
                         "innerFocusWidth:0");
         cmdUpdate.addActionListener(e -> {
             if (validateFields()) {
-                updateLoan(client);
+                //updateLoan(client);
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo actualizado correctamente");
 
                 // Método para refrescar la tabla del padre
@@ -141,7 +141,7 @@ public class EditLoanForm extends JPanel {
         return comboBox;
     }
 
-    private void updateLoan(Client client) {
+    /*private void updateLoan(Client client) {
         try {
             // Convertir el texto de la fecha a LocalDate
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato esperado
@@ -166,5 +166,5 @@ public class EditLoanForm extends JPanel {
             // Manejar errores de formato de fecha o campos inválidos
             Notifications.getInstance().show(Notifications.Type.ERROR, "Error: Verifique el formato de la fecha (YYYY-MM-DD).");
         }
-    }
+    }*/
 }

@@ -104,7 +104,6 @@ public class LoanListView extends JPanel {
             for (Loan loan : loans) {
                 model.addRow(new Object[]{
                         loan.getId(),
-                        //loan.getClient().getFirstName(),
                         loan.getAmount(),
                         loan.getInterestRate(),
                         loan.getTerm(),
@@ -134,9 +133,7 @@ public class LoanListView extends JPanel {
                         loan.getInterestRate(),
                         loan.getTerm(),
                         loan.isActive() ? "Activo" : "Inactivo",
-                        loan.getDate(),
-                        loan.getClientId(),
-                        loan.getUserId()
+                        loan.getDate()
                 });
             }
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Tabla reseteada con éxito.");
@@ -152,7 +149,6 @@ public class LoanListView extends JPanel {
             for (Loan loan : loans) {
                 model.addRow(new Object[]{
                         loan.getId(),
-                       //loan.getClient().getFirstName() + " " + loan.getClient().getFirstSurname(),
                         loan.getAmount(),
                         loan.getInterestRate(),
                         loan.getTerm(),
@@ -221,7 +217,6 @@ public class LoanListView extends JPanel {
         List<Loan> loans = this.loanController.getAllLoans();
         model = new DefaultTableModel();
         model.addColumn("ID");
-        model.addColumn("Cliente");
         model.addColumn("Monto");
         model.addColumn("Tasa de interes");
         model.addColumn("Plazo");
@@ -232,7 +227,6 @@ public class LoanListView extends JPanel {
             for (Loan loan : loans) {
                 model.addRow(new Object[]{
                         loan.getId(),
-                        //loan.getClient().getFirstName() + " " + loan.getClient().getFirstSurname(),
                         loan.getAmount(),
                         loan.getInterestRate(),
                         loan.getTerm(),
