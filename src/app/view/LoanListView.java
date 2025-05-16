@@ -2,6 +2,7 @@ package app.view;
 
 import app.controller.LoanController;
 import app.model.Loan;
+import app.model.User;
 import app.view.forms.EditLoanForm;
 import app.view.forms.NewLoanForm;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -20,9 +21,11 @@ public class LoanListView extends JPanel {
     private LoanController loanController;
     private DefaultTableModel model;
     private JTable table;
+    private User user;
 
-    public LoanListView() {
+    public LoanListView(User user) {
         this.loanController = new LoanController();
+        this.user = user;
         init();
     }
 
@@ -246,12 +249,11 @@ public class LoanListView extends JPanel {
         // Estilo de la tabla
         table.setRowHeight(35);
         table.getColumnModel().getColumn(0).setPreferredWidth(100);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(1).setPreferredWidth(100);
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
         table.getColumnModel().getColumn(3).setPreferredWidth(100);
         table.getColumnModel().getColumn(4).setPreferredWidth(100);
         table.getColumnModel().getColumn(5).setPreferredWidth(100);
-        table.getColumnModel().getColumn(6).setPreferredWidth(100);
         table.putClientProperty(FlatClientProperties.STYLE,
                 "showHorizontalLines:true;" +
                         "showVerticalLines:true;" +
@@ -297,7 +299,7 @@ public class LoanListView extends JPanel {
     private void setupNewButtonAction(JButton button) {
         button.addActionListener(e -> {
             JFrame frame = new JFrame("Nuevo Préstamo");
-            frame.setContentPane(new NewLoanForm(this));
+            frame.setContentPane(new NewLoanForm(this.user, this));
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);

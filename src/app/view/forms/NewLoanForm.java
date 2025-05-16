@@ -4,6 +4,7 @@ import app.controller.ClientController;
 import app.controller.LoanController;
 import app.model.Client;
 import app.model.Loan;
+import app.model.User;
 import app.view.LoanListView;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -24,12 +25,14 @@ public class NewLoanForm extends JPanel {
     private LoanListView listView;
     private LoanController loanController;
     private ClientController clientController;
+    private User user;
 
-    public NewLoanForm(LoanListView listView) {
+    public NewLoanForm(User user, LoanListView listView) {
         init();
         this.listView = listView;
         this.loanController = new LoanController();
         this.clientController = new ClientController();
+        this.user = user;
     }
 
     private void init() {
@@ -60,7 +63,7 @@ public class NewLoanForm extends JPanel {
         txtTerm = createTextField("Plazo (meses)");
         txtDate = createTextField("Fecha (YYYY-MM-DD)");
 
-// Botón "Buscar Cliente"
+        // Botón "Buscar Cliente"
         JButton btnSelectClient = new JButton("Buscar Cliente");
         btnSelectClient.putClientProperty(FlatClientProperties.STYLE,
                 "[light]background:darken(@background,10%);" +
@@ -72,7 +75,7 @@ public class NewLoanForm extends JPanel {
             List<Client> clients = this.clientController.getAllClients();
             ClientSelectorDialog dialog = new ClientSelectorDialog((JFrame) SwingUtilities.getWindowAncestor(this), clients);
             dialog.setVisible(true);
-            String selectedClientId = dialog.getSelectedClientId();
+            String selectedClientId = dialog.getSelectedClientId() + ":" + dialog.getName();
             if (selectedClientId != null) {
                 txtClient.setText(selectedClientId); // Asignar el ID del cliente seleccionado
             }
@@ -91,7 +94,7 @@ public class NewLoanForm extends JPanel {
                         "innerFocusWidth:0");
         cmdSave.addActionListener(e -> {
             if (validateFields()) {
-                //saveLoan();
+                saveLoan();
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo guardado correctamente");
 
                 // Cerrar la ventana después de guardar
@@ -139,8 +142,13 @@ public class NewLoanForm extends JPanel {
     }
 
     private boolean validateFields() {
-        return !txtClient.getText().isEmpty() &&
+       /*return !txtClient.getText().isEmpty() &&
                 !txtAmount.getText().isEmpty() &&
+                !txtInterestRate.getText().isEmpty() &&
+                !txtTerm.getText().isEmpty() &&
+                !txtDate.getText().isEmpty();*/
+
+        return  !txtAmount.getText().isEmpty() &&
                 !txtInterestRate.getText().isEmpty() &&
                 !txtTerm.getText().isEmpty() &&
                 !txtDate.getText().isEmpty();
@@ -160,43 +168,23 @@ public class NewLoanForm extends JPanel {
         add(btnSelectClient);
     }
 
-    /*private void saveLoan() {
+    private void saveLoan() {
         // Obtener los valores de los campos del formulario
         String clientId = txtClient.getText(); // ID del cliente asociado al préstamo
-        Client client = this.clientController.getClientById(clientId);
-
-        if (client == null) {
-            Notifications.getInstance().show(Notifications.Type.ERROR, "El cliente no existe. Verifique el ID ingresado.");
-            return;
-        }
 
         double amount = Double.parseDouble(txtAmount.getText()); // Monto del préstamo
         double interestRate = Double.parseDouble(txtInterestRate.getText()); // Tasa de interés
         int term = Integer.parseInt(txtTerm.getText()); // Plazo en meses
+        boolean active = true;
         LocalDate date = LocalDate.parse(txtDate.getText()); // Fecha del préstamo
 
         // Crear un objeto Loan con los datos ingresados
-        Loan loan = new Loan(
-                client, // Obtener el objeto Client asociado al ID
-                amount,
-                interestRate,
-                term,
-                date
-        );
+        Loan loan = new Loan(amount, interestRate, term, active, date, Integer.parseInt(clientId), this.user.getId());
 
         // Guardar el préstamo utilizando el controlador
         this.loanController.createLoan(loan);
 
-        // Mostrar notificación de éxito
-        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo guardado correctamente");
-
         // Refrescar la tabla del padre
         this.listView.refreshTable();
-
-        // Cerrar la ventana después de guardar
-        Window window = SwingUtilities.getWindowAncestor(this);
-        if (window != null) {
-            window.dispose();
-        }
-    }*/
+    }
 }

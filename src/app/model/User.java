@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class User {
 
-    private String id;
+    private int id;
     private String names;
     private String surnames;
     private String email;
@@ -13,7 +13,6 @@ public class User {
     private String gender;
 
     public User(String names, String surnames, String email, String password, String username, String gender) {
-        this.id = UUID.randomUUID().toString();
         this.names = names;
         this.surnames = surnames;
         this.email = email;
@@ -22,11 +21,11 @@ public class User {
         this.gender = gender;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

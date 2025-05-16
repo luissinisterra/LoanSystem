@@ -79,7 +79,7 @@ public class MainForm extends JLayeredPane {
                 Application.showForm(new Dashboard());
             } else if (index == 1) {
                 if (subIndex == 1) {
-                    Application.showForm(new LoanListView());
+                    Application.showForm(new LoanListView(this.user));
                 } else {
                     action.cancel();
                 }
