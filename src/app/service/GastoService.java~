@@ -16,7 +16,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GastoService {
@@ -49,7 +48,6 @@ public class GastoService {
         } catch (IOException e) {
             throw new ApiException("Error de conexión al obtener gastos");
         }*/
-        return new ArrayList<>();
     }
 
     public void remove(String id) {

@@ -15,6 +15,7 @@ public class Loan {
     private int userId;
 
     public Loan(double amount, double interestRate, double term, boolean active, LocalDate date, int clientId, int userId) {
+        this.id = id;
         this.amount = amount;
         this.interestRate = interestRate;
         this.term = term;

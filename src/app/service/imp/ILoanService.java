@@ -17,7 +17,7 @@ public interface ILoanService {
     Call<Void> createLoan(@Body Loan loan);
 
     @PUT("/api/loans/{id}")
-    Call<Void> updateLoan(@Path("id") String id, @Body Loan loan);
+    Call<Void> updateLoan(@Path("id") int id, @Body Loan loan);
 
     @DELETE("/api/loans/{id}")
     Call<Void> deleteLoan(@Path("id") String id);

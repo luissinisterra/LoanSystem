@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dto.LoginRequest;
 import app.exception.ApiException;
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
@@ -54,11 +55,11 @@ public class UserService {
 
     public User loadUser(String username, String password) {
         try {
-            Response<User> response = apiService.loadUser(username, password).execute();
+            LoginRequest loginRequest = new LoginRequest(username, password);
+            Response<User> response = apiService.loadUser(loginRequest).execute();
             User user = response.body();
             if (!response.isSuccessful()) {
-                System.out.println(response.body());
-                //throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
             return user;
         }catch (IOException ex){

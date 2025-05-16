@@ -28,7 +28,7 @@ public class LoanController {
     }
 
     // Actualizar un préstamo existente
-    public void updateLoan(String id, Loan loan) {
+    public void updateLoan(int id, Loan loan) {
         this.loanService.updateLoan(id, loan);
     }
 
