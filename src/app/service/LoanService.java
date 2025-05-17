@@ -52,8 +52,20 @@ public class LoanService {
         }
     }
 
+    // Obtener todos los préstamos de un usuario en especifico
+    public List<Loan> getAllLoansByUserId(int id) {
+        try {
+            Response<List<Loan>> response = this.iLoanService.getAllLoansByUserId(id).execute();
+            List<Loan> userLoans = response.body();
+            return userLoans;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
     // Obtener un préstamo por ID
-    public Loan getLoanById(String id) {
+    public Loan getLoanById(int id) {
         try {
             Response<Loan> response = this.iLoanService.getLoanById(id).execute();
             Loan loan = response.body();
@@ -83,7 +95,7 @@ public class LoanService {
     }
 
     // Eliminar un préstamo
-    public void deleteLoan(String id) {
+    public void deleteLoan(int id) {
         try {
             Response<Void> response = this.iLoanService.deleteLoan(id).execute();
         } catch (IOException e) {

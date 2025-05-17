@@ -11,10 +11,10 @@ public interface ILoanService {
     Call<List<Loan>> getAllLoans();
 
     @GET("/api/loans/user/{id}")
-    Call<List<Loan>> getLoansByUserId(@Path("id") String id);
+    Call<List<Loan>> getAllLoansByUserId(@Path("id") int id);
 
     @GET("/api/loans/{id}")
-    Call<Loan> getLoanById(@Path("id") String id);
+    Call<Loan> getLoanById(@Path("id") int id);
 
     @POST("/api/loans")
     Call<Void> createLoan(@Body Loan loan);
@@ -23,7 +23,7 @@ public interface ILoanService {
     Call<Void> updateLoan(@Path("id") int id, @Body Loan loan);
 
     @DELETE("/api/loans/{id}")
-    Call<Void> deleteLoan(@Path("id") String id);
+    Call<Void> deleteLoan(@Path("id") int id);
 
     @GET("/api/loans/search")
     Call<List<Loan>> searchLoansByQuery(@Query("query") String query);

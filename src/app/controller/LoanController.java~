@@ -17,7 +17,6 @@ public class LoanController {
         return this.loanService.getAllLoans();
     }
 
-    // Obtener todos los préstamos de un usuario en especifico
     public List<Loan> getAllLoansByUserId(int id) {
         return this.loanService.getAllLoansByUserId(id);
     }

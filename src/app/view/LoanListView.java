@@ -125,7 +125,7 @@ public class LoanListView extends JPanel {
 
     // Método para resetear la tabla
     private void resetTable() {
-        List<Loan> loans = this.loanController.getAllLoans();
+        List<Loan> loans = this.loanController.getAllLoansByUserId(this.user.getId());
         model.setRowCount(0); // Limpiar las filas actuales del modelo
 
         if (loans != null && !loans.isEmpty()) {
@@ -145,7 +145,7 @@ public class LoanListView extends JPanel {
 
     // Método para actualizar la tabla
     public void refreshTable() {
-        List<Loan> loans = this.loanController.getAllLoans();
+        List<Loan> loans = this.loanController.getAllLoansByUserId(this.user.getId());
         model.setRowCount(0); // Limpiar las filas actuales del modelo
 
         if (loans != null && !loans.isEmpty()) {
@@ -316,7 +316,7 @@ public class LoanListView extends JPanel {
                 String id = table.getValueAt(selectedRow, 0).toString();
 
                 System.out.println(id);
-                Loan loan = this.loanController.getLoanById(id);
+                Loan loan = this.loanController.getLoanById(Integer.parseInt(id));
                 JFrame frame = new JFrame("Editar Préstamo");
                 frame.setContentPane(new EditLoanForm(
                         loan.getId(),
@@ -349,7 +349,7 @@ public class LoanListView extends JPanel {
 
                 int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este préstamo?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    this.loanController.deleteLoan(id);
+                    this.loanController.deleteLoan(Integer.parseInt(id));
                     this.refreshTable();
                     Notifications.getInstance().show(Notifications.Type.SUCCESS, "El préstamo ha sido eliminado con éxito.");
                 }
