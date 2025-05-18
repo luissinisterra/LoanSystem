@@ -25,6 +25,6 @@ public interface ILoanService {
     @DELETE("/api/loans/{id}")
     Call<Void> deleteLoan(@Path("id") int id);
 
-    @GET("/api/loans/search")
-    Call<List<Loan>> searchLoansByQuery(@Query("query") String query);
+    @GET("/api/loans/search/{userId}")
+    Call<List<Loan>> searchLoansByQuery(@Path("userId") int userId, @Query("query") String query);
 }

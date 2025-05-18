@@ -104,9 +104,9 @@ public class LoanService {
     }
 
     // Buscar préstamos por consulta
-    public List<Loan> searchLoansByQuery(int userId, String query) {
+    public List<Loan> searchLoansByQuery(String query) {
         try {
-            Response<List<Loan>> response = this.iLoanService.searchLoansByQuery(userId, query).execute();
+            Response<List<Loan>> response = this.iLoanService.searchLoansByQuery(query).execute();
             List<Loan> loans = response.body();
             return loans;
         } catch (IOException e) {

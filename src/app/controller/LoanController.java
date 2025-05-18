@@ -43,8 +43,8 @@ public class LoanController {
     }
 
     // Buscar préstamos por consulta
-    public List<Loan> searchLoansByQuery(String query) {
-        return this.loanService.searchLoansByQuery(query);
+    public List<Loan> searchLoansByQuery(int userId, String query) {
+        return this.loanService.searchLoansByQuery(userId, query);
     }
 
     // Contar préstamos activos

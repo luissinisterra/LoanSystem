@@ -26,14 +26,14 @@ public class EditLoanForm extends JPanel {
     private LoanListView listView;
     private User user;
 
-    public EditLoanForm(int id, double amount, double interestRate, double term, String status, String date, int clientId, int userId, User user, LoanListView listView) {
+    public EditLoanForm(int id, double amount, double interestRate, double term, String status, String date, int clientId, User user, LoanListView listView) {
         this.user = user;
         this.listView = listView;
         this.loanController = new LoanController();
-        init(id, amount, interestRate, term, status, date, clientId, userId);
+        init(id, amount, interestRate, term, status, date, clientId);
     }
 
-    private void init(int id, double amount, double interestRate, double term, String status, String date, int clientId, int userId) {
+    private void init(int id, double amount, double interestRate, double term, String status, String date, int clientId) {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
 
         // Panel principal
@@ -77,7 +77,7 @@ public class EditLoanForm extends JPanel {
                         "innerFocusWidth:0");
         cmdUpdate.addActionListener(e -> {
             if (validateFields()) {
-                //updateLoan(client);
+                updateLoan();
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo actualizado correctamente");
 
                 // Método para refrescar la tabla del padre
@@ -145,9 +145,9 @@ public class EditLoanForm extends JPanel {
         return comboBox;
     }
 
-    private void updateLoan(Client client) {
+    private void updateLoan() {
         try {
-            // Convertir el texto de la fecha a LocalDate
+            /*// Convertir el texto de la fecha a LocalDate
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato esperado
             LocalDate date = LocalDate.parse(txtDate.getText(), formatter);
 
@@ -156,6 +156,7 @@ public class EditLoanForm extends JPanel {
             double amount = Double.parseDouble(txtAmount.getText()); // Monto del préstamo
             double interestRate = Double.parseDouble(txtInterestRate.getText()); // Tasa de interés
             int term = Integer.parseInt(txtTerm.getText()); // Plazo en meses
+
             boolean active = true;
 
             Loan loan = new Loan(amount, interestRate, term, active, date, Integer.parseInt(clientId), this.user.getId());
@@ -165,7 +166,7 @@ public class EditLoanForm extends JPanel {
             loan.setActive("Activo".equals(status));
 
             // Actualizar el préstamo en la base de datos o en memoria
-            this.loanController.updateLoan(Integer.parseInt(txtId.getText()), loan);
+            this.loanController.updateLoan(Integer.parseInt(txtId.getText()), loan);*/
         } catch (Exception e) {
             // Manejar errores de formato de fecha o campos inválidos
             Notifications.getInstance().show(Notifications.Type.ERROR, "Error: Verifique el formato de la fecha (YYYY-MM-DD).");
