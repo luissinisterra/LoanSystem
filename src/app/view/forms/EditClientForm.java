@@ -22,6 +22,7 @@ public class EditClientForm extends JPanel {
     private JTextField txtEmail;
     private JTextField txtPhone;
     private JTextField txtAddress;
+    private JTextField txtStatus;
     private JButton cmdUpdate;
     private JComboBox<String> cbStatus;
     private ClientController clientController;
@@ -76,6 +77,7 @@ public class EditClientForm extends JPanel {
         txtAddress = createTextField("Dirección");
         txtAddress.setText(address);
 
+        txtStatus = createTextField("Estatus");
         cbStatus = createComboBox();
         cbStatus.setSelectedItem(status);
 
@@ -133,6 +135,7 @@ public class EditClientForm extends JPanel {
         panel.add(txtPhone);
         panel.add(new JLabel("Dirección"), "gapy 8");
         panel.add(txtAddress);
+        panel.add(new Label("Estatus"), "gapy 8");
         panel.add(cbStatus, "growx, wrap");
         panel.add(cmdUpdate, "gapy 20");
 

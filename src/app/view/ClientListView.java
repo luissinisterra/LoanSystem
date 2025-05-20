@@ -330,7 +330,7 @@ public class ClientListView extends JPanel {
         button.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                String id = (String) table.getValueAt(selectedRow, 0);
+                String id = table.getValueAt(selectedRow, 0).toString();
 
                 Client client = this.clientController.getClientById(Integer.parseInt(id));
 
