@@ -97,7 +97,7 @@ public class Application extends JFrame {
         FlatMacDarkLaf.setup();
         java.awt.EventQueue.invokeLater(() -> {
             app = new Application();
-a            //  app.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+            //  app.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
             app.setVisible(true);
         });
     }
