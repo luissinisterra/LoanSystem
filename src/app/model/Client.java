@@ -16,10 +16,10 @@ public class Client {
     private String email;
     private String phone;
     private boolean active;
+    private String address;
     private int userId;
 
-    public Client(int id, String firstName, String secondName, String firstSurname, String secondSurname, int age, String email, String phone, boolean active, int userId) {
-        this.id = id;
+    public Client(String firstName, String secondName, String firstSurname, String secondSurname, int age, String email, String phone, boolean active, String address, int userId) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.firstSurname = firstSurname;
@@ -28,6 +28,7 @@ public class Client {
         this.email = email;
         this.phone = phone;
         this.active = active;
+        this.address = address;
         this.userId = userId;
     }
 
@@ -101,6 +102,14 @@ public class Client {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public int getUserId() {

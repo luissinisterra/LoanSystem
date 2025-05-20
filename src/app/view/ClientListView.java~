@@ -146,7 +146,7 @@ public class ClientListView extends JPanel {
                         client.getAge(),
                         client.getEmail(),
                         client.getPhone(),
-                        client.getAddress(),
+                        client.getDirection(),
                         client.isActive() ? "Activo" : "Inactivo"
                 });
             }
@@ -166,7 +166,7 @@ public class ClientListView extends JPanel {
                         client.getAge(),
                         client.getEmail(),
                         client.getPhone(),
-                        client.getAddress(),
+                        client.getDirection(),
                         client.isActive() ? "Activo" : "Inactivo"
                 });
             }
@@ -247,7 +247,7 @@ public class ClientListView extends JPanel {
                         client.getAge(),
                         client.getEmail(),
                         client.getPhone(),
-                        client.getAddress(),
+                        client.getDirection(),
                         client.isActive() ? "Activo" : "Inactivo"
                 });
             }
