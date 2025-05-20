@@ -35,7 +35,7 @@ public class Application extends JFrame {
         Notifications.getInstance().setJFrame(this);
     }
 
-    public static void setUserToMainForm(User user) {
+    public void setUserToMainForm(User user) {
         mainForm.setUser(user);
     }
 

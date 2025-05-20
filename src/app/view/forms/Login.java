@@ -35,7 +35,8 @@ public class Login extends JPanel {
                 JOptionPane.showMessageDialog(null, "gay");
             } else {
                 User user = this.userController.loadUser(username, password);
-                Application.setUserToMainForm(user);
+                System.out.println(user.getUsername());
+                Application.getInstance().setUserToMainForm(user);
                 Application.login();
             }
         });
