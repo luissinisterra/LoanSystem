@@ -6,6 +6,7 @@ import app.controller.IncomeController;
 import app.controller.LoanController;
 import app.model.Gasto;
 import app.model.Income;
+import app.model.Loan;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
@@ -231,7 +232,11 @@ public class Dashboard extends JPanel {
     }
 
     private JLabel createTotalLabel(){
-        JLabel lb = new JLabel(String.valueOf(clientController.getAllClients().size()));
+        //JLabel lb = new JLabel(String.valueOf(clientController.getAllClients().size()));
+        JLabel lb = new JLabel(String.valueOf(
+                (clientController.getAllClients() == null || clientController.getAllClients().isEmpty()) ? 0 : clientController.getAllClients().size()
+        ));
+
         lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
         totalClients = lb;
         return lb;
@@ -245,7 +250,11 @@ public class Dashboard extends JPanel {
     }
 
     private JLabel createTotalLoansLabel(){
-        JLabel lb = new JLabel(String.valueOf(loanController.getAllLoans().size()));
+        //JLabel lb = new JLabel(String.valueOf(loanController.getAllLoans().size()));
+        List<Loan> loans = loanController.getAllLoans();
+        JLabel lb = new JLabel(String.valueOf(
+                (loans == null || loans.isEmpty()) ? 0 : loans.size()
+        ));
         lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
         totalLoansLabel = lb;
         return lb;

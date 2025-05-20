@@ -375,7 +375,7 @@ public class ClientListView extends JPanel {
         button.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                String id = (String) table.getValueAt(selectedRow, 0);
+                String id = table.getValueAt(selectedRow, 0).toString();
                 int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este cliente?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
                     this.clientController.deleteClient(Integer.parseInt(id));

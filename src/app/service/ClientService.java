@@ -61,17 +61,6 @@ public class ClientService {
         }
     }
 
-    public List<Loan> getAllLoansByClientId(int id) {
-        try{
-            Response<List<Loan>> response = this.iClientService.getAllLoansByClientId(id).execute();
-            List<Loan> loans = response.body();
-            return loans;
-        } catch (IOException e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public Client getClientById(int id) {
         try{
             Response<Client> response = this.iClientService.getClientById(id).execute();

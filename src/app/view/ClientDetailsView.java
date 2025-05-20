@@ -1,6 +1,7 @@
 package app.view;
 
 import app.controller.ClientController;
+import app.controller.LoanController;
 import app.model.Client;
 import app.model.Loan;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -14,11 +15,14 @@ import java.awt.*;
 import java.util.List;
 
 public class ClientDetailsView extends JPanel {
-    private final ClientController clientController = new ClientController();
+    private final ClientController clientController;
+    private final LoanController loanController;
     private final int clientId;
 
     public ClientDetailsView(int clientId) {
         this.clientId = clientId;
+        this.clientController = new ClientController();
+        this.loanController = new LoanController();
         init();
     }
 
@@ -78,7 +82,9 @@ public class ClientDetailsView extends JPanel {
         JLabel title = new JLabel("Historial de Préstamos");
         title.putClientProperty(FlatClientProperties.STYLE, "font:bold +4");
 
-        List<Loan> loans = this.clientController.getAllLoansByUserId(client.getId());
+        List<Loan> loans = this.loanController.getAllLoansByClientId(client.getId());
+
+        System.out.println(loans);
 
         // Crear modelo tabla
         DefaultTableModel model = new DefaultTableModel();

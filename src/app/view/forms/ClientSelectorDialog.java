@@ -118,12 +118,16 @@ public class ClientSelectorDialog extends JDialog {
         btnSelect.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                selectedClientId = (String) model.getValueAt(selectedRow, 0);
+                // Obtener el valor de la primera columna y convertirlo a String
+                Object value = model.getValueAt(selectedRow, 0);
+                selectedClientId = (value == null) ? "0" : String.valueOf(value);  // Maneja el caso null y asegura que sea un String
+
                 dispose(); // Cierra la ventana
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un cliente.");
             }
         });
+
         panel.add(btnSelect, "gapy 10, growx");
 
         // Cargar datos iniciales

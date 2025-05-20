@@ -22,10 +22,6 @@ public class ClientController {
         return this.clientService.getAllClientsByUserId(id);
     }
 
-    public List<Loan> getAllLoansByUserId(int id) {
-        return this.clientService.getAllLoansByClientId(id);
-    }
-
     public Client getClientById(int id) {
         return this.clientService.getClientById(id);
     }

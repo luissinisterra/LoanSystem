@@ -57,7 +57,7 @@ public class ClientService {
             return clients;
         } catch (IOException e) {
             e.printStackTrace();
-            return null);
+            return null;
         }
     }
 

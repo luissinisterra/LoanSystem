@@ -105,8 +105,9 @@ public class NewClientForm extends JPanel {
         panel.add(txtEmail);
         panel.add(new JLabel("Teléfono"), "gapy 8");
         panel.add(txtPhone);
-        panel.add(new JLabel("Dirección"), "gapy 8");
+        panel.add(new JLabel("País"), "gapy 8");
         panel.add(txtAddress);
+        panel.add(new JLabel("Dirección"), "gapy 8");
         panel.add(cmdSave, "gapy 20");
 
         add(panel);
