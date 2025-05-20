@@ -1,5 +1,7 @@
 package app.service.imp;
 
+import app.dto.IncomeCreateDTO;
+import app.dto.IncomeResponseDTO;
 import app.model.Income;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -10,21 +12,24 @@ public interface IIncomeService {
 
     //Listar
     @GET ("/api/incomes")
-    Call<List<Income>> getIncomes();
+    Call<List<IncomeResponseDTO>> getIncomes();
 
     @GET ("/api/incomes/{id}")
-    Call<Income> getIncomeByID(@Path("id") String id);
+    Call<IncomeResponseDTO> getIncomeByID(@Path("id") Integer id);
+
+    @GET ("/api/incomes/user/{userId}")
+    Call<List<IncomeResponseDTO>> getIncomesByUserID(@Path("userId") Integer userID);
 
     //Crear
     @POST ("/api/incomes")
-    Call<Income> addIncome(@Body Income i);
+    Call<IncomeResponseDTO> addIncome(@Body IncomeCreateDTO i);
 
     //Actualizar
     @PUT ("/api/incomes/{id}")
-    Call<Income>  updateIncome(@Path("id") String id, @Body Income i);
+    Call<IncomeResponseDTO>  updateIncome(@Path("id") Integer id, @Body IncomeCreateDTO i);
 
     //Eliminar
     @DELETE ("/api/incomes/{id}")
-    Call<Void> deleteIncome(@Path("id") String id);
+    Call<Void> deleteIncome(@Path("id") Integer id);
 
 }

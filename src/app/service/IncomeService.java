@@ -1,5 +1,7 @@
 package app.service;
 
+import app.dto.IncomeCreateDTO;
+import app.dto.IncomeResponseDTO;
 import app.exception.ApiException;
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
@@ -37,9 +39,9 @@ public class IncomeService {
         apiService = retrofit.create(IIncomeService.class);
     }
 
-    public List<Income> getIncomes() {
+    public List<IncomeResponseDTO> getIncomes() {
         try {
-            Response<List<Income>> response = apiService.getIncomes().execute();
+            Response<List<IncomeResponseDTO>> response = apiService.getIncomes().execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -49,7 +51,7 @@ public class IncomeService {
         }
     }
 
-    public void remove(String id) {
+    public void remove(Integer id) {
         try {
             Response<Void> response = apiService.deleteIncome(id).execute();
             if (!response.isSuccessful()) {
@@ -60,10 +62,10 @@ public class IncomeService {
         }
     }
 
-    public Income add(String tipo, String descripcion, double valor) {
-        Income income = buildIncome(tipo, descripcion, valor);
+    public IncomeResponseDTO add(Integer ammount, String incomeDescription, String incomeType, Integer userId) {
+        IncomeCreateDTO income = new IncomeCreateDTO(ammount, incomeDescription, incomeType, userId);
         try {
-            Response<Income> response = apiService.addIncome(income).execute();
+            Response<IncomeResponseDTO> response = apiService.addIncome(income).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -73,9 +75,9 @@ public class IncomeService {
         }
     }
 
-    public Income getById(String id) {
+    public IncomeResponseDTO getById(int id) {
         try {
-            Response<Income> response = apiService.getIncomeByID(id).execute();
+            Response<IncomeResponseDTO> response = apiService.getIncomeByID(id).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -85,10 +87,10 @@ public class IncomeService {
         }
     }
 
-    public Income update(String id, String tipo, String descripcion, double valor) {
-        Income income = buildIncome(tipo, descripcion, valor);
+    public IncomeResponseDTO update(Integer ammount, String incomeDescription, String incomeType, Integer userId, Integer incomeID) {
+        IncomeCreateDTO income = new IncomeCreateDTO(ammount, incomeDescription, incomeType, userId);
         try {
-            Response<Income> response = apiService.updateIncome(id, income).execute();
+            Response<IncomeResponseDTO> response = apiService.updateIncome(incomeID, income).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -98,7 +100,15 @@ public class IncomeService {
         }
     }
 
-    private Income buildIncome(String tipo, String descripcion, double valor) {
-        return new Income(tipo, descripcion, valor);
+    public List<IncomeResponseDTO> getIncomesByUserID(Integer userID) {
+        try {
+            Response<List<IncomeResponseDTO>> response = apiService.getIncomesByUserID(userID).execute();
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+            return response.body();
+        } catch (IOException e) {
+            throw new ApiException("Error de conexión al obtener ingresos");
+        }
     }
 }

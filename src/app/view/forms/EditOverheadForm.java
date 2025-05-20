@@ -1,8 +1,10 @@
 package app.view.forms;
 
-import app.controller.GastoController;
+import app.controller.OverheadController;
+import app.dto.OverheadResponseDTO;
 import app.exception.ApiException;
-import app.model.Gasto;
+import app.model.Overhead;
+import app.model.User;
 import app.view.Overheads;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -13,15 +15,17 @@ import java.awt.*;
 
 public class EditOverheadForm extends JPanel {
 
-    private final GastoController controller = new GastoController();
+    private final OverheadController controller = new OverheadController();
     private Overheads over;
-    private Gasto gasto;
+    private OverheadResponseDTO overhead;
+    private User user;
 
-    public EditOverheadForm(Overheads over, Gasto gasto) {
-        init();
+    public EditOverheadForm(Overheads over, OverheadResponseDTO overhead, User user) {
         this.over = over;
-        this.gasto = gasto;
-        setText(this.gasto);
+        this.overhead = overhead;
+        this.user = user;
+        init();
+        setText(this.overhead);
     }
 
     // ==============================
@@ -101,13 +105,13 @@ public class EditOverheadForm extends JPanel {
             String type = cbType.getSelectedItem().toString();
             String detail = txtDetail.getText();
             String value = txtValue.getText();
-            String id = this.gasto.getIdGasto();
+            Integer id = this.overhead.getId();
             if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacios");
             } else if (value.matches(".*[a-zA-Z].*")) {
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
             } else {
-                controller.updateGasto(id, type, detail, Double.parseDouble(value));
+                controller.updateGasto(user.getId(), type, detail, Integer.parseInt(value), id);
                 over.llenarTabla();
                 over.setTotal();
                 Window window = SwingUtilities.getWindowAncestor(this);
@@ -154,10 +158,10 @@ public class EditOverheadForm extends JPanel {
         return button;
     }
 
-    private void setText(Gasto gasto) {
-        txtDetail.setText(gasto.getDescripcionGasto());
-        txtValue.setText(String.valueOf(gasto.getValorGasto()));
-        cbType.setSelectedIndex(getIndex(gasto.getTipoDeGasto()));
+    private void setText(OverheadResponseDTO overhead) {
+        txtDetail.setText(overhead.getOverheadDescription());
+        txtValue.setText(String.valueOf(overhead.getAmmount()));
+        cbType.setSelectedIndex(getIndex(overhead.getOverheadType()));
     }
 
     private int getIndex(String tipo){

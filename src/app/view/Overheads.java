@@ -1,8 +1,10 @@
 package app.view;
 
-import app.controller.GastoController;
+import app.controller.OverheadController;
+import app.dto.OverheadResponseDTO;
 import app.exception.ApiException;
-import app.model.Gasto;
+import app.model.Overhead;
+import app.model.User;
 import app.view.forms.EditOverheadForm;
 import app.view.forms.NewOverheadForm;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -10,21 +12,19 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
 import raven.toast.Notifications;
 
-import javax.management.Notification;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class Overheads extends JPanel {
 
-    private GastoController controller;
-
-    public Overheads() {
-        controller = new GastoController();
+    private OverheadController controller;
+    private User user;
+    public Overheads(User user) {
+        controller = new OverheadController();
+        this.user = user;
         init();
     }
 
@@ -170,11 +170,11 @@ public class Overheads extends JPanel {
                     return false; // Ninguna celda editable
                 }
             };
-            for (int i = 0; i < controller.getGastos().size(); i++) {
+            for (int i = 0; i < controller.getByUserID(user.getId()).size(); i++) {
                 model.addRow(new Object[]{
-                        controller.getGastos().get(i).getTipoDeGasto(),
-                        controller.getGastos().get(i).getValorGasto(),
-                        controller.getGastos().get(i).getFechaGasto(),
+                        controller.getByUserID(user.getId()).get(i).getOverheadType(),
+                        controller.getByUserID(user.getId()).get(i).getAmmount(),
+                        controller.getByUserID(user.getId()).get(i).getOverheadDate(),
                 });
             }
             tablaGastos.setModel(model);
@@ -185,10 +185,10 @@ public class Overheads extends JPanel {
 
     public void setTotal () {
         try{
-            List<Gasto> gastos = controller.getGastos();
+            List<OverheadResponseDTO> overheads = controller.getByUserID(user.getId());
             double total = 0;
-            for (Gasto gasto : gastos) {
-                total += gasto.getValorGasto();
+            for (OverheadResponseDTO overhead : overheads) {
+                total += overhead.getAmmount();
             }
             lblTotalLabel.setText("Total: "  + total);
         }catch (ApiException ex){
@@ -201,7 +201,7 @@ public class Overheads extends JPanel {
     // ==============================
 
     private void addOverhead(){
-        NewOverheadForm newOverheadForm = new NewOverheadForm(this);
+        NewOverheadForm newOverheadForm = new NewOverheadForm(this, user);
         JFrame frame = new JFrame("Agregar gasto");
         frame.setContentPane(newOverheadForm);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -212,13 +212,13 @@ public class Overheads extends JPanel {
     }
 
     private void editOverhead(){
-        String id = getIdGastoSeleccionado();
+        Integer id = getIdGastoSeleccionado();
         if (id == null) {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un gasto para editar");
         }
         else {
-            Gasto gasto = controller.getByID(id);
-            EditOverheadForm editOverheadForm = new EditOverheadForm(this, gasto);
+            OverheadResponseDTO overhead = controller.getByID(id);
+            EditOverheadForm editOverheadForm = new EditOverheadForm(this, overhead, user);
             JFrame frame = new JFrame("Editar gasto");
             frame.setContentPane(editOverheadForm);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -230,7 +230,7 @@ public class Overheads extends JPanel {
     }
 
     private void removeOverhead(){
-        String id = getIdGastoSeleccionado();
+        Integer id = getIdGastoSeleccionado();
         if (id == null) {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Selecciona un gasto para eliminar");
         }
@@ -243,12 +243,16 @@ public class Overheads extends JPanel {
     }
 
     private void detailsOverhead(){
-        String id = getIdGastoSeleccionado();
+        Integer id = getIdGastoSeleccionado();
         if  (id == null) {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Selecciona un gasto para ver sus detalles");
         }
         else {
-            JOptionPane.showMessageDialog(null, controller.getByID(id));
+            JOptionPane.showMessageDialog(null, "ID: " + id + "\n" +
+                    "Tipo: " + controller.getByID(id).getOverheadType() + "\n" +
+                    "Valor: " + controller.getByID(id).getAmmount() + "\n" +
+                    "Detalles: " + controller.getByID(id).getOverheadDescription() + "\n" +
+                    "Fecha: " + controller.getByID(id).getOverheadDate());
         }
     }
 
@@ -256,13 +260,13 @@ public class Overheads extends JPanel {
     // Helpers
     // ==============================
 
-    private String getIdGastoSeleccionado() {
+    private Integer getIdGastoSeleccionado() {
         int filaVista = tablaGastos.getSelectedRow();
         if (filaVista >= 0) {
             int filaModelo = tablaGastos.convertRowIndexToModel(filaVista);
-            List<Gasto> gastos = controller.getGastos();
-            if (filaModelo < gastos.size()) {
-                return gastos.get(filaModelo).getIdGasto();
+            List<OverheadResponseDTO> overheads = controller.getByUserID(user.getId());
+            if (filaModelo < overheads.size()) {
+                return overheads.get(filaModelo).getId();
             }
         }
         return null;

@@ -1,8 +1,10 @@
 package app.view.forms;
 
 import app.controller.IncomeController;
+import app.dto.IncomeResponseDTO;
 import app.exception.ApiException;
 import app.model.Income;
+import app.model.User;
 import app.view.Incomes;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -15,11 +17,13 @@ public class EditIncomesForm extends JPanel {
 
     private final IncomeController controller = new IncomeController();
     private Incomes over;
-    private Income income;
+    private IncomeResponseDTO income;
+    private User user;
 
-    public EditIncomesForm(Incomes over, Income income) {
+    public EditIncomesForm(Incomes over, IncomeResponseDTO income, User user) {
         this.over = over;
         this.income = income;
+        this.user = user;
         init();
     }
 
@@ -80,14 +84,14 @@ public class EditIncomesForm extends JPanel {
             String type = cbType.getSelectedItem().toString();
             String detail = txtDetail.getText();
             String value = txtValue.getText();
-            String id = income.getIncomeID();
+            Integer id = income.getId();
 
             if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacíos");
             } else if (value.matches(".*[a-zA-Z].*")) {
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numérico con letras");
             } else {
-                controller.updateIncome(id, type, detail, Double.parseDouble(value));
+                controller.updateIncome(Integer.parseInt(value), detail, type, user.getId(), id);
                 over.llenarTabla();
                 over.setTotal();
                 closeWindow();
@@ -113,9 +117,9 @@ public class EditIncomesForm extends JPanel {
     // Helpers
     // ==============================
 
-    private void setIncomeData(Income income) {
+    private void setIncomeData(IncomeResponseDTO income) {
         txtDetail.setText(income.getIncomeDescription());
-        txtValue.setText(String.valueOf(income.getIncomeAmount()));
+        txtValue.setText(String.valueOf(income.getAmmount()));
         cbType.setSelectedIndex(getTypeIndex(income.getIncomeType()));
     }
 

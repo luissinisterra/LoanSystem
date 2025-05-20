@@ -1,7 +1,8 @@
 package app.view.forms;
 
-import app.controller.GastoController;
+import app.controller.OverheadController;
 import app.exception.ApiException;
+import app.model.User;
 import app.view.Overheads;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -12,12 +13,13 @@ import java.awt.*;
 
 public class NewOverheadForm extends JPanel {
 
-    private final GastoController controller = new GastoController();
+    private final OverheadController controller = new OverheadController();
     private Overheads over;
-
-    public NewOverheadForm(Overheads over) {
-        init();
+    private User user;
+    public NewOverheadForm(Overheads over, User user) {
         this.over = over;
+        this.user = user;
+        init();
     }
 
     // ==============================
@@ -104,7 +106,7 @@ public class NewOverheadForm extends JPanel {
               Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
           }
           else {
-              controller.addGasto(type, detail, Double.parseDouble(value));
+              controller.addGasto(user.getId(), type, detail, Integer.parseInt(value));
               over.llenarTabla();
               over.setTotal();
               Window window = SwingUtilities.getWindowAncestor(this);

@@ -6,19 +6,14 @@ import java.util.UUID;
 
 public class Income {
 
-    private String incomeID;
+    private Integer incomeID;
+    private User user;
     private String incomeType;
     private String incomeDescription;
-    private double incomeAmount;
+    private int incomeAmount;
     private LocalDate incomeDate;
 
-    public Income() {
-        this.incomeID = UUID.randomUUID().toString();
-        this.incomeDate = LocalDate.now();
-    }
-
-    public Income(String incomeType, String incomeDescription, double incomeAmount) {
-        this.incomeID = UUID.randomUUID().toString();
+    public Income(String incomeType, String incomeDescription, int incomeAmount) {
         this.incomeDate = LocalDate.now();
         this.incomeType = incomeType;
         this.incomeDescription = incomeDescription;
@@ -28,11 +23,11 @@ public class Income {
     //Getters and setters
 
 
-    public String getIncomeID() {
+    public Integer getIncomeID() {
         return incomeID;
     }
 
-    public void setIncomeID(String incomeID) {
+    public void setIncomeID(Integer incomeID) {
         this.incomeID = incomeID;
     }
 
@@ -52,11 +47,11 @@ public class Income {
         this.incomeDescription = incomeDescription;
     }
 
-    public double getIncomeAmount() {
+    public int getIncomeAmount() {
         return incomeAmount;
     }
 
-    public void setIncomeAmount(double incomeAmount) {
+    public void setIncomeAmount(int incomeAmount) {
         this.incomeAmount = incomeAmount;
     }
 
@@ -66,6 +61,14 @@ public class Income {
 
     public void setIncomeDate(LocalDate incomeDate) {
         this.incomeDate = incomeDate;
+    }
+
+    public User getUserID() {
+        return user;
+    }
+
+    public void setUserID(User user) {
+        this.user = user;
     }
 
     @Override

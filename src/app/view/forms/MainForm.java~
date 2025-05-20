@@ -94,7 +94,7 @@ public class MainForm extends JLayeredPane {
                     Application.showForm(new FinancialReport());
                 }
                 if (subIndex == 2) {
-                    Application.showForm(new Overheads(user));
+                    Application.showForm(new Overheads());
                 }
                 if (subIndex == 3) {
                     Application.showForm(new Incomes(user));

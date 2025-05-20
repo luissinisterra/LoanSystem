@@ -1,11 +1,13 @@
 package app.view;
 
 import app.controller.ClientController;
-import app.controller.GastoController;
+import app.controller.OverheadController;
 import app.controller.IncomeController;
 import app.controller.LoanController;
-import app.model.Gasto;
-import app.model.Income;
+import app.dto.IncomeResponseDTO;
+import app.dto.OverheadResponseDTO;
+import app.model.Overhead;
+import app.model.User;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
@@ -16,11 +18,13 @@ import java.util.List;
 
 public class Dashboard extends JPanel {
 
-    ClientController clientController = new ClientController();
-    LoanController loanController = new LoanController();
-    IncomeController incomeController = new IncomeController();
-    GastoController gastoController = new GastoController();
-    public Dashboard() {
+    private ClientController clientController = new ClientController();
+    private LoanController loanController = new LoanController();
+    private IncomeController incomeController = new IncomeController();
+    private OverheadController overheadController = new OverheadController();
+    private User user;
+    public Dashboard(User user) {
+        this.user = user;
         init();
     }
 
@@ -231,7 +235,7 @@ public class Dashboard extends JPanel {
     }
 
     private JLabel createTotalLabel(){
-        JLabel lb = new JLabel(String.valueOf(clientController.getAllClients().size()));
+        JLabel lb = new JLabel("0");
         lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
         totalClients = lb;
         return lb;
@@ -245,17 +249,17 @@ public class Dashboard extends JPanel {
     }
 
     private JLabel createTotalLoansLabel(){
-        JLabel lb = new JLabel(String.valueOf(loanController.getAllLoans().size()));
+        JLabel lb = new JLabel("0");
         lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
         totalLoansLabel = lb;
         return lb;
     }
 
     private JLabel getTotalIncomes(){
-        List<Income> incomes = incomeController.getIncomes();
+        List<IncomeResponseDTO> incomes = incomeController.getIncomesByUserID(user.getId());
         double total = 0;
-        for( Income income : incomes){
-            total += income.getIncomeAmount();
+        for( IncomeResponseDTO income : incomes){
+            total += income.getAmmount();
         }
         JLabel lb = new JLabel(String.valueOf(total));
         lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
@@ -264,10 +268,10 @@ public class Dashboard extends JPanel {
     }
 
     private JLabel getTotalGastos(){
-        List<Gasto> gastos = gastoController.getGastos();
+        List<OverheadResponseDTO> overheads = overheadController.getByUserID(user.getId());
         double total = 0;
-        for( Gasto gasto : gastos){
-            total += gasto.getValorGasto();
+        for( OverheadResponseDTO overhead : overheads){
+            total += overhead.getAmmount();
         }
         JLabel lb = new JLabel(String.valueOf(total));
         lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");

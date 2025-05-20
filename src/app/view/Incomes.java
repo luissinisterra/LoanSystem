@@ -1,8 +1,10 @@
 package app.view;
 
 import app.controller.IncomeController;
+import app.dto.IncomeResponseDTO;
 import app.exception.ApiException;
 import app.model.Income;
+import app.model.User;
 import app.view.forms.EditIncomesForm;
 import app.view.forms.NewIncomeForm;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -19,9 +21,10 @@ import java.util.List;
 public class Incomes extends JPanel {
 
     private final IncomeController controller = new IncomeController();
+    private User user;
 
-
-    public Incomes() {
+    public Incomes(User user) {
+        this.user = user;
         init();
     }
 
@@ -160,10 +163,10 @@ public class Incomes extends JPanel {
                     return false; // Ninguna celda editable
                 }
             };
-            for (Income income : controller.getIncomes()) {
+            for (IncomeResponseDTO income : controller.getIncomesByUserID(user.getId())) {
                 model.addRow(new Object[]{
                         income.getIncomeType(),
-                        income.getIncomeAmount(),
+                        income.getAmmount(),
                         income.getIncomeDate()
                 });
             }
@@ -175,13 +178,14 @@ public class Incomes extends JPanel {
 
     public void setTotal() {
         try {
-            List<Income> incomes = controller.getIncomes();
+            List<IncomeResponseDTO> incomes = controller.getIncomesByUserID(user.getId());
             double total = 0;
-            for (Income income : incomes) {
-                total += income.getIncomeAmount();
+            for (IncomeResponseDTO income : incomes) {
+                total += income.getAmmount();
             }
             lblTotalLabel.setText("Total: " + total);
         } catch (ApiException ex) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, ex.getMessage());
         }
     }
 
@@ -190,7 +194,7 @@ public class Incomes extends JPanel {
     // ==============================
 
     private void agregarIngreso() {
-        NewIncomeForm form = new NewIncomeForm(this);
+        NewIncomeForm form = new NewIncomeForm(this, this.user);
         JFrame frame = new JFrame("Agregar gasto");
         frame.setContentPane(form);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -201,54 +205,57 @@ public class Incomes extends JPanel {
     }
 
     private void eliminarIngreso() {
-        String id = getSelectedIncomeID();
+        Integer id = getSelectedIncomeID();
         if (id == null) {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un ingreso para eliminar");
-        } else {
-            controller.removeIncome(id);
-            llenarTabla();
-            setTotal();
-            Notifications.getInstance().show(Notifications.Type.INFO, "Ingreso eliminado correctamente");
+            return;
         }
+        controller.removeIncome(id);
+        llenarTabla();
+        setTotal();
+        Notifications.getInstance().show(Notifications.Type.INFO, "Ingreso eliminado correctamente");
     }
 
     private void editarIngreso() {
-        String id = getSelectedIncomeID();
+        Integer id = getSelectedIncomeID();
         if (id == null) {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un ingreso para editar");
-        } else {
-            Income i = controller.getIncomeByID(id);
-            EditIncomesForm form = new EditIncomesForm(this, i);
-            JFrame frame = new JFrame("Editar gasto");
-            frame.setContentPane(form);
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-            frame.setAlwaysOnTop(true);
+            return;
         }
+        IncomeResponseDTO i = controller.getIncomeByID(id);
+        EditIncomesForm form = new EditIncomesForm(this, i, this.user);
+        JFrame frame = new JFrame("Editar gasto");
+        frame.setContentPane(form);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.setAlwaysOnTop(true);
     }
 
     private void verDetallesIngreso() {
-        String id = getSelectedIncomeID();
+        Integer id = getSelectedIncomeID();
         if (id == null) {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un ingreso para ver sus detalles");
-        } else {
-            JOptionPane.showMessageDialog(null, controller.getIncomeByID(id));
+            return;
         }
+        JOptionPane.showMessageDialog(null, "ID: " + id + "\n" +
+                "Tipo: " + controller.getIncomeByID(id).getIncomeType() + "\n" +
+                "Valor: " + controller.getIncomeByID(id).getAmmount() + "\n" +
+                "Fecha: " + controller.getIncomeByID(id).getIncomeDate());
     }
 
     // ==============================
     // Helpers
     // ==============================
 
-    private String getSelectedIncomeID() {
+    private Integer getSelectedIncomeID() {
         int filaVista = incomesTable.getSelectedRow();
         if (filaVista >= 0) {
             int filaModelo = incomesTable.convertRowIndexToModel(filaVista);
-            List<Income> incomes = controller.getIncomes();
+            List<IncomeResponseDTO> incomes = controller.getIncomes();
             if (filaModelo < incomes.size()) {
-                return incomes.get(filaModelo).getIncomeID();
+                return incomes.get(filaModelo).getId();
             }
         }
         return null;

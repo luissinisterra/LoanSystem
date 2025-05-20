@@ -2,6 +2,7 @@ package app.view.forms;
 
 import app.controller.IncomeController;
 import app.exception.ApiException;
+import app.model.User;
 import app.view.Incomes;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -14,11 +15,13 @@ public class NewIncomeForm extends JPanel {
 
     private final IncomeController controller = new IncomeController();
     private Incomes over;
+    private User user;
 
-    public NewIncomeForm(Incomes over) {
-        this.over = over;
+    public NewIncomeForm(Incomes over, User user){
         init();
         setupActions();
+        this.over = over;
+        this.user = user;
     }
 
     // ==============================
@@ -78,18 +81,19 @@ public class NewIncomeForm extends JPanel {
 
         if (type.trim().isEmpty() || detail.trim().isEmpty() || value.trim().isEmpty()) {
             Notifications.getInstance().show(Notifications.Type.WARNING, "Campos vacíos");
-        } else if (value.matches(".*[a-zA-Z].*")) {
+            return;
+        } if (value.matches(".*[a-zA-Z].*")) {
             Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numérico con letras");
-        } else {
-            try {
-                controller.addIncome(type, detail, Double.parseDouble(value));
-                over.llenarTabla();
-                over.setTotal();
-                closeWindow();
-                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Ingreso creado correctamente");
-            } catch (ApiException ex) {
-                Notifications.getInstance().show(Notifications.Type.ERROR, ex.getMessage());
-            }
+            return;
+        }
+        try {
+            controller.addIncome(Integer.parseInt(value), detail, type, user.getId());
+            over.llenarTabla();
+            over.setTotal();
+            closeWindow();
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Ingreso creado correctamente");
+        } catch (ApiException ex) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, ex.getMessage());
         }
     }
 

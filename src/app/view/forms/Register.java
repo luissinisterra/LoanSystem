@@ -167,7 +167,7 @@ public class Register extends JPanel {
     }
 
     private void login(User user) {
-        Application.setUserToMainForm(user);
+        Application.getInstance().setUserToMainForm(user);
         Application.login();
     }
 

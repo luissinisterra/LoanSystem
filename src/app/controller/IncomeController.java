@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.IncomeResponseDTO;
 import app.model.Income;
 import app.service.IncomeService;
 
@@ -12,24 +13,28 @@ public class IncomeController {
         this.incomeService = new IncomeService();
     }
 
-    public List<Income> getIncomes() {
+    public List<IncomeResponseDTO> getIncomes() {
         return incomeService.getIncomes();
     }
 
-    public Income getIncomeByID(String id) {
+    public IncomeResponseDTO getIncomeByID(Integer id) {
         return incomeService.getById(id);
     }
 
-    public void removeIncome(String id) {
+    public void removeIncome(Integer id) {
         incomeService.remove(id);
     }
 
-    public Income addIncome(String tipo, String descripcion, double valor) {
-        return incomeService.add(tipo, descripcion, valor);
+    public IncomeResponseDTO addIncome(Integer ammount, String incomeDescription, String incomeType, Integer userId) {
+        return incomeService.add(ammount, incomeDescription, incomeType, userId);
     }
 
-    public Income updateIncome(String id, String tipo, String descripcion, double valor) {
-        return incomeService.update(id, tipo, descripcion, valor);
+    public IncomeResponseDTO updateIncome(Integer ammount, String incomeDescription, String incomeType, Integer userId, Integer incomeID) {
+        return incomeService.update(ammount, incomeDescription, incomeType, userId, incomeID);
+    }
+
+    public List<IncomeResponseDTO> getIncomesByUserID(Integer userID) {
+        return incomeService.getIncomesByUserID(userID);
     }
 
 }
