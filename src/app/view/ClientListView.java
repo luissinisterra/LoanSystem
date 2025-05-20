@@ -135,7 +135,8 @@ public class ClientListView extends JPanel {
 
     //Metodo para filtrado de clientes
     private void resetTable() {
-        List<Client> clients = this.clientController.getAllClients();
+        List<Client> clients = this.clientController.getAllClientsByUserId(this.user.getId());
+
         model.setRowCount(0); // Limpiar las filas actuales del modelo
 
         if (clients != null && !clients.isEmpty()) {
@@ -155,7 +156,8 @@ public class ClientListView extends JPanel {
     }
 
     public void refreshTable() {
-        List<Client> clients = this.clientController.getAllClients();
+        List<Client> clients = this.clientController.getAllClientsByUserId(this.user.getId());
+
         model.setRowCount(0); // Limpiar las filas actuales del modelo
 
         if (clients != null && !clients.isEmpty()) {
@@ -229,7 +231,9 @@ public class ClientListView extends JPanel {
     // Método para crear la tabla
     private JScrollPane createTablePanel() {
         this.createStatsPanel();
-        List<Client> clients = this.clientController.getAllClients();
+
+        List<Client> clients = this.clientController.getAllClientsByUserId(this.user.getId());
+
         model = new DefaultTableModel();
         model.addColumn("Documento");
         model.addColumn("Nombre");

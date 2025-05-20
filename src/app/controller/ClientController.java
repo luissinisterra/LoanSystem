@@ -18,6 +18,10 @@ public class ClientController {
         return this.clientService.getAllClients();
     }
 
+    public List<Client> getAllClientsByUserId(int id) {
+        return this.clientService.getAllClientsByUserId(id);
+    }
+
     public List<Loan> getAllLoansByUserId(int id) {
         return this.clientService.getAllLoansByClientId(id);
     }
