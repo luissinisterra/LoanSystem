@@ -26,7 +26,7 @@ public class ClientDetailsView extends JPanel {
         setLayout(new MigLayout("fill, insets 20", "[grow][grow]", "[grow]"));
 
         // Obtener cliente
-        Client client = clientController.getClientById(clientId);
+        Client client = clientController.getClientById(Integer.parseInt(clientId));
 
         // Paneles
         JPanel leftPanel = createInfoPanel(client);

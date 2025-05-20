@@ -313,7 +313,7 @@ public class ClientListView extends JPanel {
     private void setupNewButtonAction(JButton button) {
         button.addActionListener(e -> {
             JFrame frame = new JFrame("Nuevo Cliente");
-            frame.setContentPane(new NewClientForm(this));
+            frame.setContentPane(new NewClientForm(this.user, this));
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
@@ -327,7 +327,9 @@ public class ClientListView extends JPanel {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
                 String id = (String) table.getValueAt(selectedRow, 0);
-                Client client = this.clientController.getClientById(id);
+
+                Client client = this.clientController.getClientById(Integer.parseInt(id));
+
                 String firstName = client.getFirstName();
                 String secondName = client.getFirstSurname();
                 String firstSurname = client.getFirstSurname();
@@ -340,7 +342,7 @@ public class ClientListView extends JPanel {
 
                 JFrame frame = new JFrame("Editar Cliente");
                 frame.setContentPane(new EditClientForm(
-                        id,
+                        Integer.parseInt(id),
                         firstName,
                         secondName,
                         firstSurname,
@@ -350,7 +352,8 @@ public class ClientListView extends JPanel {
                         phone,
                         address,
                         status,
-                        this
+                        this,
+                        this.user
                 ));
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.pack();
@@ -371,7 +374,7 @@ public class ClientListView extends JPanel {
                 String id = (String) table.getValueAt(selectedRow, 0);
                 int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este cliente?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    this.clientController.deleteClient(id);
+                    this.clientController.deleteClient(Integer.parseInt(id));
                     this.refreshTable();
                     Notifications.getInstance().show(Notifications.Type.SUCCESS, "El cliente ha sido eliminado con éxito.");
                 }

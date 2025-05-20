@@ -11,16 +11,16 @@ public interface IClientService {
     Call<List<Client>> getAllClients();
 
     @GET("/api/clients/{id}")
-    Call<Client> getClientById(@Path("id") String id);
+    Call<Client> getClientById(@Path("id") int id);
 
     @POST("/api/clients")
     Call<Void> createClient(@Body Client client);
 
     @PUT("/api/clients/{id}")
-    Call<Void> updateClient(@Path("id") String id, @Body Client client);
+    Call<Void> updateClient(@Path("id") int id, @Body Client client);
 
     @DELETE("/api/clients/{id}")
-    Call<Void> deleteClient(@Path("id") String id);
+    Call<Void> deleteClient(@Path("id") int id);
 
     @GET("/api/clients/search")
     Call<List<Client>> searchClientsByQuery(@Query("query") String query);

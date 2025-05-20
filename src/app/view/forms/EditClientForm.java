@@ -2,6 +2,7 @@ package app.view.forms;
 
 import app.controller.ClientController;
 import app.model.Client;
+import app.model.User;
 import app.view.ClientListView;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -20,25 +21,23 @@ public class EditClientForm extends JPanel {
     private JTextField txtAge;
     private JTextField txtEmail;
     private JTextField txtPhone;
-    private JTextField txtCountry;
-    private JTextField txtDepartment;
-    private JTextField txtCity;
-    private JTextField txtStreet;
-    private JTextField txtPostalCode;
+    private JTextField txtAddress;
     private JButton cmdUpdate;
     private JComboBox<String> cbStatus;
     private ClientController clientController;
     private ClientListView listView;
+    private User user;
 
-    public EditClientForm(String id, String firstName, String secondName, String firstSurname, String secondSurname,
-                          int age, String email, String phone, Address address, String status, ClientListView listView) {
-        init(id, firstName, secondName, firstSurname, secondSurname, age, email, phone, address, status);
-        this.clientController = new ClientController();
+    public EditClientForm(int id, String firstName, String secondName, String firstSurname, String secondSurname,
+                          int age, String email, String phone, String address, String status, ClientListView listView, User user) {
+        this.user = user;
         this.listView = listView;
+        this.clientController = new ClientController();
+        init(id, firstName, secondName, firstSurname, secondSurname, age, email, phone, address, status);
     }
 
-    private void init(String id, String firstName, String secondName, String firstSurname, String secondSurname,
-                      int age, String email, String phone, Address address, String status) {
+    private void init(int id, String firstName, String secondName, String firstSurname, String secondSurname,
+                      int age, String email, String phone, String address, String status) {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
 
         // Panel principal
@@ -50,7 +49,7 @@ public class EditClientForm extends JPanel {
 
         // Campos de texto prellenados con los datos del cliente
         txtId = createTextField("ID del cliente");
-        txtId.setText(id);
+        txtId.setText(String.valueOf(id));
         txtId.setEditable(false); // El ID no debe ser editable
 
         txtFirstName = createTextField("Primer nombre");
@@ -74,20 +73,8 @@ public class EditClientForm extends JPanel {
         txtPhone = createTextField("Teléfono");
         txtPhone.setText(phone);
 
-        txtCountry = createTextField("País");
-        txtCountry.setText(address.getCountry());
-
-        txtDepartment = createTextField("Departamento");
-        txtDepartment.setText(address.getDeparment());
-
-        txtCity = createTextField("Ciudad");
-        txtCity.setText(address.getCity());
-
-        txtStreet = createTextField("Calle");
-        txtStreet.setText(address.getStreet());
-
-        txtPostalCode = createTextField("Código postal");
-        txtPostalCode.setText(address.getPostalCode());
+        txtAddress = createTextField("Dirección");
+        txtAddress.setText(address);
 
         cbStatus = createComboBox();
         cbStatus.setSelectedItem(status);
@@ -144,20 +131,10 @@ public class EditClientForm extends JPanel {
         panel.add(txtEmail);
         panel.add(new JLabel("Teléfono"), "gapy 8");
         panel.add(txtPhone);
-        panel.add(new JLabel("País"), "gapy 8");
-        panel.add(txtCountry);
-        panel.add(new JLabel("Departamento"), "gapy 8");
-        panel.add(txtDepartment);
-        panel.add(new JLabel("Ciudad"), "gapy 8");
-        panel.add(txtCity);
-        panel.add(new JLabel("Calle"), "gapy 8");
-        panel.add(txtStreet);
-        panel.add(new JLabel("Código postal"), "gapy 8");
-        panel.add(txtPostalCode);
-        panel.add(new JLabel("Estado:"), "gapy 8");
+        panel.add(new JLabel("Dirección"), "gapy 8");
+        panel.add(txtAddress);
         panel.add(cbStatus, "growx, wrap");
         panel.add(cmdUpdate, "gapy 20");
-
 
         add(panel);
     }
@@ -174,11 +151,7 @@ public class EditClientForm extends JPanel {
                 !txtAge.getText().isEmpty() &&
                 !txtEmail.getText().isEmpty() &&
                 !txtPhone.getText().isEmpty() &&
-                !txtCountry.getText().isEmpty() &&
-                !txtDepartment.getText().isEmpty() &&
-                !txtCity.getText().isEmpty() &&
-                !txtStreet.getText().isEmpty() &&
-                !txtPostalCode.getText().isEmpty();
+                !txtAddress.getText().isEmpty();
     }
 
     private JComboBox<String> createComboBox() {
@@ -191,18 +164,9 @@ public class EditClientForm extends JPanel {
     }
 
     private void updateClient() {
-        // Crear un objeto Address con los datos ingresados
-        Address address = new Address(
-                txtCountry.getText(),
-                txtDepartment.getText(),
-                txtCity.getText(),
-                txtStreet.getText(),
-                txtPostalCode.getText()
-        );
 
         // Crear un objeto Client con los datos actualizados
         Client client = new Client(
-                txtId.getText(),
                 txtFirstName.getText(),
                 txtSecondName.getText(),
                 txtFirstSurname.getText(),
@@ -210,13 +174,14 @@ public class EditClientForm extends JPanel {
                 Integer.parseInt(txtAge.getText()),
                 txtEmail.getText(),
                 txtPhone.getText(),
-                address
+                txtAddress.getText(),
+                this.user.getId()
         );
 
         String status = cbStatus.getSelectedItem().toString();
         client.setActive("Activo".equals(status));
 
         // Actualizar el cliente en la base de datos o en memoria
-        this.clientController.updateClient(txtId.getText(), client);
+        this.clientController.updateClient(Integer.parseInt(txtId.getText()), client);
     }
 }

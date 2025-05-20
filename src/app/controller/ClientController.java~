@@ -17,7 +17,7 @@ public class ClientController {
         return this.clientService.getAllClients();
     }
 
-    public Client getClientById(int id) {
+    public Client getClientById(String id) {
         return this.clientService.getClientById(id);
     }
 
@@ -25,11 +25,11 @@ public class ClientController {
         this.clientService.createClient(client);
     }
 
-    public void updateClient(int id, Client client) {
+    public void updateClient(String id, Client client) {
         this.clientService.updateClient(id, client);
     }
 
-    public void deleteClient(int id) {
+    public void deleteClient(String id) {
         this.clientService.deleteClient(id);
     }
 

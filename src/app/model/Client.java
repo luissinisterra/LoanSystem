@@ -19,7 +19,7 @@ public class Client {
     private String address;
     private int userId;
 
-    public Client(String firstName, String secondName, String firstSurname, String secondSurname, int age, String email, String phone, boolean active, String address, int userId) {
+    public Client(String firstName, String secondName, String firstSurname, String secondSurname, int age, String email, String phone, String address, int userId) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.firstSurname = firstSurname;
@@ -27,7 +27,7 @@ public class Client {
         this.age = age;
         this.email = email;
         this.phone = phone;
-        this.active = active;
+        this.active = true;
         this.address = address;
         this.userId = userId;
     }

@@ -49,7 +49,7 @@ public class ClientService {
         }
     }
 
-    public Client getClientById(String id) {
+    public Client getClientById(int id) {
         try{
             Response<Client> response = this.iClientService.getClientById(id).execute();
             Client client = response.body();
@@ -68,7 +68,7 @@ public class ClientService {
         }
     }
 
-    public void updateClient(String id, Client client) {
+    public void updateClient(int id, Client client) {
         try {
             Response<Void> response = this.iClientService.updateClient(id, client).execute();
         } catch (IOException e) {
@@ -76,7 +76,7 @@ public class ClientService {
         }
     }
 
-    public void deleteClient(String id) {
+    public void deleteClient(int id) {
         try {
             Response<Void> response = this.iClientService.deleteClient(id).execute();
         } catch (IOException e) {

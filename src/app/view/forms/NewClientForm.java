@@ -3,6 +3,7 @@ package app.view.forms;
 import app.controller.ClientController;
 import app.exception.ApiException;
 import app.model.Client;
+import app.model.User;
 import app.view.ClientListView;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -21,20 +22,17 @@ public class NewClientForm extends JPanel {
     private JTextField txtAge;
     private JTextField txtEmail;
     private JTextField txtPhone;
-    private JTextField txtCountry;
-    private JTextField txtDepartment;
-    private JTextField txtCity;
-    private JTextField txtStreet;
-    private JTextField txtPostalCode;
+    private JTextField txtAddress;
     private JButton cmdSave;
     private ClientListView listView;
-
+    private User user;
     private ClientController clientController;
 
-    public NewClientForm(ClientListView listView) {
-        init();
+    public NewClientForm(User user, ClientListView listView) {
+        this.user = user;
         this.listView = listView;
         this.clientController = new ClientController();
+        init();
     }
 
     private void init() {
@@ -56,11 +54,7 @@ public class NewClientForm extends JPanel {
         txtAge = createTextField("Edad");
         txtEmail = createTextField("Correo electrónico");
         txtPhone = createTextField("Teléfono");
-        txtCountry = createTextField("País");
-        txtDepartment = createTextField("Departamento");
-        txtCity = createTextField("Ciudad");
-        txtStreet = createTextField("Calle");
-        txtPostalCode = createTextField("Código postal");
+        txtAddress = createTextField("Dirección");
 
         // Botón Guardar
         cmdSave = new JButton("Guardar");
@@ -112,15 +106,8 @@ public class NewClientForm extends JPanel {
         panel.add(new JLabel("Teléfono"), "gapy 8");
         panel.add(txtPhone);
         panel.add(new JLabel("País"), "gapy 8");
-        panel.add(txtCountry);
-        panel.add(new JLabel("Departamento"), "gapy 8");
-        panel.add(txtDepartment);
-        panel.add(new JLabel("Ciudad"), "gapy 8");
-        panel.add(txtCity);
-        panel.add(new JLabel("Calle"), "gapy 8");
-        panel.add(txtStreet);
-        panel.add(new JLabel("Código postal"), "gapy 8");
-        panel.add(txtPostalCode);
+        panel.add(txtAddress);
+        panel.add(new JLabel("Dirección"), "gapy 8");
         panel.add(cmdSave, "gapy 20");
 
         add(panel);
@@ -142,14 +129,9 @@ public class NewClientForm extends JPanel {
             int age = (txtAge.getText().length() > 0) ? Integer.parseInt(txtAge.getText()) : 0;
             String email = txtEmail.getText();
             String phone = txtPhone.getText();
-            String country = txtCountry.getText();
-            String department = txtDepartment.getText();
-            String city = txtCity.getText();
-            String street = txtStreet.getText();
-            String postalCode = txtPostalCode.getText();
+            String address = txtAddress.getText();
 
-            Address address = new Address(country, department, city, street, postalCode);
-            Client client = new Client(id, firstName, secondName, firstSurname, secondSurname, age, email, phone, address);
+            Client client = new Client(firstName, secondName, firstSurname, secondSurname, age, email, phone, address, this.user.getId());
 
             this.clientController.createClient(client);
         } catch (ApiException ex) {
