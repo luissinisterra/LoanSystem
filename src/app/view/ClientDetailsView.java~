@@ -89,7 +89,7 @@ public class ClientDetailsView extends JPanel {
         model.addColumn("Estado");
 
         if (loans != null && !loans.isEmpty()) {
-            for (Loan loan : loans) {
+            for (Loan loan : client.getLoans()) {
                 model.addRow(new Object[]{
                         "$" + loan.getAmount(),
                         loan.getInterestRate() + "%",

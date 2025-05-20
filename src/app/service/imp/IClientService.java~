@@ -1,7 +1,6 @@
 package app.service.imp;
 
 import app.model.Client;
-import app.model.Loan;
 import retrofit2.Call;
 import retrofit2.http.*;
 

@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.model.Client;
+import app.model.Loan;
 import app.service.ClientService;
 import retrofit2.http.Path;
 
@@ -15,6 +16,10 @@ public class ClientController {
 
     public List<Client> getAllClients() {
         return this.clientService.getAllClients();
+    }
+
+    public List<Loan> getAllLoansByUserId(int id) {
+        return this.clientService.getAllLoansByClientId(id);
     }
 
     public Client getClientById(int id) {
@@ -40,5 +45,4 @@ public class ClientController {
     public int getActiveClientsCount() {
         return this.clientService.getActiveClientsCount();
     }
-
 }

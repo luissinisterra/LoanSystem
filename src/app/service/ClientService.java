@@ -3,6 +3,7 @@ package app.service;
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
 import app.model.Client;
+import app.model.Loan;
 import app.service.imp.IClientService;
 import com.google.gson.*;
 import retrofit2.Response;
@@ -46,6 +47,17 @@ public class ClientService {
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
+        }
+    }
+
+    public List<Loan> getAllLoansByClientId(int id) {
+        try{
+            Response<List<Loan>> response = this.iClientService.getAllLoansByClientId(id).execute();
+            List<Loan> loans = response.body();
+            return loans;
+        } catch (IOException e){
+            e.printStackTrace();
+            return null;
         }
     }
 
