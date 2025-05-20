@@ -14,6 +14,9 @@ public interface IClientService {
     @GET("/api/clients/user/{id}")
     Call<List<Client>> getAllClientsByUserId(@Path("id") int id);
 
+    @GET("/api/loans/client-loans/{id}")
+    Call<List<Loan>> getAllLoansByClientId(@Path("id") int id);
+
     @GET("/api/clients/{id}")
     Call<Client> getClientById(@Path("id") int id);
 

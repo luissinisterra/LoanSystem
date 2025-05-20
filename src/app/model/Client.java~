@@ -1,7 +1,13 @@
 package app.model;
 
-public class Person {
-    private String id;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Client {
+
+    private int id;
     private String firstName;
     private String secondName;
     private String firstSurname;
@@ -9,12 +15,11 @@ public class Person {
     private int age;
     private String email;
     private String phone;
-    private Address address;
+    private boolean active;
+    private String address;
+    private int userId;
 
-    public Person() {}
-
-    public Person(String id, String firstName, String secondName, String firstSurname, String secondSurname, int age, String email, String phone, Address address) {
-        this.id = id;
+    public Client(String firstName, String secondName, String firstSurname, String secondSurname, int age, String email, String phone, boolean active, String address, int userId) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.firstSurname = firstSurname;
@@ -22,14 +27,16 @@ public class Person {
         this.age = age;
         this.email = email;
         this.phone = phone;
+        this.active = true;
         this.address = address;
+        this.userId = userId;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -89,12 +96,27 @@ public class Person {
         this.phone = phone;
     }
 
-    public Address getAddress() {
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(String address) {
         this.address = address;
     }
-}
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+}

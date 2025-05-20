@@ -52,6 +52,17 @@ public class LoanService {
         }
     }
 
+    public List<Loan> getAllLoansByClientId(int id) {
+        try{
+            Response<List<Loan>> response = this.iLoanService.getAllLoansByClientId(id).execute();
+            List<Loan> loans = response.body();
+            return loans;
+        } catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     // Obtener todos los préstamos de un usuario en especifico
     public List<Loan> getAllLoansByUserId(int id) {
         try {

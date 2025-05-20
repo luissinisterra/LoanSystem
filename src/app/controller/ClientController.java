@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.model.Client;
+import app.model.Loan;
 import app.service.ClientService;
 import retrofit2.http.Path;
 
@@ -17,7 +18,11 @@ public class ClientController {
         return this.clientService.getAllClients();
     }
 
-    public Client getClientById(String id) {
+    public List<Client> getAllClientsByUserId(int id) {
+        return this.clientService.getAllClientsByUserId(id);
+    }
+
+    public Client getClientById(int id) {
         return this.clientService.getClientById(id);
     }
 
@@ -25,11 +30,11 @@ public class ClientController {
         this.clientService.createClient(client);
     }
 
-    public void updateClient(String id, Client client) {
+    public void updateClient(int id, Client client) {
         this.clientService.updateClient(id, client);
     }
 
-    public void deleteClient(String id) {
+    public void deleteClient(int id) {
         this.clientService.deleteClient(id);
     }
 
@@ -40,5 +45,4 @@ public class ClientController {
     public int getActiveClientsCount() {
         return this.clientService.getActiveClientsCount();
     }
-
 }
