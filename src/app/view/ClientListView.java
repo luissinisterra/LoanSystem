@@ -1,7 +1,6 @@
 package app.view;
 
 import app.controller.ClientController;
-import app.model.Address;
 import app.model.Client;
 import app.model.User;
 import app.view.forms.EditClientForm;

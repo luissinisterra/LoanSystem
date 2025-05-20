@@ -1,7 +1,6 @@
 package app.view.forms;
 
 import app.controller.ClientController;
-import app.model.Address;
 import app.model.Client;
 import app.view.ClientListView;
 import com.formdev.flatlaf.FlatClientProperties;
