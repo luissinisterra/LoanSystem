@@ -38,6 +38,7 @@ public class Login extends JPanel {
                 try {
                     this.userController.loadUser(username, password);
                     User user = this.userController.loadUser(username, password);
+                    System.out.println(user.getUsername());
                     Application.getInstance().setUserToMainForm(user);
                     Application.login();
                 } catch (Exception ex) {
