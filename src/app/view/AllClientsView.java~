@@ -2,7 +2,6 @@ package app.view;
 
 import app.controller.ClientController;
 import app.model.Client;
-import app.model.User;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 

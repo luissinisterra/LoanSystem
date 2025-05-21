@@ -6,6 +6,7 @@ import app.model.User;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import app.manager.FormsManager;
+import raven.toast.Notifications;
 
 import javax.management.Notification;
 import javax.swing.*;
@@ -34,10 +35,15 @@ public class Login extends JPanel {
             if (txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "gay");
             } else {
-                User user = this.userController.loadUser(username, password);
-                System.out.println(user.getUsername());
-                Application.getInstance().setUserToMainForm(user);
-                Application.login();
+                try {
+                    this.userController.loadUser(username, password);
+                    User user = this.userController.loadUser(username, password);
+                    System.out.println(user.getUsername());
+                    Application.getInstance().setUserToMainForm(user);
+                    Application.login();
+                } catch (Exception ex) {
+                    Notifications.getInstance().show(Notifications.Type.ERROR, ex.getMessage());
+                }
             }
         });
 

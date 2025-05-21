@@ -84,8 +84,6 @@ public class ClientDetailsView extends JPanel {
 
         List<Loan> loans = this.loanController.getAllLoansByClientId(client.getId());
 
-        System.out.println(loans);
-
         // Crear modelo tabla
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Monto");

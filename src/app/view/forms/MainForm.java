@@ -87,7 +87,7 @@ public class MainForm extends JLayeredPane {
                 if(subIndex == 1){
                     Application.showForm(new ClientListView(user));
                 } else if(subIndex == 2){
-                    Application.showForm(new AllClientsView());
+                    Application.showForm(new AllClientsView(this.user));
                 }
             }else if(index == 4) {
                 if (subIndex == 1) {
