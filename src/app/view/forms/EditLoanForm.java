@@ -26,14 +26,14 @@ public class EditLoanForm extends JPanel {
     private LoanListView listView;
     private User user;
 
-    public EditLoanForm(int id, double amount, double interestRate, double term, String status, String date, int clientId, User user, LoanListView listView) {
+    public EditLoanForm(int id, double amount, double interestRate, int term, String status, String date, int clientId, User user, LoanListView listView) {
         this.user = user;
         this.listView = listView;
         this.loanController = new LoanController();
         init(id, amount, interestRate, term, status, date, clientId);
     }
 
-    private void init(int id, double amount, double interestRate, double term, String status, String date, int clientId) {
+    private void init(int id, double amount, double interestRate, int term, String status, String date, int clientId) {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
 
         // Panel principal
@@ -106,8 +106,8 @@ public class EditLoanForm extends JPanel {
         panel.add(description);
         panel.add(new JLabel("ID"), "gapy 10");
         panel.add(txtId);
-        //panel.add(new JLabel("Nombre del cliente"), "gapy 8");
-        //panel.add(txtClientName);
+        panel.add(new JLabel("Documento del cliente"), "gapy 8");
+        panel.add(txtClientId);
         panel.add(new JLabel("Monto"), "gapy 8");
         panel.add(txtAmount);
         panel.add(new JLabel("Tasa de interes"), "gapy 8");
@@ -147,7 +147,7 @@ public class EditLoanForm extends JPanel {
 
     private void updateLoan() {
         try {
-            /*// Convertir el texto de la fecha a LocalDate
+            // Convertir el texto de la fecha a LocalDate
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato esperado
             LocalDate date = LocalDate.parse(txtDate.getText(), formatter);
 
@@ -166,10 +166,11 @@ public class EditLoanForm extends JPanel {
             loan.setActive("Activo".equals(status));
 
             // Actualizar el préstamo en la base de datos o en memoria
-            this.loanController.updateLoan(Integer.parseInt(txtId.getText()), loan);*/
+            this.loanController.updateLoan(Integer.parseInt(txtId.getText()), loan);
         } catch (Exception e) {
             // Manejar errores de formato de fecha o campos inválidos
-            Notifications.getInstance().show(Notifications.Type.ERROR, "Error: Verifique el formato de la fecha (YYYY-MM-DD).");
+            //Notifications.getInstance().show(Notifications.Type.ERROR, "Error: Verifique el formato de la fecha (YYYY-MM-DD).");
+            Notifications.getInstance().show(Notifications.Type.ERROR, e.getMessage());
         }
     }
 }

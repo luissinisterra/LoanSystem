@@ -8,13 +8,13 @@ public class Loan {
     private int id;
     private double amount;
     private double interestRate;
-    private double term;
+    private int term;
     private boolean active;
     private LocalDate date;
     private int clientId;
     private int userId;
 
-    public Loan(double amount, double interestRate, double term, boolean active, LocalDate date, int clientId, int userId) {
+    public Loan(double amount, double interestRate, int term, boolean active, LocalDate date, int clientId, int userId) {
         this.amount = amount;
         this.interestRate = interestRate;
         this.term = term;
@@ -48,11 +48,11 @@ public class Loan {
         this.interestRate = interestRate;
     }
 
-    public double getTerm() {
+    public int getTerm() {
         return term;
     }
 
-    public void setTerm(double term) {
+    public void setTerm(int term) {
         this.term = term;
     }
 

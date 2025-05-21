@@ -99,7 +99,7 @@ public class LoanListView extends JPanel {
 
     // Método para filtrar la tabla
     private void filterTable(String query) {
-        List<Loan> loans = this.loanController.searchLoansByQuery(this.user.getId() ,query);  
+        List<Loan> loans = this.loanController.searchLoansByQuery(this.user.getId() ,query);
         model.setRowCount(0); // Limpiar las filas actuales del modelo
         boolean isEmpty = true;
 
@@ -316,6 +316,7 @@ public class LoanListView extends JPanel {
                 String id = table.getValueAt(selectedRow, 0).toString();
 
                 Loan loan = this.loanController.getLoanById(Integer.parseInt(id));
+                System.out.println("ID del cliente: " + loan.getClientId());
                 JFrame frame = new JFrame("Editar Préstamo");
                 frame.setContentPane(new EditLoanForm(
                         loan.getId(),

@@ -311,7 +311,6 @@ public class ClientListView extends JPanel {
         buttonPanel.add(newButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
-        buttonPanel.add(seeDetails);
 
         return buttonPanel;
     }

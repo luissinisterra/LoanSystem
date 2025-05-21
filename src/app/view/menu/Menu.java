@@ -30,7 +30,7 @@ public class Menu extends JPanel {
             {"~PRÉSTAMOS~"},
             {"Gestión de Préstamos", "Lista de Préstamos"},
             {"~CLIENTES~"},
-            {"Gestión de Clientes", "Lista de Clientes", "Detalles de Clientes"},
+            {"Gestión de Clientes", "Lista de Clientes"},
             {"~PAGOS~"},
             {"Procesamiento de Pagos", "Historial de Pagos"},
             {"~CONTABILIDAD~"},
