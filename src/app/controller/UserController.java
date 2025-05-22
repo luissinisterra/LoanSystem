@@ -14,6 +14,14 @@ public class UserController {
         return this.userService.saveUser(names, surnames, email, password, username, gender);
     }
 
+    public User updateUser(int id, User user) {
+        return this.userService.updateUser(id, user);
+    }
+
+    public void deleteUser(int id) {
+        this.userService.deleteUser(id);
+    }
+
     public User loadUser(String username, String password) {
         return this.userService.loadUser(username, password);
     }

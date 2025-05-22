@@ -1,5 +1,6 @@
 package app.view.forms;
 
+import app.controller.UserController;
 import app.model.User;
 import app.view.UserProfileView;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -9,10 +10,10 @@ import raven.toast.Notifications;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Objects;
 
 public class EditUserForm extends JPanel {
 
+    private JTextField txtId;
     private JTextField txtNames;
     private JTextField txtSurnames;
     private JTextField txtEmail;
@@ -20,12 +21,14 @@ public class EditUserForm extends JPanel {
     private JPasswordField txtPassword;
     private JComboBox<String> cbGender;
 
-    private final User user;
-    private final UserProfileView profileView;
+    private User user;
+    private UserProfileView profileView;
+    private UserController userController;
 
     public EditUserForm(User user, UserProfileView profileView) {
         this.user = user;
         this.profileView = profileView;
+        this.userController = new UserController();
         init();
     }
 
@@ -47,7 +50,8 @@ public class EditUserForm extends JPanel {
                 "[light]foreground:lighten(@foreground,30%);" +
                         "[dark]foreground:darken(@foreground,30%)");
 
-        // Campos del formulario
+        txtId.setText(String.valueOf(user.getId()));
+
         txtNames = createTextField("Nombres");
         txtNames.setText(user.getNames());
 
@@ -111,25 +115,31 @@ public class EditUserForm extends JPanel {
 
     private void saveAction(ActionEvent e) {
         if (validateFields()) {
-            user.setNames(txtNames.getText());
-            user.setSurnames(txtSurnames.getText());
-            user.setEmail(txtEmail.getText());
-            user.setUsername(txtUsername.getText());
-            if (!new String(txtPassword.getPassword()).isEmpty()) {
-                user.setPassword(new String(txtPassword.getPassword()));
-            }
-            user.setGender((String) Objects.requireNonNull(cbGender.getSelectedItem()));
-
-            profileView.refreshData(user);
+            updateUser();
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Perfil actualizado correctamente.");
 
             Window window = SwingUtilities.getWindowAncestor(this);
             if (window != null) {
                 window.dispose();
             }
+
+            this.profileView.refreshData(user);
         } else {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Por favor complete los campos obligatorios.");
         }
+    }
+
+    private void updateUser() {
+        User user = new User(
+                txtNames.getText(),
+                txtSurnames.getText(),
+                txtEmail.getText(),
+                txtUsername.getText(),
+                new String(txtPassword.getPassword()),
+                (String) cbGender.getSelectedItem()
+        );
+
+        this.userController.updateUser(Integer.parseInt(txtId.getText()), user);
     }
 
     private boolean validateFields() {

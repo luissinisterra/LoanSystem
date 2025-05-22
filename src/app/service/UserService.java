@@ -44,11 +44,40 @@ public class UserService {
         try {
             User user = new User(names, surnames, email, password, username, gender);
             Response<User> response = apiService.createUser(user).execute();
+
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
+
             return response.body();
         }catch (IOException ex){
+            throw new ApiException("Error de conexión");
+        }
+    }
+
+    public User updateUser(int id, User user) {
+        try {
+            Response<User> response = apiService.updateUser(id, user).execute();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
+            return response.body();
+        }catch (IOException ex){
+            throw new ApiException("Error de conexión");
+        }
+    }
+
+    public void deleteUser(int id) {
+        try {
+            Response<Void> response = apiService.deleteUser(id).execute();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
+        } catch (IOException e) {
             throw new ApiException("Error de conexión");
         }
     }
