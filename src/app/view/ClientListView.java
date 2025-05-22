@@ -109,7 +109,7 @@ public class ClientListView extends JPanel {
 
     //Metodo para filtrado de clientes
     private void filterTable(String query) {
-        List<Client> clients = this.clientController.searchClientsByQuery(query);
+        List<Client> clients = this.clientController.searchClientsByQuery(this.user.getId(), query);
         model.setRowCount(0); // Limpiar las filas actuales del modelo
 
         boolean isEmpty = true;
@@ -119,8 +119,10 @@ public class ClientListView extends JPanel {
                 model.addRow(new Object[]{
                         client.getId(),
                         client.getFirstName() + " " + client.getFirstSurname(),
+                        client.getAge(),
                         client.getEmail(),
                         client.getPhone(),
+                        client.getAddress(),
                         client.isActive() ? "Activo" : "Inactivo"
                 });
             }
@@ -241,7 +243,7 @@ public class ClientListView extends JPanel {
         model.addColumn("Correo");
         model.addColumn("Teléfono");
         model.addColumn("Dirección");
-        model.addColumn("Activo");
+        model.addColumn("Estado");
 
         if (clients != null && !clients.isEmpty()) {
             for (Client client : clients) {

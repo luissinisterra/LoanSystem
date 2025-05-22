@@ -96,9 +96,9 @@ public class ClientService {
         }
     }
 
-    public List<Client> searchClientsByQuery(String query) {
+    public List<Client> searchClientsByQuery(int userId, String query) {
         try {
-            Response<List<Client>> response = this.iClientService.searchClientsByQuery(query).execute();
+            Response<List<Client>> response = this.iClientService.searchClientsByQuery(userId, query).execute();
             List<Client> clients = response.body();
             return clients;
         } catch (IOException e) {

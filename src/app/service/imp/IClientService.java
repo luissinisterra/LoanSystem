@@ -26,6 +26,6 @@ public interface IClientService {
     @DELETE("/api/clients/{id}")
     Call<Void> deleteClient(@Path("id") int id);
 
-    @GET("/api/clients/search")
-    Call<List<Client>> searchClientsByQuery(@Query("query") String query);
+    @GET("/api/clients/search/{userId}")
+    Call<List<Client>> searchClientsByQuery(@Path("userId") int userId, @Query("query") String query);
 }

@@ -38,7 +38,7 @@ public class ClientController {
         this.clientService.deleteClient(id);
     }
 
-    public List<Client> searchClientsByQuery(int userId, String query) {
+    public List<Client> searchClientsByQuery(int userId,String query) {
         return this.clientService.searchClientsByQuery(userId, query);
     }
 
