@@ -1,10 +1,5 @@
 package app.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class Client {
 
     private int id;
@@ -19,7 +14,8 @@ public class Client {
     private String address;
     private int userId;
 
-    public Client(String firstName, String secondName, String firstSurname, String secondSurname, int age, String email, String phone, String address, int userId) {
+    public Client(int id, String firstName, String secondName, String firstSurname, String secondSurname, int age, String email, String phone, String address, int userId) {
+        this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.firstSurname = firstSurname;

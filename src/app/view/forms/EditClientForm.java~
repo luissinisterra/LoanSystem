@@ -170,7 +170,6 @@ public class EditClientForm extends JPanel {
 
         // Crear un objeto Client con los datos actualizados
         Client client = new Client(
-                Integer.parseInt(txtId.getText()),
                 txtFirstName.getText(),
                 txtSecondName.getText(),
                 txtFirstSurname.getText(),

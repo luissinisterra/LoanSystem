@@ -120,7 +120,7 @@ public class NewClientForm extends JPanel {
 
     private void saveClient() {
         try{
-            String id = txtId.getText();
+            int id = Integer.parseInt(txtId.getText());
             String firstName = txtFirstName.getText();
             String secondName = txtSecondName.getText();
             String firstSurname = txtFirstSurname.getText();
@@ -130,7 +130,7 @@ public class NewClientForm extends JPanel {
             String phone = txtPhone.getText();
             String address = txtAddress.getText();
 
-            Client client = new Client(firstName, secondName, firstSurname, secondSurname, age, email, phone, address, this.user.getId());
+            Client client = new Client(id, firstName, secondName, firstSurname, secondSurname, age, email, phone, address, this.user.getId());
 
             this.clientController.createClient(client);
         } catch (ApiException ex) {

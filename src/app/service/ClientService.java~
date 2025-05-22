@@ -105,7 +105,7 @@ public class ClientService {
     public void updateClient(int id, Client client) {
         try {
             Response<Void> response = this.iClientService.updateClient(id, client).execute();
-
+            
             if(!response.isSuccessful()){
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }

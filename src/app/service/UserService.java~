@@ -65,6 +65,7 @@ public class UserService {
         }catch (IOException ex){
             throw new ApiException("Error de conexión");
         }
+        return null;
     }
 
 }
