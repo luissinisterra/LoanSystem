@@ -1,9 +1,11 @@
 package app.service;
 
+import app.exception.ApiException;
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
 import app.model.Loan;
 import app.service.imp.ILoanService;
+import app.util.ApiErrorUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import retrofit2.Response;
@@ -45,6 +47,11 @@ public class LoanService {
         try {
             Response<List<Loan>> response = this.iLoanService.getAllLoans().execute();
             List<Loan> loans = response.body();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
             return loans;
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,10 +63,15 @@ public class LoanService {
         try{
             Response<List<Loan>> response = this.iLoanService.getAllLoansByClientId(id).execute();
             List<Loan> loans = response.body();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
             return loans;
         } catch (IOException e){
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -68,6 +80,11 @@ public class LoanService {
         try {
             Response<List<Loan>> response = this.iLoanService.getAllLoansByUserId(id).execute();
             List<Loan> userLoans = response.body();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
             return userLoans;
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,10 +97,14 @@ public class LoanService {
         try {
             Response<Loan> response = this.iLoanService.getLoanById(id).execute();
             Loan loan = response.body();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
             return loan;
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new ApiException("Error de conexión");
         }
     }
 
@@ -91,8 +112,13 @@ public class LoanService {
     public void createLoan(Loan loan) {
         try {
             Response<Void> response = this.iLoanService.createLoan(loan).execute();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ApiException("Error de conexión");
         }
     }
 
@@ -100,8 +126,13 @@ public class LoanService {
     public void updateLoan(int id, Loan loan) {
         try {
             Response<Void> response = this.iLoanService.updateLoan(id, loan).execute();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ApiException("Error de conexión");
         }
     }
 
@@ -109,8 +140,13 @@ public class LoanService {
     public void deleteLoan(int id) {
         try {
             Response<Void> response = this.iLoanService.deleteLoan(id).execute();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ApiException("Error de conexión");
         }
     }
 
@@ -122,7 +158,7 @@ public class LoanService {
             return loans;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 

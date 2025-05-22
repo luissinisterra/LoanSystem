@@ -58,9 +58,11 @@ public class UserService {
             LoginRequest loginRequest = new LoginRequest(username, password);
             Response<User> response = apiService.loadUser(loginRequest).execute();
             User user = response.body();
+
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
+
             return user;
         }catch (IOException ex){
             throw new ApiException("Error de conexión");
