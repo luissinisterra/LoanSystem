@@ -1,5 +1,5 @@
 package app;
-
+                                    
 import app.manager.FormsManager;
 import app.model.User;
 import app.view.forms.Login;
@@ -35,7 +35,7 @@ public class Application extends JFrame {
         Notifications.getInstance().setJFrame(this);
     }
 
-    public static void setUserToMainForm(User user) {
+    public void setUserToMainForm(User user) {
         mainForm.setUser(user);
     }
 
@@ -97,7 +97,7 @@ public class Application extends JFrame {
         FlatMacDarkLaf.setup();
         java.awt.EventQueue.invokeLater(() -> {
             app = new Application();
-a            //  app.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+            //  app.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
             app.setVisible(true);
         });
     }

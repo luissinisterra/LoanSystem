@@ -1,7 +1,5 @@
 package app.model;
 
-import java.util.UUID;
-
 public class User {
 
     private int id;
@@ -12,7 +10,7 @@ public class User {
     private String username;
     private String gender;
 
-    public User(String names, String surnames, String email, String password, String username, String gender) {
+    public User(int id, String names, String surnames, String email, String password, String username, String gender) {
         this.names = names;
         this.surnames = surnames;
         this.email = email;

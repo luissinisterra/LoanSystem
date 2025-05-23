@@ -69,7 +69,7 @@ public class ClientService {
             return clients;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -109,6 +109,7 @@ public class ClientService {
             if(!response.isSuccessful()){
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,6 +118,11 @@ public class ClientService {
     public void deleteClient(int id) {
         try {
             Response<Void> response = this.iClientService.deleteClient(id).execute();
+
+            if(!response.isSuccessful()){
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -125,11 +131,16 @@ public class ClientService {
     public List<Client> searchClientsByQuery(int userId, String query) {
         try {
             Response<List<Client>> response = this.iClientService.searchClientsByQuery(userId, query).execute();
+
+            if(!response.isSuccessful()){
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
             List<Client> clients = response.body();
             return clients;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 

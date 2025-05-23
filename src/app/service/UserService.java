@@ -40,15 +40,44 @@ public class UserService {
         this.apiService = retrofit.create(IUserService.class);
     }
 
-    public User saveUser(String names, String surnames, String email, String password, String username, String gender) {
+    public User saveUser(int id, String names, String surnames, String email, String password, String username, String gender) {
         try {
-            User user = new User(names, surnames, email, password, username, gender);
+            User user = new User(id, names, surnames, email, password, username, gender);
             Response<User> response = apiService.createUser(user).execute();
+
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
+
             return response.body();
         }catch (IOException ex){
+            throw new ApiException("Error de conexión");
+        }
+    }
+
+    public User updateUser(int id, User user) {
+        try {
+            Response<User> response = apiService.updateUser(id, user).execute();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
+            return response.body();
+        }catch (IOException ex){
+            throw new ApiException("Error de conexión");
+        }
+    }
+
+    public void deleteUser(int id) {
+        try {
+            Response<Void> response = apiService.deleteUser(id).execute();
+
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+
+        } catch (IOException e) {
             throw new ApiException("Error de conexión");
         }
     }

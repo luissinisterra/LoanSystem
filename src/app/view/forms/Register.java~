@@ -153,7 +153,7 @@ public class Register extends JPanel {
             }
 
             // Registro
-            User user = userController.saveUser(0, names, surnames, email, password, username, gender);
+            User user = userController.saveUser(names, surnames, email, password, username, gender);
 
             // Login automático
             login(user);
