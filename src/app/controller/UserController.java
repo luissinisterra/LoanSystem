@@ -10,8 +10,8 @@ public class UserController {
         userService = new UserService();
     }
 
-    public User saveUser(String names, String surnames, String email, String password, String username, String gender) {
-        return this.userService.saveUser(names, surnames, email, password, username, gender);
+    public User saveUser(int id, String names, String surnames, String email, String password, String username, String gender) {
+        return this.userService.saveUser(id, names, surnames, email, password, username, gender);
     }
 
     public User updateUser(int id, User user) {

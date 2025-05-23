@@ -40,9 +40,9 @@ public class UserService {
         this.apiService = retrofit.create(IUserService.class);
     }
 
-    public User saveUser(String names, String surnames, String email, String password, String username, String gender) {
+    public User saveUser(int id, String names, String surnames, String email, String password, String username, String gender) {
         try {
-            User user = new User(names, surnames, email, password, username, gender);
+            User user = new User(id, names, surnames, email, password, username, gender);
             Response<User> response = apiService.createUser(user).execute();
 
             if (!response.isSuccessful()) {

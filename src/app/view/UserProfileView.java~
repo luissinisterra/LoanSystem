@@ -102,6 +102,7 @@ public class UserProfileView extends JPanel {
         button.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this,"¿Está seguro de eliminar su cuenta? Esta acción no se puede deshacer.", "Confirmación", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
+                this.userController.deleteUser(user.getId());
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Funcionalidad de eliminación pendiente.");
             }
         });
