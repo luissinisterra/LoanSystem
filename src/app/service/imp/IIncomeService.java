@@ -10,26 +10,41 @@ import java.util.List;
 
 public interface IIncomeService {
 
-    //Listar
-    @GET ("/api/incomes")
-    Call<List<IncomeResponseDTO>> getIncomes();
+    // === Listar ===
+    @GET("/api/incomes")
+    Call<List<IncomeResponseDTO>> getIncomes(@Header("Authorization") String authHeader);
 
-    @GET ("/api/incomes/{id}")
-    Call<IncomeResponseDTO> getIncomeByID(@Path("id") Integer id);
+    @GET("/api/incomes/{id}")
+    Call<IncomeResponseDTO> getIncomeByID(
+            @Header("Authorization") String authHeader,
+            @Path("id") Integer id
+    );
 
-    @GET ("/api/incomes/user/{userId}")
-    Call<List<IncomeResponseDTO>> getIncomesByUserID(@Path("userId") Integer userID);
+    @GET("/api/incomes/user/{userId}")
+    Call<List<IncomeResponseDTO>> getIncomesByUserID(
+            @Header("Authorization") String authHeader,
+            @Path("userId") Integer userID
+    );
 
-    //Crear
-    @POST ("/api/incomes")
-    Call<IncomeResponseDTO> addIncome(@Body IncomeCreateDTO i);
+    // === Crear ===
+    @POST("/api/incomes")
+    Call<IncomeResponseDTO> addIncome(
+            @Header("Authorization") String authHeader,
+            @Body IncomeCreateDTO income
+    );
 
-    //Actualizar
-    @PUT ("/api/incomes/{id}")
-    Call<IncomeResponseDTO>  updateIncome(@Path("id") Integer id, @Body IncomeCreateDTO i);
+    // === Actualizar ===
+    @PUT("/api/incomes/{id}")
+    Call<IncomeResponseDTO> updateIncome(
+            @Header("Authorization") String authHeader,
+            @Path("id") Integer id,
+            @Body IncomeCreateDTO income
+    );
 
-    //Eliminar
-    @DELETE ("/api/incomes/{id}")
-    Call<Void> deleteIncome(@Path("id") Integer id);
-
+    // === Eliminar ===
+    @DELETE("/api/incomes/{id}")
+    Call<Void> deleteIncome(
+            @Header("Authorization") String authHeader,
+            @Path("id") Integer id
+    );
 }

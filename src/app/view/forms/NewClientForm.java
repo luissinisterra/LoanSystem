@@ -132,7 +132,7 @@ public class NewClientForm extends JPanel {
 
             Client client = new Client(id, firstName, secondName, firstSurname, secondSurname, age, email, phone, address, this.user.getId());
 
-            this.clientController.createClient(client);
+            this.clientController.createClient(client, this.user);
         } catch (ApiException ex) {
             Notifications.getInstance().show(Notifications.Type.ERROR, ex.getMessage());
         }

@@ -166,7 +166,7 @@ public class EditLoanForm extends JPanel {
             loan.setActive("Activo".equals(status));
 
             // Actualizar el préstamo en la base de datos o en memoria
-            this.loanController.updateLoan(Integer.parseInt(txtId.getText()), loan);
+            this.loanController.updateLoan(Integer.parseInt(txtId.getText()), loan, this.user);
         } catch (Exception e) {
             // Manejar errores de formato de fecha o campos inválidos
             Notifications.getInstance().show(Notifications.Type.ERROR, "Error: Al actualizar el préstamo, por favor verifique los datos.");

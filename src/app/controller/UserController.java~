@@ -19,7 +19,7 @@ public class UserController {
     }
 
     public void deleteUser(int id, User user) {
-        this.userService.deleteUser(id, user);
+        this.userService.deleteUser(user, id);
     }
 
     public User loadUser(String username, String password) {

@@ -256,7 +256,7 @@ public class Dashboard extends JPanel {
     }
 
     private JLabel getTotalIncomes(){
-        List<IncomeResponseDTO> incomes = incomeController.getIncomesByUserID(user.getId());
+        List<IncomeResponseDTO> incomes = incomeController.getIncomesByUserID(user.getId(), this.user);
         double total = 0;
         for( IncomeResponseDTO income : incomes){
             total += income.getAmmount();
@@ -268,7 +268,7 @@ public class Dashboard extends JPanel {
     }
 
     private JLabel getTotalGastos(){
-        List<OverheadResponseDTO> overheads = overheadController.getByUserID(user.getId());
+        List<OverheadResponseDTO> overheads = overheadController.getByUserID(user.getId(), this.user);
         double total = 0;
         for( OverheadResponseDTO overhead : overheads){
             total += overhead.getAmmount();
