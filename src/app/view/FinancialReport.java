@@ -37,27 +37,9 @@ public class FinancialReport extends JPanel {
                 "[light]foreground:lighten(@foreground,30%);" +
                         "[dark]foreground:darken(@foreground,30%)");
 
-        // Tabla con columnas más anchas
-        String[] columns = {"Concepto", "Trim. 1", "Trim. 2", "Trim. 3", "Trim. 4"};
-        Object[][] data = {
-                {"Ingresos", "$120,000", "$135,000", "$142,000", "$160,000"},
-                {"Gastos", "$45,000", "$48,000", "$52,000", "$55,000"},
-                {"Beneficio Bruto", "$75,000", "$87,000", "$90,000", "$105,000"},
-                {"Impuestos", "$18,000", "$21,000", "$23,000", "$26,000"},
-                {"Beneficio Neto Final", "$57,000", "$66,000", "$67,000", "$79,000"},
-                {"Flujo de Caja Operativo", "$49,000", "$58,000", "$60,000", "$72,000"}
-        };
-
-        DefaultTableModel model = new DefaultTableModel(data, columns) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        JTable table = new JTable(model);
-        table.setRowHeight(40);
-        table.putClientProperty(FlatClientProperties.STYLE, ""
+        tablaPrestamos= new JTable();
+        tablaPrestamos.setRowHeight(40);
+        tablaPrestamos.putClientProperty(FlatClientProperties.STYLE, ""
                 + "showHorizontalLines:true;"
                 + "showVerticalLines:true;"
                 + "selectionBackground:@background;"
@@ -65,13 +47,13 @@ public class FinancialReport extends JPanel {
                 + "font:+2");
 
         // Header optimizado para el nuevo ancho
-        JTableHeader header = table.getTableHeader();
+        JTableHeader header = tablaPrestamos.getTableHeader();
         header.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:bold +2;"
                 + "height:40");
 
         // ScrollPane con ancho completo
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(tablaPrestamos);
         scrollPane.putClientProperty(FlatClientProperties.STYLE, ""
                 + "border:7,7,7,7;"
                 + "background:@background;");
@@ -118,7 +100,7 @@ public class FinancialReport extends JPanel {
 
                 try {
                     obj = new ExportarExcel();
-                    obj.exportarExcel(table);
+                    obj.exportarExcel(tablaPrestamos);
                 } catch (IOException ex) {
                     System.out.println("Error: " + ex);
                 }
@@ -135,4 +117,9 @@ public class FinancialReport extends JPanel {
 
         add(panel);
     }
+
+    private void llenarTabla() {
+
+    }
+    private JTable tablaPrestamos;
 }
