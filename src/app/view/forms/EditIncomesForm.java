@@ -91,7 +91,7 @@ public class EditIncomesForm extends JPanel {
             } else if (value.matches(".*[a-zA-Z].*")) {
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numérico con letras");
             } else {
-                controller.updateIncome(Integer.parseInt(value), detail, type, user.getId(), id);
+                controller.updateIncome(Integer.parseInt(value), detail, type, user.getId(), id, this.user);
                 over.llenarTabla();
                 over.setTotal();
                 closeWindow();

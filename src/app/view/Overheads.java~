@@ -264,7 +264,7 @@ public class Overheads extends JPanel {
         int filaVista = tablaGastos.getSelectedRow();
         if (filaVista >= 0) {
             int filaModelo = tablaGastos.convertRowIndexToModel(filaVista);
-            List<OverheadResponseDTO> overheads = controller.getByUserID(user.getId(), this.user);
+            List<OverheadResponseDTO> overheads = controller.getByUserID(user.getId());
             if (filaModelo < overheads.size()) {
                 return overheads.get(filaModelo).getId();
             }

@@ -6,6 +6,7 @@ import app.exception.ApiException;
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
 import app.model.Overhead;
+import app.model.User;
 import app.service.imp.IOverheadService;
 import app.util.ApiErrorUtils;
 import com.google.gson.Gson;
@@ -41,9 +42,10 @@ public class GastoService {
         apiService = retrofit.create(IOverheadService.class);
     }
 
-    public void remove(Integer id) {
+    public void remove(Integer id, User user) {
         try {
-            Response<Void> response = apiService.deleteGasto(id).execute();
+            String token = user.getToken();
+            Response<Void> response = apiService.deleteGasto(token, id).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -52,10 +54,11 @@ public class GastoService {
         }
     }
 
-    public OverheadResponseDTO add(Integer userId, String overheadType, String overheadDescription, Integer ammount) {
+    public OverheadResponseDTO add(Integer userId, String overheadType, String overheadDescription, Integer ammount, User user) {
         CreateOverheadDTO overhead = new CreateOverheadDTO(userId, overheadType, overheadDescription, ammount);
         try {
-            Response<OverheadResponseDTO> response = apiService.createGasto(overhead).execute();
+            String token = user.getToken();
+            Response<OverheadResponseDTO> response = apiService.createGasto(token, overhead).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -65,9 +68,10 @@ public class GastoService {
         }
     }
 
-    public OverheadResponseDTO getById(Integer id) {
+    public OverheadResponseDTO getById(Integer id, User user) {
         try {
-            Response<OverheadResponseDTO> response = apiService.getGastoById(id).execute();
+            String token = user.getToken();
+            Response<OverheadResponseDTO> response = apiService.getGastoById(token, id).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -77,10 +81,11 @@ public class GastoService {
         }
     }
 
-    public OverheadResponseDTO update(Integer userId, String overheadType, String overheadDescription, Integer ammount, Integer id) {
+    public OverheadResponseDTO update(Integer userId, String overheadType, String overheadDescription, Integer ammount, Integer id, User user) {
         CreateOverheadDTO overhead = new CreateOverheadDTO(userId, overheadType, overheadDescription, ammount);
         try {
-            Response<OverheadResponseDTO> response = apiService.updateGasto(id, overhead).execute();
+            String token = user.getToken();
+            Response<OverheadResponseDTO> response = apiService.updateGasto(token, id, overhead).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -90,9 +95,10 @@ public class GastoService {
         }
     }
 
-    public List<OverheadResponseDTO> getByUserID(Integer userID){
+    public List<OverheadResponseDTO> getByUserID(Integer userID, User user){
         try {
-            Response<List<OverheadResponseDTO>> response = apiService.getOverheadByUserId(userID).execute();
+            String token = user.getToken();
+            Response<List<OverheadResponseDTO>> response = apiService.getOverheadByUserId(token, userID).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }

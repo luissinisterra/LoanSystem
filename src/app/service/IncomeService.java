@@ -6,6 +6,7 @@ import app.exception.ApiException;
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
 import app.model.Income;
+import app.model.User;
 import app.service.imp.IIncomeService;
 import app.util.ApiErrorUtils;
 import com.google.gson.Gson;
@@ -39,9 +40,10 @@ public class IncomeService {
         apiService = retrofit.create(IIncomeService.class);
     }
 
-    public List<IncomeResponseDTO> getIncomes() {
+    public List<IncomeResponseDTO> getIncomes(User user) {
         try {
-            Response<List<IncomeResponseDTO>> response = apiService.getIncomes().execute();
+            String token = "Bearer " + user.getToken();
+            Response<List<IncomeResponseDTO>> response = apiService.getIncomes(token).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -51,9 +53,10 @@ public class IncomeService {
         }
     }
 
-    public void remove(Integer id) {
+    public void remove(Integer id, User user) {
         try {
-            Response<Void> response = apiService.deleteIncome(id).execute();
+            String token = "Bearer " + user.getToken();
+            Response<Void> response = apiService.deleteIncome(token, id).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -62,10 +65,11 @@ public class IncomeService {
         }
     }
 
-    public IncomeResponseDTO add(Integer ammount, String incomeDescription, String incomeType, Integer userId) {
+    public IncomeResponseDTO add(Integer ammount, String incomeDescription, String incomeType, Integer userId, User user) {
         IncomeCreateDTO income = new IncomeCreateDTO(ammount, incomeDescription, incomeType, userId);
         try {
-            Response<IncomeResponseDTO> response = apiService.addIncome(income).execute();
+            String token = "Bearer " + user.getToken();
+            Response<IncomeResponseDTO> response = apiService.addIncome(token, income).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -75,9 +79,10 @@ public class IncomeService {
         }
     }
 
-    public IncomeResponseDTO getById(int id) {
+    public IncomeResponseDTO getById(int id, User user) {
         try {
-            Response<IncomeResponseDTO> response = apiService.getIncomeByID(id).execute();
+            String token = "Bearer " + user.getToken();
+            Response<IncomeResponseDTO> response = apiService.getIncomeByID(token, id).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -87,10 +92,11 @@ public class IncomeService {
         }
     }
 
-    public IncomeResponseDTO update(Integer ammount, String incomeDescription, String incomeType, Integer userId, Integer incomeID) {
+    public IncomeResponseDTO update(Integer ammount, String incomeDescription, String incomeType, Integer userId, Integer incomeID, User user) {
         IncomeCreateDTO income = new IncomeCreateDTO(ammount, incomeDescription, incomeType, userId);
         try {
-            Response<IncomeResponseDTO> response = apiService.updateIncome(incomeID, income).execute();
+            String token = "Bearer " + user.getToken();
+            Response<IncomeResponseDTO> response = apiService.updateIncome(token, incomeID, income).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }
@@ -100,9 +106,10 @@ public class IncomeService {
         }
     }
 
-    public List<IncomeResponseDTO> getIncomesByUserID(Integer userID) {
+    public List<IncomeResponseDTO> getIncomesByUserID(Integer userID, User user) {
         try {
-            Response<List<IncomeResponseDTO>> response = apiService.getIncomesByUserID(userID).execute();
+            String token = "Bearer " + user.getToken();
+            Response<List<IncomeResponseDTO>> response = apiService.getIncomesByUserID(token, userID).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }

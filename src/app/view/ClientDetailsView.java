@@ -4,7 +4,9 @@ import app.controller.ClientController;
 import app.controller.LoanController;
 import app.model.Client;
 import app.model.Loan;
+import app.model.User;
 import com.formdev.flatlaf.FlatClientProperties;
+import com.github.weisj.jsvg.nodes.Use;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -18,11 +20,13 @@ public class ClientDetailsView extends JPanel {
     private final ClientController clientController;
     private final LoanController loanController;
     private final int clientId;
+    private final User user;
 
-    public ClientDetailsView(int clientId) {
+    public ClientDetailsView(int clientId, User user) {
         this.clientId = clientId;
         this.clientController = new ClientController();
         this.loanController = new LoanController();
+        this.user = user;
         init();
     }
 
@@ -30,7 +34,7 @@ public class ClientDetailsView extends JPanel {
         setLayout(new MigLayout("fill, insets 20", "[grow][grow]", "[grow]"));
 
         // Obtener cliente
-        Client client = clientController.getClientById(clientId);
+        Client client = clientController.getClientById(clientId, this.user);
 
         // Paneles
         JPanel leftPanel = createInfoPanel(client);
@@ -82,7 +86,7 @@ public class ClientDetailsView extends JPanel {
         JLabel title = new JLabel("Historial de Préstamos");
         title.putClientProperty(FlatClientProperties.STYLE, "font:bold +4");
 
-        List<Loan> loans = this.loanController.getAllLoansByClientId(client.getId());
+        List<Loan> loans = this.loanController.getAllLoansByClientId(client.getId(), this.user);
 
         // Crear modelo tabla
         DefaultTableModel model = new DefaultTableModel();

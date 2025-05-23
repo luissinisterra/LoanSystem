@@ -1,5 +1,6 @@
 package app.view;
 
+import app.Application;
 import app.controller.UserController;
 import app.model.User;
 import app.view.forms.EditUserForm;
@@ -99,13 +100,30 @@ public class UserProfileView extends JPanel {
     // Método para configurar el botón de eliminar
     private void setupDeleteButtonAction(JButton button) {
         button.addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(this,"¿Está seguro de eliminar su cuenta? Esta acción no se puede deshacer.", "Confirmación", JOptionPane.YES_NO_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(
+                    button,
+                    "¿Está seguro de eliminar su cuenta? Esta acción no se puede deshacer.",
+                    "Confirmación",
+                    JOptionPane.YES_NO_OPTION
+            );
+
             if (confirm == JOptionPane.YES_OPTION) {
-                this.userController.deleteUser(user.getId());
-                Notifications.getInstance().show(Notifications.Type.WARNING, "Funcionalidad de eliminación pendiente.");
+                userController.deleteUser(user.getId(), this.user);
+
+                // Cambiar a pantalla de login
+                Application.logout();
+
+                // Cierra la ventana contenedora si no es la ventana principal
+                Window window = SwingUtilities.getWindowAncestor(button);
+                if (window != null && !(window instanceof Application)) {
+                    window.dispose();
+                }
+
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Cuenta eliminada con éxito.");
             }
         });
     }
+
 
     public void refreshData(User updatedUser) {
         this.user = updatedUser;

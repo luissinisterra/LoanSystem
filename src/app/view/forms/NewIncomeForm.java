@@ -87,7 +87,7 @@ public class NewIncomeForm extends JPanel {
             return;
         }
         try {
-            controller.addIncome(Integer.parseInt(value), detail, type, user.getId());
+            controller.addIncome(Integer.parseInt(value), detail, type, user.getId(), this.user);
             over.llenarTabla();
             over.setTotal();
             closeWindow();

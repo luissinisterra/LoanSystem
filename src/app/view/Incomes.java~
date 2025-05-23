@@ -210,7 +210,7 @@ public class Incomes extends JPanel {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Seleccione un ingreso para eliminar");
             return;
         }
-        controller.removeIncome(id, this.user);
+        controller.removeIncome(id);
         llenarTabla();
         setTotal();
         Notifications.getInstance().show(Notifications.Type.INFO, "Ingreso eliminado correctamente");

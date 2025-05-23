@@ -57,7 +57,8 @@ public class UserService {
 
     public User updateUser(int id, User user) {
         try {
-            Response<User> response = apiService.updateUser(id, user).execute();
+            String token = "Bearer " + user.getToken();
+            Response<User> response = apiService.updateUser(token, id, user).execute();
 
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -69,9 +70,10 @@ public class UserService {
         }
     }
 
-    public void deleteUser(int id) {
+    public void deleteUser(int id, User user) {
         try {
-            Response<Void> response = apiService.deleteUser(id).execute();
+            String token = "Bearer " + user.getToken();
+            Response<Void> response = apiService.deleteUser(token, id).execute();
 
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));

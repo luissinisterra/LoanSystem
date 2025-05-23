@@ -22,8 +22,8 @@ public class IncomeController {
         return incomeService.getById(id, user);
     }
 
-    public void removeIncome(Integer id, User user) {
-        incomeService.remove(id, user);
+    public void removeIncome(Integer id) {
+        incomeService.remove(id);
     }
 
     public IncomeResponseDTO addIncome(Integer ammount, String incomeDescription, String incomeType, Integer userId, User user) {

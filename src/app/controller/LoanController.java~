@@ -43,7 +43,7 @@ public class LoanController {
     }
 
     // Eliminar un préstamo
-    public void deleteLoan(int id, User user) {
+    public void deleteLoan(int id) {
         this.loanService.deleteLoan(id, user);
     }
 

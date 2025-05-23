@@ -111,7 +111,7 @@ public class EditOverheadForm extends JPanel {
             } else if (value.matches(".*[a-zA-Z].*")) {
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
             } else {
-                controller.updateGasto(user.getId(), type, detail, Integer.parseInt(value), id);
+                controller.updateGasto(user.getId(), type, detail, Integer.parseInt(value), id, this.user);
                 over.llenarTabla();
                 over.setTotal();
                 Window window = SwingUtilities.getWindowAncestor(this);
