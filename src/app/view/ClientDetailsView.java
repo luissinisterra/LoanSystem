@@ -86,7 +86,7 @@ public class ClientDetailsView extends JPanel {
         JLabel title = new JLabel("Historial de Préstamos");
         title.putClientProperty(FlatClientProperties.STYLE, "font:bold +4");
 
-        List<Loan> loans = this.loanController.getAllLoansByClientId(client.getId());
+        List<Loan> loans = this.loanController.getAllLoansByClientId(client.getId(), this.user);
 
         // Crear modelo tabla
         DefaultTableModel model = new DefaultTableModel();

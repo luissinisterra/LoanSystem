@@ -4,6 +4,7 @@ import app.exception.ApiException;
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
 import app.model.Loan;
+import app.model.User;
 import app.service.imp.ILoanService;
 import app.util.ApiErrorUtils;
 import com.google.gson.Gson;
@@ -43,9 +44,10 @@ public class LoanService {
     }
 
     // Obtener todos los préstamos
-    public List<Loan> getAllLoans() {
+    public List<Loan> getAllLoans(User user) {
         try {
-            Response<List<Loan>> response = this.iLoanService.getAllLoans().execute();
+            String token = "Bearer " + user.getToken();
+            Response<List<Loan>> response = this.iLoanService.getAllLoans(token).execute();
             List<Loan> loans = response.body();
 
             if (!response.isSuccessful()) {
@@ -59,9 +61,10 @@ public class LoanService {
         }
     }
 
-    public List<Loan> getAllLoansByClientId(int id) {
+    public List<Loan> getAllLoansByClientId(int id, User user) {
         try{
-            Response<List<Loan>> response = this.iLoanService.getAllLoansByClientId(id).execute();
+            String token = "Bearer " + user.getToken();
+            Response<List<Loan>> response = this.iLoanService.getAllLoansByClientId(token, id).execute();
             List<Loan> loans = response.body();
 
             if (!response.isSuccessful()) {
@@ -76,9 +79,10 @@ public class LoanService {
     }
 
     // Obtener todos los préstamos de un usuario en especifico
-    public List<Loan> getAllLoansByUserId(int id) {
+    public List<Loan> getAllLoansByUserId(int id, User user) {
         try {
-            Response<List<Loan>> response = this.iLoanService.getAllLoansByUserId(id).execute();
+            String token = "Bearer " + user.getToken();
+            Response<List<Loan>> response = this.iLoanService.getAllLoansByUserId(token, id).execute();
             List<Loan> userLoans = response.body();
 
             if (!response.isSuccessful()) {
@@ -93,9 +97,10 @@ public class LoanService {
     }
 
     // Obtener un préstamo por ID
-    public Loan getLoanById(int id) {
+    public Loan getLoanById(int id, User user) {
         try {
-            Response<Loan> response = this.iLoanService.getLoanById(id).execute();
+            String token = "Bearer " + user.getToken();
+            Response<Loan> response = this.iLoanService.getLoanById(token, id).execute();
             Loan loan = response.body();
 
             if (!response.isSuccessful()) {
@@ -109,9 +114,10 @@ public class LoanService {
     }
 
     // Crear un nuevo préstamo
-    public void createLoan(Loan loan) {
+    public void createLoan(Loan loan, User user) {
         try {
-            Response<Void> response = this.iLoanService.createLoan(loan).execute();
+            String token = "Bearer " + user.getToken();
+            Response<Void> response = this.iLoanService.createLoan(token, loan).execute();
 
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -123,9 +129,10 @@ public class LoanService {
     }
 
     // Actualizar un préstamo existente
-    public void updateLoan(int id, Loan loan) {
+    public void updateLoan(int id, Loan loan, User user) {
         try {
-            Response<Void> response = this.iLoanService.updateLoan(id, loan).execute();
+            String token = "Bearer " + user.getToken();
+            Response<Void> response = this.iLoanService.updateLoan(token, id, loan).execute();
 
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -137,9 +144,10 @@ public class LoanService {
     }
 
     // Eliminar un préstamo
-    public void deleteLoan(int id) {
+    public void deleteLoan(int id, User user) {
         try {
-            Response<Void> response = this.iLoanService.deleteLoan(id).execute();
+            String token = "Bearer " + user.getToken();
+            Response<Void> response = this.iLoanService.deleteLoan(token, id).execute();
 
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -151,9 +159,10 @@ public class LoanService {
     }
 
     // Buscar préstamos por consulta
-    public List<Loan> searchLoansByQuery(int userId, String query) {
+    public List<Loan> searchLoansByQuery(int userId, String query, User user) {
         try {
-            Response<List<Loan>> response = this.iLoanService.searchLoansByQuery(userId, query).execute();
+            String token = "Bearer " + user.getToken();
+            Response<List<Loan>> response = this.iLoanService.searchLoansByQuery(token, userId, query).execute();
             List<Loan> loans = response.body();
             return loans;
         } catch (IOException e) {
@@ -163,9 +172,9 @@ public class LoanService {
     }
 
     // Contar préstamos activos
-    public int getActiveLoansCount() {
+    public int getActiveLoansCount(User user) {
         int activeLoansCount = 0;
-        List<Loan> loans = getAllLoans();
+        List<Loan> loans = getAllLoans(user);
         if (loans != null) {
             for (Loan loan : loans) {
                 if (loan.isActive()) {

@@ -177,7 +177,7 @@ public class NewLoanForm extends JPanel {
         Loan loan = new Loan(amount, interestRate, term, active, date, Integer.parseInt(clientId), this.user.getId());
 
         // Guardar el préstamo utilizando el controlador
-        this.loanController.createLoan(loan);
+        this.loanController.createLoan(loan, this.user);
 
         // Refrescar la tabla del padre
         this.listView.refreshTable();
