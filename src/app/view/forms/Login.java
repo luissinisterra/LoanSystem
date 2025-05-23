@@ -25,7 +25,6 @@ public class Login extends JPanel {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         txtUsername = new JTextField();
         txtPassword = new JPasswordField();
-        chRememberMe = new JCheckBox("Recordarme");
         cmdLogin = new JButton("Iniciar sesión");
 
         cmdLogin.addActionListener(e -> {
@@ -78,7 +77,6 @@ public class Login extends JPanel {
         panel.add(txtUsername);
         panel.add(new JLabel("Clave"), "gapy 8");
         panel.add(txtPassword);
-        panel.add(chRememberMe, "grow 0");
         panel.add(cmdLogin, "gapy 10");
         panel.add(createSignupLabel(), "gapy 10");
         add(panel);
