@@ -106,7 +106,7 @@ public class NewOverheadForm extends JPanel {
               Notifications.getInstance().show(Notifications.Type.WARNING, "Campo numerico con letras");
           }
           else {
-              controller.addGasto(user.getId(), type, detail, Integer.parseInt(value));
+              controller.addGasto(user.getId(), type, detail, Integer.parseInt(value), this.user);
               over.llenarTabla();
               over.setTotal();
               Window window = SwingUtilities.getWindowAncestor(this);

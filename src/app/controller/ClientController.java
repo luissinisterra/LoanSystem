@@ -24,7 +24,7 @@ public class ClientController {
     }
 
     public Client getClientById(int id, User user) {
-        return this.clientService.getClientById(id, User user);
+        return this.clientService.getClientById(id, user);
     }
 
     public void createClient(Client client, User user) {
@@ -43,7 +43,7 @@ public class ClientController {
         return this.clientService.searchClientsByQuery(userId, query, user);
     }
 
-    public int getActiveClientsCount() {
-        return this.clientService.getActiveClientsCount();
+    public int getActiveClientsCount(User user) {
+        return this.clientService.getActiveClientsCount(user);
     }
 }

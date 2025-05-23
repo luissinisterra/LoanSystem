@@ -8,31 +8,52 @@ import retrofit2.http.*;
 
 import java.util.List;
 
-
 public interface IOverheadService {
-    //Obtener por id
+
+    // === Obtener por ID ===
     @GET("/api/overheads/{id}")
-    Call<OverheadResponseDTO> getGastoById(@Path("id") Integer id);
+    Call<OverheadResponseDTO> getGastoById(
+            @Header("Authorization") String authHeader,
+            @Path("id") Integer id
+    );
 
-    //Filtrar
+    // === Filtrar gastos ===
     @GET("/api/gastos/buscar")
-    Call<List<Overhead>> buscarGastosPorFiltros(@Query("tipoDeGasto") String tipoDeGasto,
-                                                @Query("gastoMinimo") String gastoMinimo,
-                                                @Query("gastoMaximo") String gastoMaximo,
-                                                @Query("montoGasto") String montoGasto,
-                                                @Query("filtroFecha") String filtroFecha);
-    //Post
+    Call<List<Overhead>> buscarGastosPorFiltros(
+            @Header("Authorization") String authHeader,
+            @Query("tipoDeGasto") String tipoDeGasto,
+            @Query("gastoMinimo") String gastoMinimo,
+            @Query("gastoMaximo") String gastoMaximo,
+            @Query("montoGasto") String montoGasto,
+            @Query("filtroFecha") String filtroFecha
+    );
+
+    // === Crear gasto ===
     @POST("/api/overheads")
-    Call<OverheadResponseDTO> createGasto(@Body CreateOverheadDTO overhead);
+    Call<OverheadResponseDTO> createGasto(
+            @Header("Authorization") String authHeader,
+            @Body CreateOverheadDTO overhead
+    );
 
-    //Remove
+    // === Eliminar gasto ===
     @DELETE("/api/overheads/{id}")
-    Call<Void> deleteGasto(@Path("id") Integer id);
+    Call<Void> deleteGasto(
+            @Header("Authorization") String authHeader,
+            @Path("id") Integer id
+    );
 
-    //Put
+    // === Actualizar gasto ===
     @PUT("/api/overheads/{id}")
-    Call<OverheadResponseDTO> updateGasto(@Path("id") Integer id, @Body CreateOverheadDTO overhead);
+    Call<OverheadResponseDTO> updateGasto(
+            @Header("Authorization") String authHeader,
+            @Path("id") Integer id,
+            @Body CreateOverheadDTO overhead
+    );
 
-    @GET ("/api/overheads/user/{userId}")
-    Call<List<OverheadResponseDTO>> getOverheadByUserId(@Path("userId") Integer userId);
+    // === Obtener por User ID ===
+    @GET("/api/overheads/user/{userId}")
+    Call<List<OverheadResponseDTO>> getOverheadByUserId(
+            @Header("Authorization") String authHeader,
+            @Path("userId") Integer userId
+    );
 }

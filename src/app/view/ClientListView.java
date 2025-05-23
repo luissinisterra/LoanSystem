@@ -192,7 +192,7 @@ public class ClientListView extends JPanel {
 
         // Icono para la sección de clientes activos
         FlatSVGIcon activesClientsIcon = new FlatSVGIcon("app/icon/svg/quality-icon.svg").derive(50, 50);
-        int activesClientsCompletes = this.clientController.getActiveClientsCount() == 0 ? 0 : this.clientController.getActiveClientsCount();
+        int activesClientsCompletes = this.clientController.getActiveClientsCount(this.user) == 0 ? 0 : this.clientController.getActiveClientsCount(this.user);
         JPanel activeClients = createStatCard("Clientes Activos", activesClientsIcon, String.valueOf("  " + activesClientsCompletes));
 
         statsPanel.add(totalClients);
