@@ -18,6 +18,7 @@ public class User {
         this.password = password;
         this.username = username;
         this.gender = gender;
+        this.token = "";
     }
 
     public int getId() {

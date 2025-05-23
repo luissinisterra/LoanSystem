@@ -2,6 +2,7 @@ package app.view.forms;
 
 import app.controller.ClientController;
 import app.controller.LoanController;
+import app.exception.ApiException;
 import app.model.Client;
 import app.model.Loan;
 import app.model.User;
@@ -95,13 +96,6 @@ public class NewLoanForm extends JPanel {
         cmdSave.addActionListener(e -> {
             if (validateFields()) {
                 saveLoan();
-                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo guardado correctamente");
-
-                // Cerrar la ventana después de guardar
-                Window window = SwingUtilities.getWindowAncestor(this);
-                if (window != null) {
-                    window.dispose();
-                }
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "Por favor complete todos los campos obligatorios");
             }
@@ -164,22 +158,35 @@ public class NewLoanForm extends JPanel {
     }
 
     private void saveLoan() {
-        // Obtener los valores de los campos del formulario
-        String clientId = txtClient.getText(); // ID del cliente asociado al préstamo
+        try {
+            // Obtener los valores de los campos del formulario
+            String clientId = txtClient.getText(); // ID del cliente asociado al préstamo
 
-        double amount = Double.parseDouble(txtAmount.getText()); // Monto del préstamo
-        double interestRate = Double.parseDouble(txtInterestRate.getText()); // Tasa de interés
-        int term = Integer.parseInt(txtTerm.getText()); // Plazo en meses
-        boolean active = true;
-        LocalDate date = LocalDate.parse(txtDate.getText()); // Fecha del préstamo
+            double amount = Double.parseDouble(txtAmount.getText()); // Monto del préstamo
+            double interestRate = Double.parseDouble(txtInterestRate.getText()); // Tasa de interés
+            int term = Integer.parseInt(txtTerm.getText()); // Plazo en meses
+            boolean active = true;
+            LocalDate date = LocalDate.parse(txtDate.getText()); // Fecha del préstamo
 
-        // Crear un objeto Loan con los datos ingresados
-        Loan loan = new Loan(amount, interestRate, term, active, date, Integer.parseInt(clientId), this.user.getId());
+            // Crear un objeto Loan con los datos ingresados
+            Loan loan = new Loan(amount, interestRate, term, active, date, Integer.parseInt(clientId), this.user.getId());
 
-        // Guardar el préstamo utilizando el controlador
-        this.loanController.createLoan(loan, this.user);
+            // Guardar el préstamo utilizando el controlador
+            this.loanController.createLoan(loan, this.user);
 
-        // Refrescar la tabla del padre
-        this.listView.refreshTable();
+            // Refrescar la tabla del padre
+            this.listView.refreshTable();
+
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Préstamo guardado correctamente");
+
+            // Cerrar la ventana después de guardar
+            Window window = SwingUtilities.getWindowAncestor(this);
+            if (window != null) {
+                window.dispose();
+            }
+
+        } catch (Exception e) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, e.getMessage());
+        }
     }
 }
