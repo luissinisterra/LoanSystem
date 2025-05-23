@@ -186,6 +186,6 @@ public class EditClientForm extends JPanel {
         client.setActive("Activo".equals(status));
 
         // Actualizar el cliente en la base de datos o en memoria
-        this.clientController.updateClient(Integer.parseInt(txtId.getText()), client);
+        this.clientController.updateClient(Integer.parseInt(txtId.getText()), client, this.user);
     }
 }

@@ -108,7 +108,7 @@ public class UserProfileView extends JPanel {
             );
 
             if (confirm == JOptionPane.YES_OPTION) {
-                userController.deleteUser(user.getId());
+                userController.deleteUser(user.getId(), this.user);
 
                 // Cambiar a pantalla de login
                 Application.logout();

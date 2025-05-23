@@ -256,7 +256,7 @@ public class Dashboard extends JPanel {
     }
 
     private JLabel getTotalIncomes(){
-        List<IncomeResponseDTO> incomes = incomeController.getIncomesByUserID(user.getId());
+        List<IncomeResponseDTO> incomes = incomeController.getIncomesByUserID(user.getId(), this.user);
         double total = 0;
         for( IncomeResponseDTO income : incomes){
             total += income.getAmmount();

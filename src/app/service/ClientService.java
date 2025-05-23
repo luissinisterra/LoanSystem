@@ -5,6 +5,7 @@ import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
 import app.model.Client;
 import app.model.Loan;
+import app.model.User;
 import app.service.imp.IClientService;
 import app.util.ApiErrorUtils;
 import com.google.gson.*;
@@ -41,9 +42,10 @@ public class ClientService {
         this.iClientService = retrofit.create(IClientService.class);
     }
 
-    public List<Client> getAllClients() {
+    public List<Client> getAllClients(User user) {
         try {
-            Response<List<Client>> response = this.iClientService.getAllClients().execute();
+            String token = "Bearer " + user.getToken();
+            Response<List<Client>> response = this.iClientService.getAllClients(token).execute();
 
             if(!response.isSuccessful()){
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -57,9 +59,10 @@ public class ClientService {
         }
     }
 
-    public List<Client> getAllClientsByUserId(int id) {
+    public List<Client> getAllClientsByUserId(int id, User user) {
         try {
-            Response<List<Client>> response = this.iClientService.getAllClientsByUserId(id).execute();
+            String token = "Bearer " + user.getToken();
+            Response<List<Client>> response = this.iClientService.getAllClientsByUserId(token, id).execute();
 
             if(!response.isSuccessful()){
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -73,9 +76,10 @@ public class ClientService {
         }
     }
 
-    public Client getClientById(int id) {
+    public Client getClientById(int id, User user) {
         try{
-            Response<Client> response = this.iClientService.getClientById(id).execute();
+            String token = "Bearer " + user.getToken();
+            Response<Client> response = this.iClientService.getClientById(token, id).execute();
 
             if(!response.isSuccessful()){
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -89,9 +93,10 @@ public class ClientService {
         }
     }
 
-    public void createClient(Client client) {
+    public void createClient(Client client, User user) {
         try{
-            Response<Void> response = this.iClientService.createClient(client).execute();
+            String token = "Bearer " + user.getToken();
+            Response<Void> response = this.iClientService.createClient(token, client).execute();
 
             if(!response.isSuccessful()){
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -102,9 +107,10 @@ public class ClientService {
         }
     }
 
-    public void updateClient(int id, Client client) {
+    public void updateClient(int id, Client client, User user) {
         try {
-            Response<Void> response = this.iClientService.updateClient(id, client).execute();
+            String token = "Bearer " + user.getToken();
+            Response<Void> response = this.iClientService.updateClient(token, id, client).execute();
 
             if(!response.isSuccessful()){
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -115,9 +121,10 @@ public class ClientService {
         }
     }
 
-    public void deleteClient(int id) {
+    public void deleteClient(int id, User user) {
         try {
-            Response<Void> response = this.iClientService.deleteClient(id).execute();
+            String token = "Bearer " + user.getToken();
+            Response<Void> response = this.iClientService.deleteClient(token, id).execute();
 
             if(!response.isSuccessful()){
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -128,9 +135,10 @@ public class ClientService {
         }
     }
 
-    public List<Client> searchClientsByQuery(int userId, String query) {
+    public List<Client> searchClientsByQuery(int userId, String query, User user) {
         try {
-            Response<List<Client>> response = this.iClientService.searchClientsByQuery(userId, query).execute();
+            String token = "Bearer " + user.getToken();
+            Response<List<Client>> response = this.iClientService.searchClientsByQuery(token, userId, query).execute();
 
             if(!response.isSuccessful()){
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -144,9 +152,9 @@ public class ClientService {
         }
     }
 
-    public int getActiveClientsCount() {
+    public int getActiveClientsCount(User user) {
         int activeClientsCount = 0;
-        List<Client> clients = getAllClients();
+        List<Client> clients = getAllClients(user);
         if (clients != null) {
             for (Client client : clients) {
                 if (client.isActive()){

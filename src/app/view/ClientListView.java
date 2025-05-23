@@ -109,7 +109,7 @@ public class ClientListView extends JPanel {
 
     //Metodo para filtrado de clientes
     private void filterTable(String query) {
-        List<Client> clients = this.clientController.searchClientsByQuery(this.user.getId(), query);
+        List<Client> clients = this.clientController.searchClientsByQuery(this.user.getId(), query, this.user);
         model.setRowCount(0); // Limpiar las filas actuales del modelo
 
         boolean isEmpty = true;
@@ -137,7 +137,7 @@ public class ClientListView extends JPanel {
 
     //Metodo para filtrado de clientes
     private void resetTable() {
-        List<Client> clients = this.clientController.getAllClientsByUserId(this.user.getId());
+        List<Client> clients = this.clientController.getAllClientsByUserId(this.user.getId(), this.user);
 
         model.setRowCount(0); // Limpiar las filas actuales del modelo
 
@@ -158,7 +158,7 @@ public class ClientListView extends JPanel {
     }
 
     public void refreshTable() {
-        List<Client> clients = this.clientController.getAllClientsByUserId(this.user.getId());
+        List<Client> clients = this.clientController.getAllClientsByUserId(this.user.getId(), this.user);
 
         model.setRowCount(0); // Limpiar las filas actuales del modelo
 
@@ -186,7 +186,7 @@ public class ClientListView extends JPanel {
 
         // Icono para la sección de clientes totales
         FlatSVGIcon totalClientsIcon = new FlatSVGIcon("app/icon/svg/people-icon.svg").derive(50, 50);
-        List<Client> allClients = this.clientController.getAllClients();
+        List<Client> allClients = this.clientController.getAllClients(this.user);
         int totalClientsCompletes = (allClients == null || allClients.isEmpty()) ? 0 : allClients.size();
         JPanel totalClients = createStatCard("Total de Clientes", totalClientsIcon, String.valueOf("  " + totalClientsCompletes));
 
@@ -234,7 +234,7 @@ public class ClientListView extends JPanel {
     private JScrollPane createTablePanel() {
         this.createStatsPanel();
 
-        List<Client> clients = this.clientController.getAllClientsByUserId(this.user.getId());
+        List<Client> clients = this.clientController.getAllClientsByUserId(this.user.getId(), this.user);
 
         model = new DefaultTableModel();
         model.addColumn("Documento");
@@ -337,7 +337,7 @@ public class ClientListView extends JPanel {
             if (selectedRow != -1) {
                 String id = table.getValueAt(selectedRow, 0).toString();
 
-                Client client = this.clientController.getClientById(Integer.parseInt(id));
+                Client client = this.clientController.getClientById(Integer.parseInt(id), this.user);
 
                 String firstName = client.getFirstName();
                 String secondName = client.getFirstSurname();
@@ -383,7 +383,7 @@ public class ClientListView extends JPanel {
                 String id = table.getValueAt(selectedRow, 0).toString();
                 int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este cliente?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    this.clientController.deleteClient(Integer.parseInt(id));
+                    this.clientController.deleteClient(Integer.parseInt(id), this.user);
                     this.refreshTable();
                     Notifications.getInstance().show(Notifications.Type.SUCCESS, "El cliente ha sido eliminado con éxito.");
                 }
@@ -415,7 +415,7 @@ public class ClientListView extends JPanel {
             if (selectedRow != -1) {
                 String id = table.getValueAt(selectedRow, 0).toString();
                 JFrame frame = new JFrame("Detalles del Cliente");
-                frame.setContentPane(new ClientDetailsView(Integer.parseInt(id)));
+                frame.setContentPane(new ClientDetailsView(Integer.parseInt(id), this.user));
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.pack();
                 frame.setLocationRelativeTo(null);

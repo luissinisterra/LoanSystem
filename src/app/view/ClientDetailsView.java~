@@ -83,7 +83,7 @@ public class ClientDetailsView extends JPanel {
         title.putClientProperty(FlatClientProperties.STYLE, "font:bold +4");
 
         List<Loan> loans = this.loanController.getAllLoansByClientId(client.getId());
-        
+
         // Crear modelo tabla
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Monto");
