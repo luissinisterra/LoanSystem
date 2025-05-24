@@ -1,5 +1,6 @@
 package app;
 
+import app.dto.UserResponseDTO;
 import app.manager.FormsManager;
 import app.model.User;
 import app.view.forms.Login;
@@ -35,7 +36,7 @@ public class Application extends JFrame {
         Notifications.getInstance().setJFrame(this);
     }
 
-    public void setUserToMainForm(User user) {
+    public void setUserToMainForm(UserResponseDTO user) {
         mainForm.setUser(user);
     }
 

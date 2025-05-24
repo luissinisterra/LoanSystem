@@ -31,6 +31,6 @@ public class OverheadController {
     }
 
     public List<OverheadResponseDTO> getByUserID(Integer userID, User user){
-        return this.gastoService.getByUserID(userID,, user);
+        return this.gastoService.getByUserID(userID, user);
     }
 }

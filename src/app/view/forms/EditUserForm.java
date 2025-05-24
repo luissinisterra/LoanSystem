@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.controller.UserController;
+import app.dto.UserResponseDTO;
 import app.model.User;
 import app.view.UserProfileView;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -21,11 +22,11 @@ public class EditUserForm extends JPanel {
     private JPasswordField txtPassword;
     private JComboBox<String> cbGender;
 
-    private User user;
+    private UserResponseDTO user;
     private UserProfileView profileView;
     private UserController userController;
 
-    public EditUserForm(User user, UserProfileView profileView) {
+    public EditUserForm(UserResponseDTO user, UserProfileView profileView) {
         this.user = user;
         this.profileView = profileView;
         this.userController = new UserController();
@@ -125,18 +126,17 @@ public class EditUserForm extends JPanel {
     private void updateUser() {
         try{
             User user = new User(
-                    Integer.parseInt(txtId.getText()),
                     txtNames.getText(),
                     txtSurnames.getText(),
                     txtEmail.getText(),
-                    String.valueOf(txtPassword.getPassword().length == 0 ? this.user.getPassword() : txtPassword.getPassword()),
+                    String.valueOf(txtPassword.getPassword().length == 0 ? "" : new String(txtPassword.getPassword())),
                     txtUsername.getText(),
                     (String) cbGender.getSelectedItem()
             );
 
-            this.userController.updateUser(Integer.parseInt(txtId.getText()), user);
+            UserResponseDTO userUpdated = this.userController.updateUser(Integer.parseInt(txtId.getText()), user, this.user);
 
-            this.profileView.refreshData(user);
+            this.profileView.refreshData(userUpdated);
 
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Perfil actualizado correctamente.");
 

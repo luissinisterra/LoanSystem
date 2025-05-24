@@ -1,6 +1,7 @@
 package app.view;
 
 import app.controller.LoanController;
+import app.dto.UserResponseDTO;
 import app.model.Loan;
 import app.model.User;
 import app.view.forms.EditLoanForm;
@@ -21,9 +22,9 @@ public class LoanListView extends JPanel {
     private LoanController loanController;
     private DefaultTableModel model;
     private JTable table;
-    private User user;
+    private UserResponseDTO user;
 
-    public LoanListView(User user) {
+    public LoanListView(UserResponseDTO user) {
         this.loanController = new LoanController();
         this.user = user;
         init();

@@ -1,7 +1,6 @@
 package app.model;
 
 
-import app.dto.UserResponseDTO;
 import com.github.weisj.jsvg.nodes.Use;
 
 import java.time.LocalDate;
@@ -9,7 +8,7 @@ import java.time.LocalDate;
 public class Overhead {
 
     private Integer overheadID;
-    private UserResponseDTO user;
+    private User user;
     private String overheadType;
     private String overheadDescription;
     private Integer ammount;
@@ -29,11 +28,11 @@ public class Overhead {
         this.overheadID = overheadID;
     }
 
-    public UserResponseDTO getUserID() {
+    public User getUserID() {
         return user;
     }
 
-    public void setUserID(UserResponseDTO userID) {
+    public void setUserID(User userID) {
         this.user = userID;
     }
 

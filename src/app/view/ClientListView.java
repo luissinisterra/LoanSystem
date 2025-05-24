@@ -1,6 +1,7 @@
 package app.view;
 
 import app.controller.ClientController;
+import app.dto.UserResponseDTO;
 import app.model.Client;
 import app.model.User;
 import app.view.forms.EditClientForm;
@@ -21,9 +22,9 @@ public class ClientListView extends JPanel {
     private ClientController clientController = new ClientController();
     private DefaultTableModel model;
     private JTable table;
-    private User user;
+    private UserResponseDTO user;
 
-    public ClientListView(User user) {
+    public ClientListView(UserResponseDTO user) {
         this.user = user;
         this.clientController = new ClientController();
         init();

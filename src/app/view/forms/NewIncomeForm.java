@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.controller.IncomeController;
+import app.dto.UserResponseDTO;
 import app.exception.ApiException;
 import app.model.User;
 import app.view.Incomes;
@@ -15,9 +16,9 @@ public class NewIncomeForm extends JPanel {
 
     private final IncomeController controller = new IncomeController();
     private Incomes over;
-    private User user;
+    private UserResponseDTO user;
 
-    public NewIncomeForm(Incomes over, User user){
+    public NewIncomeForm(Incomes over, UserResponseDTO user){
         init();
         setupActions();
         this.over = over;

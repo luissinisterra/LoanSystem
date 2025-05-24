@@ -24,7 +24,7 @@ public class Application extends JFrame {
         initComponents();
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
-appa        zz  a   
+
         FormsManager.getInstance().initApplication(this);
 
         mainForm = new MainForm();

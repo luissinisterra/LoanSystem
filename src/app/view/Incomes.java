@@ -2,6 +2,7 @@ package app.view;
 
 import app.controller.IncomeController;
 import app.dto.IncomeResponseDTO;
+import app.dto.UserResponseDTO;
 import app.exception.ApiException;
 import app.model.Income;
 import app.model.User;
@@ -21,9 +22,9 @@ import java.util.List;
 public class Incomes extends JPanel {
 
     private final IncomeController controller = new IncomeController();
-    private User user;
+    private UserResponseDTO user;
 
-    public Incomes(User user) {
+    public Incomes(UserResponseDTO user) {
         this.user = user;
         init();
     }

@@ -2,6 +2,7 @@ package app.view.forms;
 
 import app.controller.ClientController;
 import app.controller.LoanController;
+import app.dto.UserResponseDTO;
 import app.exception.ApiException;
 import app.model.Client;
 import app.model.Loan;
@@ -26,9 +27,9 @@ public class NewLoanForm extends JPanel {
     private LoanListView listView;
     private LoanController loanController;
     private ClientController clientController;
-    private User user;
+    private UserResponseDTO user;
 
-    public NewLoanForm(User user, LoanListView listView) {
+    public NewLoanForm(UserResponseDTO user, LoanListView listView) {
         this.user = user;
         this.listView = listView;
         this.loanController = new LoanController();

@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.UserResponseDTO;
 import app.model.User;
 import app.service.UserService;
 
@@ -10,19 +11,19 @@ public class UserController {
         userService = new UserService();
     }
 
-    public User saveUser(int id, String names, String surnames, String email, String password, String username, String gender) {
-        return this.userService.saveUser(id, names, surnames, email, password, username, gender);
+    public UserResponseDTO saveUser(String names, String surnames, String email, String password, String username, String gender) {
+        return this.userService.saveUser(names, surnames, email, password, username, gender);
     }
 
-    public User updateUser(int id, User user) {
-        return this.userService.updateUser(id, user);
+    public UserResponseDTO updateUser(int id, User user, UserResponseDTO userRDTO) {
+        return this.userService.updateUser(id, user, userRDTO);
     }
 
-    public void deleteUser(int id, User user) {
+    public void deleteUser(int id, UserResponseDTO user) {
         this.userService.deleteUser(id, user);
     }
 
-    public User loadUser(String username, String password) {
+    public UserResponseDTO loadUser(String username, String password) {
         return this.userService.loadUser(username, password);
     }
 }

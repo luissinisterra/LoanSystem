@@ -2,6 +2,7 @@ package app.service;
 
 import app.dto.CreateOverheadDTO;
 import app.dto.OverheadResponseDTO;
+import app.dto.UserResponseDTO;
 import app.exception.ApiException;
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
@@ -42,7 +43,7 @@ public class GastoService {
         apiService = retrofit.create(IOverheadService.class);
     }
 
-    public void remove(Integer id, User user) {
+    public void remove(Integer id, UserResponseDTO user) {
         try {
             String token = user.getToken();
             Response<Void> response = apiService.deleteGasto(token, id).execute();
@@ -54,7 +55,7 @@ public class GastoService {
         }
     }
 
-    public OverheadResponseDTO add(Integer userId, String overheadType, String overheadDescription, Integer ammount, User user) {
+    public OverheadResponseDTO add(Integer userId, String overheadType, String overheadDescription, Integer ammount, UserResponseDTO user) {
         CreateOverheadDTO overhead = new CreateOverheadDTO(userId, overheadType, overheadDescription, ammount);
         try {
             String token = user.getToken();
@@ -68,7 +69,7 @@ public class GastoService {
         }
     }
 
-    public OverheadResponseDTO getById(Integer id, User user) {
+    public OverheadResponseDTO getById(Integer id, UserResponseDTO user) {
         try {
             String token = user.getToken();
             Response<OverheadResponseDTO> response = apiService.getGastoById(token, id).execute();
@@ -81,7 +82,7 @@ public class GastoService {
         }
     }
 
-    public OverheadResponseDTO update(Integer userId, String overheadType, String overheadDescription, Integer ammount, Integer id, User user) {
+    public OverheadResponseDTO update(Integer userId, String overheadType, String overheadDescription, Integer ammount, Integer id, UserResponseDTO user) {
         CreateOverheadDTO overhead = new CreateOverheadDTO(userId, overheadType, overheadDescription, ammount);
         try {
             String token = user.getToken();
@@ -95,7 +96,7 @@ public class GastoService {
         }
     }
 
-    public List<OverheadResponseDTO> getByUserID(Integer userID, User user){
+    public List<OverheadResponseDTO> getByUserID(Integer userID, UserResponseDTO user){
         try {
             String token = user.getToken();
             Response<List<OverheadResponseDTO>> response = apiService.getOverheadByUserId(token, userID).execute();

@@ -8,7 +8,6 @@ import app.view.forms.EditUserForm;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
-import raven.toast.Notifications;
 
 import javax.swing.*;
 import java.awt.*;
