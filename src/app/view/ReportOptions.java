@@ -25,36 +25,17 @@ public class ReportOptions extends JPanel {
         lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +16");
 
         // Componentes de filtrado
-        JTextField txtClient = createFormField("Buscar por cliente");
-        JComboBox<String> cbStatus = new JComboBox<>(new String[]{"Todos", "Activo", "Inactivo", "Pagado"});
-        JTextField txtDateStart = createFormField("Fecha inicial (dd/mm/aaaa)");
-        JTextField txtDateEnd = createFormField("Fecha final (dd/mm/aaaa)");
-        JTextField txtMinAmount = createFormField("Monto mínimo");
-        JTextField txtMaxAmount = createFormField("Monto máximo");
+        JComboBox<String> cbStatus = new JComboBox<>(new String[]{"1 dia", "1 semana", "1 mes", "3 meses", "6 meses", "1 año"});
 
         // Botones de acción
-        JButton btnFilter = createActionButton("Aplicar Filtros");
-        JButton btnReset = createActionButton("Restablecer");
+        JButton btnFilter = createActionButton("Buscar reporte");
 
         // Agregar componentes al panel
         panel.add(lbTitle, "growx, wrap, gapbottom 15");
 
-        panel.add(new JLabel("Cliente: (Opcional)"), "gapy 8");
-        panel.add(txtClient, "growx, wrap");
-
-        panel.add(new JLabel("Estado:"), "gapy 8");
+        panel.add(new JLabel("Rango de fecha:"), "gapy 8");
         panel.add(cbStatus, "growx, wrap");
-
-        panel.add(new JLabel("Rango de fechas:"), "gapy 8");
-        panel.add(txtDateStart, "split 2, growx");
-        panel.add(txtDateEnd, "growx, wrap");
-
-        panel.add(new JLabel("Rango de montos:"), "gapy 8");
-        panel.add(txtMinAmount, "split 2, growx");
-        panel.add(txtMaxAmount, "growx, wrap");
-
         panel.add(btnFilter, "split 3, gapy 20");
-        panel.add(btnReset);
 
         add(panel, "grow");
     }
