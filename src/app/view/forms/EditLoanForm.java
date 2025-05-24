@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.controller.LoanController;
+import app.dto.UserResponseDTO;
 import app.model.Client;
 import app.model.Loan;
 import app.model.User;
@@ -24,9 +25,9 @@ public class EditLoanForm extends JPanel {
     private JComboBox<String> cbStatus;
     private LoanController loanController;
     private LoanListView listView;
-    private User user;
+    private UserResponseDTO user;
 
-    public EditLoanForm(int id, double amount, double interestRate, int term, String status, String date, int clientId, User user, LoanListView listView) {
+    public EditLoanForm(int id, double amount, double interestRate, int term, String status, String date, int clientId, UserResponseDTO user, LoanListView listView) {
         this.user = user;
         this.listView = listView;
         this.loanController = new LoanController();

@@ -65,7 +65,7 @@ public class Income {
         this.incomeDate = incomeDate;
     }
 
-    public UserResponseDTO getUserID() {
+    public User getUserID() {
         return user;
     }
 

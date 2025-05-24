@@ -2,6 +2,7 @@ package app.view.forms;
 
 import app.Application;
 import app.controller.UserController;
+import app.dto.UserResponseDTO;
 import app.model.User;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -25,7 +26,6 @@ public class Login extends JPanel {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         txtUsername = new JTextField();
         txtPassword = new JPasswordField();
-        chRememberMe = new JCheckBox("Recordarme");
         cmdLogin = new JButton("Iniciar sesión");
 
         cmdLogin.addActionListener(e -> {
@@ -37,7 +37,7 @@ public class Login extends JPanel {
             } else {
                 try {
                     this.userController.loadUser(username, password);
-                    User user = this.userController.loadUser(username, password);
+                    UserResponseDTO user = this.userController.loadUser(username, password);
                     Application.getInstance().setUserToMainForm(user);
                     Application.login();
                 } catch (Exception ex) {
@@ -78,7 +78,6 @@ public class Login extends JPanel {
         panel.add(txtUsername);
         panel.add(new JLabel("Clave"), "gapy 8");
         panel.add(txtPassword);
-        panel.add(chRememberMe, "grow 0");
         panel.add(cmdLogin, "gapy 10");
         panel.add(createSignupLabel(), "gapy 10");
         add(panel);

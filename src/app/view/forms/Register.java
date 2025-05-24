@@ -2,6 +2,7 @@ package app.view.forms;
 
 import app.Application;
 import app.controller.UserController;
+import app.dto.UserResponseDTO;
 import app.exception.ApiException;
 import app.manager.FormsManager;
 import app.model.User;
@@ -153,7 +154,7 @@ public class Register extends JPanel {
             }
 
             // Registro
-            User user = userController.saveUser(0, names, surnames, email, password, username, gender);
+            UserResponseDTO user = userController.saveUser(names, surnames, email, password, username, gender);
 
             // Login automático
             login(user);
@@ -166,7 +167,7 @@ public class Register extends JPanel {
         }
     }
 
-    private void login(User user) {
+    private void login(UserResponseDTO user) {
         Application.getInstance().setUserToMainForm(user);
         Application.login();
     }

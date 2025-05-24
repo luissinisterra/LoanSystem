@@ -1,308 +1,62 @@
 package app.view;
 
-import app.controller.ClientController;
-import app.controller.OverheadController;
-import app.controller.IncomeController;
-import app.controller.LoanController;
-import app.dto.IncomeResponseDTO;
-import app.dto.OverheadResponseDTO;
-import app.model.Overhead;
-import app.model.User;
+import app.dto.UserResponseDTO;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class Dashboard extends JPanel {
 
-    private ClientController clientController = new ClientController();
-    private LoanController loanController = new LoanController();
-    private IncomeController incomeController = new IncomeController();
-    private OverheadController overheadController = new OverheadController();
-    private User user;
-    public Dashboard(User user) {
+    private final UserResponseDTO user;
+
+    public Dashboard(UserResponseDTO user) {
         this.user = user;
         init();
     }
 
     private void init() {
-        setLayout(new MigLayout("fillx, insets 0, wrap", "[left]", "[]20[]"));
-        JPanel panel1 = createMainPanel();
-        add(panel1, "gapx 20, gapy 20, wrap");
+        setLayout(new MigLayout("fill, wrap", "[center]", "[top]20[top]"));
 
-        JPanel panel2 = createSecondaryPanel();
-        add(panel2, "gapx 20, gaptop 60");  // Aquí bajamos más el segundo panel
-
-        JPanel panel3 = createCardsContainer();
-        add(panel3, "gapx 20, gaptop 40");
-    }
-
-
-    private JPanel createMainPanel() {
-        JPanel panel = new JPanel(new MigLayout("wrap,fillx,insets 35 35 25 25", "fill,500:400"));
+        JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 60", "[center]"));
         panel.putClientProperty(FlatClientProperties.STYLE,
-                "arc:20;" +
-                        "[light]background:darken(@background,3%);" +
-                        "[dark]background:lighten(@background,3%)");
-        panel.add(createHelloLabel());
-        return panel;
-    }
+                "[light]background:darken(@background,3%);" +
+                        "[dark]background:lighten(@background,3%);" +
+                        "arc:20");
 
-    private JPanel createSecondaryPanel() {
-        JPanel panel = new JPanel(new MigLayout("wrap,fillx,insets 35 35 25 25", "fill,500:700"));
-        panel.putClientProperty(FlatClientProperties.STYLE,
-                "arc:20;" +
-                        "[light]background:darken(@background,3%);" +
-                        "[dark]background:lighten(@background,3%)");
-        panel.add(createSummaryLabel());
-        return panel;
-    }
+        // Ícono
+        JLabel iconLabel = new JLabel(new FlatSVGIcon("app/icon/svg/welcome-icon.svg", 100, 100));
+        iconLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-    private JPanel createClientCard() {
-        JPanel panel = new JPanel(new MigLayout(
-                "wrap, insets 30, aligny top",    // alineado arriba y con márgenes
-                "[center]",                       // centrar horizontalmente
-                "[]20[]20[]"                      // espacio vertical entre componentes
-        ));
+        // Título de bienvenida estilizado
+        JLabel title = new JLabel("<html><div style='text-align:center;'>"
+                + "<h1 style='font-size:26px; font-weight:bold; margin: 10px 0;'>¡Bienvenido(a), "
+                + user.getUsername() + "!</h1></div></html>");
+        title.putClientProperty(FlatClientProperties.STYLE, "font:+2");
 
-        // Estilo visual
-        panel.putClientProperty(FlatClientProperties.STYLE,
-                "arc:20;" +
-                        "[light]background:darken(@background,3%);" +
-                        "[dark]background:lighten(@background,3%)"
-        );
+        // Descripción larga estilizada con CSS inline
+        JLabel description = new JLabel("<html><div style='text-align:justify; max-width:700px; padding: 10px 30px;'>"
+                + "<p style='font-size:15px; font-family:sans-serif; line-height:1.6; color:#555;'>"
+                + "Esta aplicación está diseñada especialmente para ayudarte a gestionar "
+                + "de forma sencilla y eficiente los <b>préstamos personales</b>.<br><br>"
+                + "Con ella podrás registrar nuevos clientes, crear y administrar préstamos, "
+                + "seguir su estado y mantener todo organizado en un solo lugar.<br><br>"
+                + "Cada préstamo puede estar <b>activo</b> o <b>pagado</b>, y puedes revisar el historial "
+                + "completo de operaciones en cualquier momento.<br><br>"
+                + "La interfaz es <b>intuitiva, rápida y segura</b>, ideal para usuarios que desean "
+                + "tener control total de sus operaciones financieras sin complicaciones."
+                + "</p></div></html>");
 
-        // Ícono SVG más grande
-        JLabel iconLabel = new JLabel();
-        iconLabel.setIcon(new FlatSVGIcon("app/icon/svg/info.svg", 48, 48));
+        description.putClientProperty(FlatClientProperties.STYLE,
+                "font:+1");
+
+        // Añadir componentes al panel central
         panel.add(iconLabel, "align center");
+        panel.add(title, "align center, gapy 10");
+        panel.add(description, "align center, growx");
 
-        // Separador ancho
-        JSeparator separator = new JSeparator();
-        separator.setPreferredSize(new Dimension(200, 2));
-        panel.add(separator, "growx, gapy 10 10");
-
-        // Texto descriptivo
-        JLabel textLabel = createClientsLabel();
-        JLabel totalLabel = createTotalLabel();
-        panel.add(textLabel, "align center");
-        panel.add(totalLabel, "align center");
-        // Para que crezca más verticalmente:
-        panel.setPreferredSize(new Dimension(250, 300)); // menos ancho, más alto
-        return panel;
+        add(panel, "grow");
     }
-
-    private JPanel createIncomesCard() {
-        JPanel panel = new JPanel(new MigLayout(
-                "wrap, insets 30, aligny top",    // alineado arriba y con márgenes
-                "[center]",                       // centrar horizontalmente
-                "[]20[]20[]"                      // espacio vertical entre componentes
-        ));
-
-        // Estilo visual
-        panel.putClientProperty(FlatClientProperties.STYLE,
-                "arc:20;" +
-                        "[light]background:darken(@background,3%);" +
-                        "[dark]background:lighten(@background,3%)"
-        );
-
-        // Ícono SVG más grande
-        JLabel iconLabel = new JLabel();
-        iconLabel.setIcon(new FlatSVGIcon("app/icon/svg/finances.svg", 48, 48));
-        panel.add(iconLabel, "align center");
-
-        // Separador ancho
-        JSeparator separator = new JSeparator();
-        separator.setPreferredSize(new Dimension(200, 2));
-        panel.add(separator, "growx, gapy 10 10");
-
-        // Texto descriptivo
-        JLabel textLabel = createIncomeslabel();
-        JLabel totalLabel = getTotalIncomes();
-        panel.add(textLabel, "align center");
-        panel.add(totalLabel, "align center");
-        // Para que crezca más verticalmente:
-        panel.setPreferredSize(new Dimension(250, 300)); // menos ancho, más alto
-        return panel;
-    }
-
-    private JPanel createGastosCard() {
-        JPanel panel = new JPanel(new MigLayout(
-                "wrap, insets 30, aligny top",    // alineado arriba y con márgenes
-                "[center]",                       // centrar horizontalmente
-                "[]20[]20[]"                      // espacio vertical entre componentes
-        ));
-
-        // Estilo visual
-        panel.putClientProperty(FlatClientProperties.STYLE,
-                "arc:20;" +
-                        "[light]background:darken(@background,3%);" +
-                        "[dark]background:lighten(@background,3%)"
-        );
-
-        // Ícono SVG más grande
-        JLabel iconLabel = new JLabel();
-        iconLabel.setIcon(new FlatSVGIcon("app/icon/svg/gasto.svg", 48, 48));
-        panel.add(iconLabel, "align center");
-
-        // Separador ancho
-        JSeparator separator = new JSeparator();
-        separator.setPreferredSize(new Dimension(200, 2));
-        panel.add(separator, "growx, gapy 10 10");
-
-        // Texto descriptivo
-        JLabel textLabel = createGastosLabel();
-        JLabel totalLabel = getTotalGastos();
-        panel.add(textLabel, "align center");
-        panel.add(totalLabel, "align center");
-        // Para que crezca más verticalmente:
-        panel.setPreferredSize(new Dimension(250, 300)); // menos ancho, más alto
-        return panel;
-    }
-
-    private JPanel createLoanCard() {
-        JPanel panel = new JPanel(new MigLayout(
-                "wrap, insets 30, aligny top",    // alineado arriba y con márgenes
-                "[center]",                       // centrar horizontalmente
-                "[]20[]20[]"                      // espacio vertical entre componentes
-        ));
-
-        // Estilo visual
-        panel.putClientProperty(FlatClientProperties.STYLE,
-                "arc:20;" +
-                        "[light]background:darken(@background,3%);" +
-                        "[dark]background:lighten(@background,3%)"
-        );
-
-        // Ícono SVG más grande
-        JLabel iconLabel = new JLabel();
-        iconLabel.setIcon(new FlatSVGIcon("app/icon/svg/bank-money-icon.svg", 48, 48));
-        panel.add(iconLabel, "align center");
-
-        // Separador ancho
-        JSeparator separator = new JSeparator();
-        separator.setPreferredSize(new Dimension(200, 2));
-        panel.add(separator, "growx, gapy 10 10");
-
-        // Texto descriptivo
-        JLabel textLabel = createLoansLabel();
-        JLabel totalLabel = createTotalLoansLabel();
-        panel.add(textLabel, "align center");
-        panel.add(totalLabel, "align center");
-        // Para que crezca más verticalmente:
-        panel.setPreferredSize(new Dimension(250, 300)); // menos ancho, más alto
-        return panel;
-    }
-
-    private JPanel createCardsContainer() {
-        JPanel container = new JPanel(new MigLayout(
-                "insets 20, fillx",       // Márgenes y que se estire horizontal
-                "[grow]20[grow]20[grow]20[grow]",   // 4 columnas que crecen con espacio uniforme
-                "[]"
-        ));
-        container.add(createClientCard(), "growx");
-        container.add(createLoanCard(), "growx");
-        container.add(createIncomesCard(), "growx");
-        container.add(createGastosCard(), "growx");
-
-        return container;
-    }
-
-
-
-    private JLabel createHelloLabel() {
-        JLabel lb = new JLabel("¡Hola de nuevo!");
-        lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +20");
-        helloLabel = lb;
-        return lb;
-    }
-
-    private JLabel createSummaryLabel(){
-        JLabel lb = new JLabel("Aqui hay un pequeño resumen de tu actividad en la app");
-        lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
-        summaryLabel = lb;
-        return lb;
-    }
-
-    private JLabel createClientsLabel(){
-        JLabel lb = new JLabel("Clientes");
-        lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
-        clientsLabel = lb;
-        return lb;
-    }
-
-    private JLabel createTotalLabel(){
-        JLabel lb = new JLabel("0");
-        lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
-        totalClients = lb;
-        return lb;
-    }
-
-    private JLabel createLoansLabel(){
-        JLabel lb = new JLabel("Prestamos");
-        lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
-        loansLabel = lb;
-        return lb;
-    }
-
-    private JLabel createTotalLoansLabel(){
-        JLabel lb = new JLabel("0");
-        lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
-        totalLoansLabel = lb;
-        return lb;
-    }
-
-    private JLabel getTotalIncomes(){
-        List<IncomeResponseDTO> incomes = incomeController.getIncomesByUserID(user.getId(), this.user);
-        double total = 0;
-        for( IncomeResponseDTO income : incomes){
-            total += income.getAmmount();
-        }
-        JLabel lb = new JLabel(String.valueOf(total));
-        lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
-        totalIncomesLabel = lb;
-        return lb;
-    }
-
-    private JLabel getTotalGastos(){
-        List<OverheadResponseDTO> overheads = overheadController.getByUserID(user.getId(), this.user);
-        double total = 0;
-        for( OverheadResponseDTO overhead : overheads){
-            total += overhead.getAmmount();
-        }
-        JLabel lb = new JLabel(String.valueOf(total));
-        lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
-        totalGastosLabel = lb;
-        return lb;
-    }
-
-    private JLabel createGastosLabel(){
-        JLabel lb = new JLabel("Gastos");
-        lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
-        gastosLabel = lb;
-        return lb;
-    }
-
-    private JLabel createIncomeslabel(){
-        JLabel lb = new JLabel("Ingresos");
-        lb.putClientProperty(FlatClientProperties.STYLE, "font:bold +10");
-        incomesLabel = lb;
-        return lb;
-    }
-
-
-    private JLabel helloLabel;
-    private JLabel summaryLabel;
-    private JLabel clientsLabel;
-    private JLabel totalClients;
-    private JLabel loansLabel;
-    private JLabel totalLoansLabel;
-    private JLabel totalIncomesLabel;
-    private JLabel incomesLabel;
-    private JLabel totalGastosLabel;
-    private JLabel gastosLabel;
-
 }

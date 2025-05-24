@@ -80,7 +80,7 @@ public class IncomeService {
         }
     }
 
-    public IncomeResponseDTO getById(int id, UserResponseDTO user) {
+    public IncomeResponseDTO getById(int id, User user) {
         try {
             String token = "Bearer " + user.getToken();
             Response<IncomeResponseDTO> response = apiService.getIncomeByID(token, id).execute();

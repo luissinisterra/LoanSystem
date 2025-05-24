@@ -1,6 +1,5 @@
 package app.service;
 
-import app.dto.UserResponseDTO;
 import app.exception.ApiException;
 import app.helper.LocalDateAdapter;
 import app.helper.LocalDateTimeAdapter;
@@ -43,7 +42,7 @@ public class ClientService {
         this.iClientService = retrofit.create(IClientService.class);
     }
 
-    public List<Client> getAllClients(UserResponseDTO user) {
+    public List<Client> getAllClients(User user) {
         try {
             String token = "Bearer " + user.getToken();
             Response<List<Client>> response = this.iClientService.getAllClients(token).execute();
@@ -60,7 +59,7 @@ public class ClientService {
         }
     }
 
-    public List<Client> getAllClientsByUserId(int id, UserResponseDTO user) {
+    public List<Client> getAllClientsByUserId(int id, User user) {
         try {
             String token = "Bearer " + user.getToken();
             Response<List<Client>> response = this.iClientService.getAllClientsByUserId(token, id).execute();
@@ -77,7 +76,7 @@ public class ClientService {
         }
     }
 
-    public Client getClientById(int id, UserResponseDTO user) {
+    public Client getClientById(int id, User user) {
         try{
             String token = "Bearer " + user.getToken();
             Response<Client> response = this.iClientService.getClientById(token, id).execute();
@@ -94,7 +93,7 @@ public class ClientService {
         }
     }
 
-    public void createClient(Client client, UserResponseDTO user) {
+    public void createClient(Client client, User user) {
         try{
             String token = "Bearer " + user.getToken();
             Response<Void> response = this.iClientService.createClient(token, client).execute();
@@ -108,7 +107,7 @@ public class ClientService {
         }
     }
 
-    public void updateClient(int id, Client client, UserResponseDTO user) {
+    public void updateClient(int id, Client client, User user) {
         try {
             String token = "Bearer " + user.getToken();
             Response<Void> response = this.iClientService.updateClient(token, id, client).execute();
@@ -122,7 +121,7 @@ public class ClientService {
         }
     }
 
-    public void deleteClient(int id, UserResponseDTO user) {
+    public void deleteClient(int id, User user) {
         try {
             String token = "Bearer " + user.getToken();
             Response<Void> response = this.iClientService.deleteClient(token, id).execute();
@@ -136,7 +135,7 @@ public class ClientService {
         }
     }
 
-    public List<Client> searchClientsByQuery(int userId, String query, UserResponseDTO user) {
+    public List<Client> searchClientsByQuery(int userId, String query, User user) {
         try {
             String token = "Bearer " + user.getToken();
             Response<List<Client>> response = this.iClientService.searchClientsByQuery(token, userId, query).execute();
@@ -153,7 +152,7 @@ public class ClientService {
         }
     }
 
-    public int getActiveClientsCount(UserResponseDTO user) {
+    public int getActiveClientsCount(User user) {
         int activeClientsCount = 0;
         List<Client> clients = getAllClients(user);
         if (clients != null) {

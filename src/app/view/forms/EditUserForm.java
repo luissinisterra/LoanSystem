@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.controller.UserController;
+import app.dto.UserResponseDTO;
 import app.model.User;
 import app.view.UserProfileView;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -21,11 +22,11 @@ public class EditUserForm extends JPanel {
     private JPasswordField txtPassword;
     private JComboBox<String> cbGender;
 
-    private User user;
+    private UserResponseDTO user;
     private UserProfileView profileView;
     private UserController userController;
 
-    public EditUserForm(User user, UserProfileView profileView) {
+    public EditUserForm(UserResponseDTO user, UserProfileView profileView) {
         this.user = user;
         this.profileView = profileView;
         this.userController = new UserController();
@@ -66,7 +67,7 @@ public class EditUserForm extends JPanel {
         txtUsername.setText(user.getUsername());
 
         txtPassword = new JPasswordField();
-        txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Contraseña actual");
+        txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nueva Contraseña (Opcional)");
         txtPassword.setText("");
 
         String[] genders = {"Masculino", "Femenino"};
@@ -117,6 +118,26 @@ public class EditUserForm extends JPanel {
     private void saveAction(ActionEvent e) {
         if (validateFields()) {
             updateUser();
+        } else {
+            Notifications.getInstance().show(Notifications.Type.ERROR, "Por favor complete los campos obligatorios.");
+        }
+    }
+
+    private void updateUser() {
+        try{
+            User user = new User(
+                    txtNames.getText(),
+                    txtSurnames.getText(),
+                    txtEmail.getText(),
+                    String.valueOf(txtPassword.getPassword().length == 0 ? "" : new String(txtPassword.getPassword())),
+                    txtUsername.getText(),
+                    (String) cbGender.getSelectedItem()
+            );
+
+            UserResponseDTO userUpdated = this.userController.updateUser(Integer.parseInt(txtId.getText()), user, this.user);
+
+            this.profileView.refreshData(userUpdated);
+
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Perfil actualizado correctamente.");
 
             Window window = SwingUtilities.getWindowAncestor(this);
@@ -124,28 +145,9 @@ public class EditUserForm extends JPanel {
                 window.dispose();
             }
 
-        } else {
-            Notifications.getInstance().show(Notifications.Type.ERROR, "Por favor complete los campos obligatorios.");
+        } catch (Exception ex) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, ex.getMessage());
         }
-    }
-
-    private void updateUser() {
-        if(txtPassword.getPassword().length == 0) {
-            txtPassword.setText(user.getPassword());
-        }
-
-        User user = new User(
-                Integer.parseInt(txtId.getText()),
-                txtNames.getText(),
-                txtSurnames.getText(),
-                txtEmail.getText(),
-                new String(txtPassword.getPassword()),
-                txtUsername.getText(),
-                (String) cbGender.getSelectedItem()
-        );
-
-        this.profileView.refreshData(user);
-        this.userController.updateUser(Integer.parseInt(txtId.getText()), user);
     }
 
     private boolean validateFields() {

@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.Application;
+import app.dto.UserResponseDTO;
 import app.model.User;
 import app.view.FinancialReport;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -27,13 +28,13 @@ import app.view.*;
  * @author Raven
  */
 public class MainForm extends JLayeredPane {
-    private User user;
+    private UserResponseDTO user;
 
     public MainForm() {
         init();
     }
 
-    public void setUser(User user) {
+    public void setUser(UserResponseDTO user) {
         this.user = user;
     }
 

@@ -56,9 +56,9 @@ public class UserService {
         }
     }
 
-    public UserResponseDTO updateUser(int id, User user, UserResponseDTO userRDTO) {
+    public UserResponseDTO updateUser(int id, User user, UserResponseDTO user) {
         try {
-            String token = "Bearer " + userRDTO.getToken();
+            String token = "Bearer " + user.getToken();
             Response<UserResponseDTO> response = apiService.updateUser(token, id, user).execute();
 
             if (!response.isSuccessful()) {

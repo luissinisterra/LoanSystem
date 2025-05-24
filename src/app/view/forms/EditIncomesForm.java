@@ -2,6 +2,7 @@ package app.view.forms;
 
 import app.controller.IncomeController;
 import app.dto.IncomeResponseDTO;
+import app.dto.UserResponseDTO;
 import app.exception.ApiException;
 import app.model.Income;
 import app.model.User;
@@ -18,9 +19,9 @@ public class EditIncomesForm extends JPanel {
     private final IncomeController controller = new IncomeController();
     private Incomes over;
     private IncomeResponseDTO income;
-    private User user;
+    private UserResponseDTO user;
 
-    public EditIncomesForm(Incomes over, IncomeResponseDTO income, User user) {
+    public EditIncomesForm(Incomes over, IncomeResponseDTO income, UserResponseDTO user) {
         this.over = over;
         this.income = income;
         this.user = user;
