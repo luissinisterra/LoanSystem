@@ -3,7 +3,6 @@ package app.view;
 import app.Application;
 import app.controller.UserController;
 import app.dto.UserResponseDTO;
-import app.model.User;
 import app.view.forms.EditUserForm;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -36,38 +35,47 @@ public class UserProfileView extends JPanel {
                         "arc:20");
 
         JLabel lbTitle = new JLabel("Perfil del Usuario");
-        lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +18");
+        lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +20; foreground:#007acc");
 
         JLabel description = new JLabel("Revise y gestione su información personal.");
-        description.putClientProperty(FlatClientProperties.STYLE, "font:italic;");
+        description.putClientProperty(FlatClientProperties.STYLE, "font:italic +1; foreground:#666666");
 
+
+        // Información del usuario
         lbNames = createInfoLabel("Nombres:", user.getNames());
         lbSurnames = createInfoLabel("Apellidos:", user.getSurnames());
         lbEmail = createInfoLabel("Correo electrónico:", user.getEmail());
         lbUsername = createInfoLabel("Nombre de usuario:", user.getUsername());
         lbGender = createInfoLabel("Género:", user.getGender());
 
-        btnEdit = createActionButton("Editar Perfil", "app/icon/svg/update-icon.svg");
-        btnDelete = createActionButton("Eliminar Cuenta", "app/icon/svg/delete-icon.svg");
+        btnEdit = createActionButton("✏️ Editar Perfil", "app/icon/svg/update-icon.svg");
+        btnDelete = createActionButton("🗑️ Eliminar Cuenta", "app/icon/svg/delete-icon.svg");
 
         setupEditButtonAction(btnEdit);
         setupDeleteButtonAction(btnDelete);
 
+        // Añadir componentes al panel
         panel.add(lbTitle, "span, center");
         panel.add(description, "span, center, gapy 10");
+
+        panel.add(new JSeparator(), "gapy 10, span");
+
         panel.add(lbNames, "gapy 12");
         panel.add(lbSurnames);
         panel.add(lbEmail);
         panel.add(lbUsername);
         panel.add(lbGender);
-        panel.add(btnEdit, "gapy 20, split 2");
+
+        panel.add(new JSeparator(), "gapy 20, span");
+
+        panel.add(btnEdit, "split 2, center");
         panel.add(btnDelete);
 
         add(panel);
     }
 
     private JLabel createInfoLabel(String label, String value) {
-        JLabel lbl = new JLabel("<html><b>" + label + "</b><br>" + value + "</html>");
+        JLabel lbl = new JLabel("<html><div style='font-size:12px'><b>" + label + "</b><br><span style='color:gray; font-size:13px'>" + value + "</span></div></html>");
         lbl.putClientProperty(FlatClientProperties.STYLE, "font:+1");
         return lbl;
     }
@@ -85,20 +93,17 @@ public class UserProfileView extends JPanel {
         return btn;
     }
 
-    // Método para configurar el botón de editar
     private void setupEditButtonAction(JButton button) {
         button.addActionListener(e -> {
-                    JFrame frame = new JFrame("Editar Perfil");
-                    frame.setContentPane(new EditUserForm(user, this));
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.pack();
-                    frame.setLocationRelativeTo(null);
-                    frame.setVisible(true);
-                }
-        );
+            JFrame frame = new JFrame("Editar Perfil");
+            frame.setContentPane(new EditUserForm(user, this));
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
     }
 
-    // Método para configurar el botón de eliminar
     private void setupDeleteButtonAction(JButton button) {
         button.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(
@@ -111,10 +116,8 @@ public class UserProfileView extends JPanel {
             if (confirm == JOptionPane.YES_OPTION) {
                 userController.deleteUser(user.getId(), this.user);
 
-                // Cambiar a pantalla de login
                 Application.logout();
 
-                // Cierra la ventana contenedora si no es la ventana principal
                 Window window = SwingUtilities.getWindowAncestor(button);
                 if (window != null && !(window instanceof Application)) {
                     window.dispose();
@@ -127,10 +130,10 @@ public class UserProfileView extends JPanel {
 
     public void refreshData(UserResponseDTO updatedUser) {
         this.user = updatedUser;
-        lbNames.setText("<html><b>Nombres:</b><br>" + user.getNames() + "</html>");
-        lbSurnames.setText("<html><b>Apellidos:</b><br>" + user.getSurnames() + "</html>");
-        lbEmail.setText("<html><b>Correo electrónico:</b><br>" + user.getEmail() + "</html>");
-        lbUsername.setText("<html><b>Nombre de usuario:</b><br>" + user.getUsername() + "</html>");
-        lbGender.setText("<html><b>Género:</b><br>" + user.getGender() + "</html>");
+        lbNames.setText("<html><div style='font-size:12px'><b>Nombres:</b><br><span style='color:gray; font-size:13px'>" + user.getNames() + "</span></div></html>");
+        lbSurnames.setText("<html><div style='font-size:12px'><b>Apellidos:</b><br><span style='color:gray; font-size:13px'>" + user.getSurnames() + "</span></div></html>");
+        lbEmail.setText("<html><div style='font-size:12px'><b>Correo electrónico:</b><br><span style='color:gray; font-size:13px'>" + user.getEmail() + "</span></div></html>");
+        lbUsername.setText("<html><div style='font-size:12px'><b>Nombre de usuario:</b><br><span style='color:gray; font-size:13px'>" + user.getUsername() + "</span></div></html>");
+        lbGender.setText("<html><div style='font-size:12px'><b>Género:</b><br><span style='color:gray; font-size:13px'>" + user.getGender() + "</span></div></html>");
     }
 }

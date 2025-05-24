@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class Dashboard extends JPanel {
 
-    private final User user;
+    private final UserResponseDTO user;
 
     public Dashboard(UserResponseDTO user) {
         this.user = user;
