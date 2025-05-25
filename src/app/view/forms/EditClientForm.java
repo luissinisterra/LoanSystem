@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.controller.ClientController;
+import app.dto.UserResponseDTO;
 import app.model.Client;
 import app.model.User;
 import app.view.ClientListView;
@@ -27,10 +28,10 @@ public class EditClientForm extends JPanel {
     private JComboBox<String> cbStatus;
     private ClientController clientController;
     private ClientListView listView;
-    private User user;
+    private UserResponseDTO user;
 
     public EditClientForm(int id, String firstName, String secondName, String firstSurname, String secondSurname,
-                          int age, String email, String phone, String address, String status, ClientListView listView, User user) {
+                          int age, String email, String phone, String address, String status, ClientListView listView, UserResponseDTO user) {
         this.user = user;
         this.listView = listView;
         this.clientController = new ClientController();

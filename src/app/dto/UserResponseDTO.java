@@ -1,7 +1,8 @@
-package app.model;
+package app.dto;
 
-public class User {
+public class UserResponseDTO {
 
+    private int id;
     private String names;
     private String surnames;
     private String email;
@@ -10,14 +11,22 @@ public class User {
     private String gender;
     private String token;
 
-    public User(String names, String surnames, String email, String password, String username, String gender) {
+    public UserResponseDTO(int id, String names, String surnames, String email, String password, String username, String gender) {
+        this.id = id;
         this.names = names;
         this.surnames = surnames;
         this.email = email;
         this.password = password;
         this.username = username;
         this.gender = gender;
-        this.token = "";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNames() {
@@ -76,3 +85,4 @@ public class User {
         this.token = token;
     }
 }
+

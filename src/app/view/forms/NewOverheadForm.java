@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.controller.OverheadController;
+import app.dto.UserResponseDTO;
 import app.exception.ApiException;
 import app.model.User;
 import app.view.Overheads;
@@ -15,8 +16,8 @@ public class NewOverheadForm extends JPanel {
 
     private final OverheadController controller = new OverheadController();
     private Overheads over;
-    private User user;
-    public NewOverheadForm(Overheads over, User user) {
+    private UserResponseDTO user;
+    public NewOverheadForm(Overheads over, UserResponseDTO user) {
         this.over = over;
         this.user = user;
         init();

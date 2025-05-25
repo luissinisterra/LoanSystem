@@ -2,31 +2,20 @@ package app.model;
 
 public class User {
 
-    private int id;
     private String names;
     private String surnames;
     private String email;
     private String password;
     private String username;
     private String gender;
-    private String token;
 
-    public User(int id, String names, String surnames, String email, String password, String username, String gender) {
+    public User(String names, String surnames, String email, String password, String username, String gender) {
         this.names = names;
         this.surnames = surnames;
         this.email = email;
         this.password = password;
         this.username = username;
         this.gender = gender;
-        this.token = "";
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNames() {
@@ -75,13 +64,5 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

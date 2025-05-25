@@ -99,7 +99,7 @@ public class LoanListView extends JPanel {
 
     // Método para filtrar la tabla
     private void filterTable(String query) {
-        List<Loan> loans = this.loanController.searchLoansByQuery(this.user.getId() ,query);
+        List<Loan> loans = this.loanController.searchLoansByQuery(this.user.getId() ,query, this.user);
         model.setRowCount(0); // Limpiar las filas actuales del modelo
         boolean isEmpty = true;
 

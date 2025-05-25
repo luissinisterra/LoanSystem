@@ -1,6 +1,7 @@
 package app.view.forms;
 
 import app.controller.ClientController;
+import app.dto.UserResponseDTO;
 import app.exception.ApiException;
 import app.model.Client;
 import app.model.User;
@@ -25,10 +26,10 @@ public class NewClientForm extends JPanel {
     private JTextField txtAddress;
     private JButton cmdSave;
     private ClientListView listView;
-    private User user;
+    private UserResponseDTO user;
     private ClientController clientController;
 
-    public NewClientForm(User user, ClientListView listView) {
+    public NewClientForm(UserResponseDTO user, ClientListView listView) {
         this.user = user;
         this.listView = listView;
         this.clientController = new ClientController();

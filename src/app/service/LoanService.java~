@@ -173,7 +173,7 @@ public class LoanService {
     }
 
     // Contar préstamos activos
-    public int getActiveLoansCount(UserResponseDTO user) {
+    public int getActiveLoansCount(User user) {
         int activeLoansCount = 0;
         List<Loan> loans = getAllLoans(user);
         if (loans != null) {

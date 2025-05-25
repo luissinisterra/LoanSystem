@@ -2,6 +2,7 @@ package app.view;
 
 import app.controller.OverheadController;
 import app.dto.OverheadResponseDTO;
+import app.dto.UserResponseDTO;
 import app.exception.ApiException;
 import app.model.Overhead;
 import app.model.User;
@@ -21,8 +22,8 @@ import java.util.List;
 public class Overheads extends JPanel {
 
     private OverheadController controller;
-    private User user;
-    public Overheads(User user) {
+    private UserResponseDTO user;
+    public Overheads(UserResponseDTO user) {
         controller = new OverheadController();
         this.user = user;
         init();

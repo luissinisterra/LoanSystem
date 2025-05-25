@@ -2,6 +2,7 @@ package app.view.forms;
 
 import app.Application;
 import app.controller.UserController;
+import app.dto.UserResponseDTO;
 import app.model.User;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -36,7 +37,7 @@ public class Login extends JPanel {
             } else {
                 try {
                     this.userController.loadUser(username, password);
-                    User user = this.userController.loadUser(username, password);
+                    UserResponseDTO user = this.userController.loadUser(username, password);
                     Application.getInstance().setUserToMainForm(user);
                     Application.login();
                 } catch (Exception ex) {

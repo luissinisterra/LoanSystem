@@ -85,6 +85,7 @@ public class GastoService {
     public OverheadResponseDTO update(Integer userId, String overheadType, String overheadDescription, Integer ammount, Integer id, UserResponseDTO user) {
         CreateOverheadDTO overhead = new CreateOverheadDTO(userId, overheadType, overheadDescription, ammount);
         try {
+            String token = user.getToken();
             String token = "Bearer" + user.getToken();
             Response<OverheadResponseDTO> response = apiService.updateGasto(token, id, overhead).execute();
             if (!response.isSuccessful()) {

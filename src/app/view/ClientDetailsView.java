@@ -2,6 +2,7 @@ package app.view;
 
 import app.controller.ClientController;
 import app.controller.LoanController;
+import app.dto.UserResponseDTO;
 import app.model.Client;
 import app.model.Loan;
 import app.model.User;
@@ -20,9 +21,9 @@ public class ClientDetailsView extends JPanel {
     private final ClientController clientController;
     private final LoanController loanController;
     private final int clientId;
-    private final User user;
+    private final UserResponseDTO user;
 
-    public ClientDetailsView(int clientId, User user) {
+    public ClientDetailsView(int clientId, UserResponseDTO user) {
         this.clientId = clientId;
         this.clientController = new ClientController();
         this.loanController = new LoanController();

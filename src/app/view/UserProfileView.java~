@@ -32,7 +32,8 @@ public class UserProfileView extends JPanel {
         JPanel panel = new JPanel(new MigLayout("wrap, fillx, insets 35 45 30 45", "[fill,360]"));
         panel.putClientProperty(FlatClientProperties.STYLE,
                 "background:$Menu.background;" +
-                        "arc:20");
+                        "arc:20;" +
+                        "shadow:10");
 
         JLabel lbTitle = new JLabel("Perfil del Usuario");
         lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +20; foreground:#007acc");
