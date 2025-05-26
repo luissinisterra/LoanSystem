@@ -45,7 +45,11 @@ public class GastoService {
 
     public void remove(Integer id, UserResponseDTO user) {
         try {
+<<<<<<< HEAD
             String token = user.getToken();
+=======
+            String token = "Bearer" + user.getToken();
+>>>>>>> af9743b1fa4f2b6074fbc8375844000a5430a525
             Response<Void> response = apiService.deleteGasto(token, id).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -58,7 +62,11 @@ public class GastoService {
     public OverheadResponseDTO add(Integer userId, String overheadType, String overheadDescription, Integer ammount, UserResponseDTO user) {
         CreateOverheadDTO overhead = new CreateOverheadDTO(userId, overheadType, overheadDescription, ammount);
         try {
+<<<<<<< HEAD
             String token = user.getToken();
+=======
+            String token = "Bearer" + user.getToken();
+>>>>>>> af9743b1fa4f2b6074fbc8375844000a5430a525
             Response<OverheadResponseDTO> response = apiService.createGasto(token, overhead).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -71,7 +79,11 @@ public class GastoService {
 
     public OverheadResponseDTO getById(Integer id, UserResponseDTO user) {
         try {
+<<<<<<< HEAD
             String token = user.getToken();
+=======
+            String token = "Bearer" + user.getToken();
+>>>>>>> af9743b1fa4f2b6074fbc8375844000a5430a525
             Response<OverheadResponseDTO> response = apiService.getGastoById(token, id).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -86,6 +98,10 @@ public class GastoService {
         CreateOverheadDTO overhead = new CreateOverheadDTO(userId, overheadType, overheadDescription, ammount);
         try {
             String token = user.getToken();
+<<<<<<< HEAD
+=======
+            String token = "Bearer" + user.getToken();
+>>>>>>> af9743b1fa4f2b6074fbc8375844000a5430a525
             Response<OverheadResponseDTO> response = apiService.updateGasto(token, id, overhead).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -98,8 +114,13 @@ public class GastoService {
 
     public List<OverheadResponseDTO> getByUserID(Integer userID, UserResponseDTO user){
         try {
+<<<<<<< HEAD
             String token = "Bearer " + user.getToken();
             Response<List<OverheadResponseDTO>> response = apiService.getOverheadByUserId(userID, token).execute();
+=======
+            String token = "Bearer" + user.getToken();
+            Response<List<OverheadResponseDTO>> response = apiService.getOverheadByUserId(token, userID).execute();
+>>>>>>> af9743b1fa4f2b6074fbc8375844000a5430a525
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
             }

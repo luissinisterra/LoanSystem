@@ -45,7 +45,7 @@ public class GastoService {
 
     public void remove(Integer id, UserResponseDTO user) {
         try {
-            String token = user.getToken();
+            String token = "Bearer" + user.getToken();
             Response<Void> response = apiService.deleteGasto(token, id).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -58,7 +58,7 @@ public class GastoService {
     public OverheadResponseDTO add(Integer userId, String overheadType, String overheadDescription, Integer ammount, UserResponseDTO user) {
         CreateOverheadDTO overhead = new CreateOverheadDTO(userId, overheadType, overheadDescription, ammount);
         try {
-            String token = user.getToken();
+            String token = "Bearer" + user.getToken();
             Response<OverheadResponseDTO> response = apiService.createGasto(token, overhead).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -71,7 +71,7 @@ public class GastoService {
 
     public OverheadResponseDTO getById(Integer id, UserResponseDTO user) {
         try {
-            String token = user.getToken();
+            String token = "Bearer" + user.getToken();
             Response<OverheadResponseDTO> response = apiService.getGastoById(token, id).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -85,7 +85,7 @@ public class GastoService {
     public OverheadResponseDTO update(Integer userId, String overheadType, String overheadDescription, Integer ammount, Integer id, UserResponseDTO user) {
         CreateOverheadDTO overhead = new CreateOverheadDTO(userId, overheadType, overheadDescription, ammount);
         try {
-            String token = user.getToken();
+            String token = "Bearer" + user.getToken();
             Response<OverheadResponseDTO> response = apiService.updateGasto(token, id, overhead).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
@@ -98,7 +98,7 @@ public class GastoService {
 
     public List<OverheadResponseDTO> getByUserID(Integer userID, UserResponseDTO user){
         try {
-            String token = user.getToken();
+            String token = "Bearer" + user.getToken();
             Response<List<OverheadResponseDTO>> response = apiService.getOverheadByUserId(token, userID).execute();
             if (!response.isSuccessful()) {
                 throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
