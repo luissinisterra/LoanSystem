@@ -57,4 +57,9 @@ public class LoanController {
     public int getActiveLoansCount(UserResponseDTO user) {
         return this.loanService.getActiveLoansCount(user);
     }
+
+    //Encontrar por fechas
+    public List<Loan> getLoansByDateRange(int userId, String date, UserResponseDTO user) {
+        return this.loanService.searchByDateRange(userId, date, user);
+    }
 }
