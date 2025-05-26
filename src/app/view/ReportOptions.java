@@ -48,6 +48,7 @@ public class ReportOptions extends JPanel {
                         + "arc:10");
         field.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, placeholder);
         return field;
+
     }
 
     private JButton createActionButton(String text) {
@@ -60,5 +61,9 @@ public class ReportOptions extends JPanel {
                         + "innerFocusWidth:0;"
                         + "arc:10");
         return button;
+    }
+
+    private void ponerFiltros(){
+
     }
 }
