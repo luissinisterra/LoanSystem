@@ -1,14 +1,18 @@
 package app.view;
 
+import app.exception.ApiException;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 import javax.swing.*;
 
 public class ReportOptions extends JPanel {
 
-    public ReportOptions() {
+    private FinancialReport reportOptions;
+    public ReportOptions(FinancialReport reportOptions) {
         init();
+        this.reportOptions = reportOptions;
     }
 
     private void init() {
@@ -25,36 +29,17 @@ public class ReportOptions extends JPanel {
         lbTitle.putClientProperty(FlatClientProperties.STYLE, "font:bold +16");
 
         // Componentes de filtrado
-        JTextField txtClient = createFormField("Buscar por cliente");
-        JComboBox<String> cbStatus = new JComboBox<>(new String[]{"Todos", "Activo", "Inactivo", "Pagado"});
-        JTextField txtDateStart = createFormField("Fecha inicial (dd/mm/aaaa)");
-        JTextField txtDateEnd = createFormField("Fecha final (dd/mm/aaaa)");
-        JTextField txtMinAmount = createFormField("Monto mínimo");
-        JTextField txtMaxAmount = createFormField("Monto máximo");
+        dates = new JComboBox<>(new String[]{"1 dia", "1 semana", "1 mes", "3 meses", "6 meses", "1 año"});
 
         // Botones de acción
-        JButton btnFilter = createActionButton("Aplicar Filtros");
-        JButton btnReset = createActionButton("Restablecer");
-
+        JButton btnFilter = createActionButton("Buscar reporte");
+        btnFilter.addActionListener(e -> ponerFiltros());
         // Agregar componentes al panel
         panel.add(lbTitle, "growx, wrap, gapbottom 15");
 
-        panel.add(new JLabel("Cliente: (Opcional)"), "gapy 8");
-        panel.add(txtClient, "growx, wrap");
-
-        panel.add(new JLabel("Estado:"), "gapy 8");
-        panel.add(cbStatus, "growx, wrap");
-
-        panel.add(new JLabel("Rango de fechas:"), "gapy 8");
-        panel.add(txtDateStart, "split 2, growx");
-        panel.add(txtDateEnd, "growx, wrap");
-
-        panel.add(new JLabel("Rango de montos:"), "gapy 8");
-        panel.add(txtMinAmount, "split 2, growx");
-        panel.add(txtMaxAmount, "growx, wrap");
-
+        panel.add(new JLabel("Rango de fecha:"), "gapy 8");
+        panel.add(dates, "growx, wrap");
         panel.add(btnFilter, "split 3, gapy 20");
-        panel.add(btnReset);
 
         add(panel, "grow");
     }
@@ -67,6 +52,7 @@ public class ReportOptions extends JPanel {
                         + "arc:10");
         field.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, placeholder);
         return field;
+
     }
 
     private JButton createActionButton(String text) {
@@ -80,4 +66,15 @@ public class ReportOptions extends JPanel {
                         + "arc:10");
         return button;
     }
+
+    private void ponerFiltros(){
+        try{
+            String date = dates.getSelectedItem().toString();
+            reportOptions.llenarTabla(date);
+        }catch(ApiException ex){
+            Notifications.getInstance().show(Notifications.Type.ERROR, ex.getMessage());
+        }
+    }
+
+    private JComboBox<String> dates;
 }

@@ -59,4 +59,12 @@ public interface ILoanService {
             @Path("userId") int userId,
             @Query("query") String query
     );
+
+    // === Búsqueda filtrada ===
+    @GET("/api/loans/search/date/{userId}")
+    Call<List<Loan>> searchLoansByDates(
+            @Header("Authorization") String authHeader,
+            @Path("userId") int userId,
+            @Query("Date") String date
+    );
 }

@@ -1,5 +1,7 @@
 package app.view;
 
+import app.controller.LoanController;
+import app.dto.UserResponseDTO;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
@@ -13,8 +15,12 @@ import app.util.ExportarExcel;
 
 public class FinancialReport extends JPanel {
 
-    public FinancialReport() {
+    private UserResponseDTO user;
+    private LoanController loanController = new LoanController();
+    public FinancialReport(UserResponseDTO user) {
         init();
+        this.user = user;
+        llenarTabla("1 año");
     }
 
     private void init() {
@@ -37,27 +43,9 @@ public class FinancialReport extends JPanel {
                 "[light]foreground:lighten(@foreground,30%);" +
                         "[dark]foreground:darken(@foreground,30%)");
 
-        // Tabla con columnas más anchas
-        String[] columns = {"Concepto", "Trim. 1", "Trim. 2", "Trim. 3", "Trim. 4"};
-        Object[][] data = {
-                {"Ingresos", "$120,000", "$135,000", "$142,000", "$160,000"},
-                {"Gastos", "$45,000", "$48,000", "$52,000", "$55,000"},
-                {"Beneficio Bruto", "$75,000", "$87,000", "$90,000", "$105,000"},
-                {"Impuestos", "$18,000", "$21,000", "$23,000", "$26,000"},
-                {"Beneficio Neto Final", "$57,000", "$66,000", "$67,000", "$79,000"},
-                {"Flujo de Caja Operativo", "$49,000", "$58,000", "$60,000", "$72,000"}
-        };
-
-        DefaultTableModel model = new DefaultTableModel(data, columns) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        JTable table = new JTable(model);
-        table.setRowHeight(40);
-        table.putClientProperty(FlatClientProperties.STYLE, ""
+        tablaPrestamos= new JTable();
+        tablaPrestamos.setRowHeight(40);
+        tablaPrestamos.putClientProperty(FlatClientProperties.STYLE, ""
                 + "showHorizontalLines:true;"
                 + "showVerticalLines:true;"
                 + "selectionBackground:@background;"
@@ -65,13 +53,13 @@ public class FinancialReport extends JPanel {
                 + "font:+2");
 
         // Header optimizado para el nuevo ancho
-        JTableHeader header = table.getTableHeader();
+        JTableHeader header = tablaPrestamos.getTableHeader();
         header.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:bold +2;"
                 + "height:40");
 
         // ScrollPane con ancho completo
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(tablaPrestamos);
         scrollPane.putClientProperty(FlatClientProperties.STYLE, ""
                 + "border:7,7,7,7;"
                 + "background:@background;");
@@ -97,18 +85,7 @@ public class FinancialReport extends JPanel {
         cmdSapa.setPreferredSize(new Dimension(300, 45));
 
         // ActionListener para el nuevo botón
-        cmdSapa.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                app.view.ReportOptions reportOptions = new ReportOptions();
-                JFrame frame = new JFrame("Datos de reporte");
-                frame.setContentPane(reportOptions);
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        });
+        cmdSapa.addActionListener(e -> abrirFormulario());
 
         //ActionListener para boton de exportar
         cmdExport.addActionListener(new ActionListener() {
@@ -118,7 +95,7 @@ public class FinancialReport extends JPanel {
 
                 try {
                     obj = new ExportarExcel();
-                    obj.exportarExcel(table);
+                    obj.exportarExcel(tablaPrestamos);
                 } catch (IOException ex) {
                     System.out.println("Error: " + ex);
                 }
@@ -135,4 +112,30 @@ public class FinancialReport extends JPanel {
 
         add(panel);
     }
+
+    public void llenarTabla(String date) {
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(new Object[]{"Monto", "Interés", "Plazo", "Fecha", "Estado"});
+        for (int i = 0; i < loanController.getLoansByDateRange(user.getId(), date, user).size(); i++) {
+            model.addRow(new Object[]{
+                    loanController.getLoansByDateRange(user.getId(), date, user).get(i).getAmount(),
+                    loanController.getLoansByDateRange(user.getId(), date, user).get(i).getInterestRate(),
+                    loanController.getLoansByDateRange(user.getId(), date, user).get(i).getTerm(),
+                    loanController.getLoansByDateRange(user.getId(), date, user).get(i).getDate(),
+                    loanController.getLoansByDateRange(user.getId(), date, user).get(i).isActive() ? "Activo" : "Inactivo",
+            });
+        }
+        tablaPrestamos.setModel(model);
+    }
+
+    private void abrirFormulario(){
+        app.view.ReportOptions reportOptions = new ReportOptions(this);
+        JFrame frame = new JFrame("Datos de reporte");
+        frame.setContentPane(reportOptions);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    private JTable tablaPrestamos;
 }

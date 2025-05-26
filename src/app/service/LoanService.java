@@ -186,4 +186,17 @@ public class LoanService {
         }
         return 0;
     }
+
+    public List<Loan> searchByDateRange(int userId, String dateRange, UserResponseDTO user) {
+        try {
+            String token = "Bearer " + user.getToken();
+            Response<List<Loan>> response = this.iLoanService.searchLoansByDates(token,userId, dateRange).execute();
+            if (!response.isSuccessful()) {
+                throw new ApiException(ApiErrorUtils.extractErrorMessage(response));
+            }
+            return response.body();
+        } catch (IOException e) {
+            throw new ApiException("Error de conexión");
+        }
+    }
 }
