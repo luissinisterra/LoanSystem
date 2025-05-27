@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 
 
 public class UserService {
-    private String BASE_URL = "http://localhost:8080";
+    private String BASE_URL = "https://loansystem-api.onrender.com/";
     private IUserService apiService;
 
     public UserService() {

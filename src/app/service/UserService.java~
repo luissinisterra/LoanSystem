@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 
 
 public class UserService {
-    private String BASE_URL = "http://localhost:8080";
+    private String BASE_URL = "https://loansystem-api.onrender.com";
     private IUserService apiService;
 
     public UserService() {
@@ -56,9 +56,9 @@ public class UserService {
         }
     }
 
-    public UserResponseDTO updateUser(int id, User user, UserResponseDTO user) {
+    public UserResponseDTO updateUser(int id, User user, UserResponseDTO userRDTO) {
         try {
-            String token = "Bearer " + user.getToken();
+            String token = "Bearer " + userRDTO.getToken();
             Response<UserResponseDTO> response = apiService.updateUser(token, id, user).execute();
 
             if (!response.isSuccessful()) {

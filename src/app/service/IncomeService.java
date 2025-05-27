@@ -33,7 +33,7 @@ public class IncomeService {
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()) // Registra el adaptador
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
-        String BASE_URL = "http://localhost:8080";
+        String BASE_URL = "https://loansystem-api.onrender.com/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))

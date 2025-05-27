@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoanService {
-    private String BASE_URL = "http://localhost:8080";
+    private String BASE_URL = "https://loansystem-api.onrender.com";
     private ILoanService iLoanService;
     private Retrofit retrofit;
 
@@ -173,7 +173,7 @@ public class LoanService {
     }
 
     // Contar préstamos activos
-    public int getActiveLoansCount(User user) {
+    public int getActiveLoansCount(UserResponseDTO user) {
         int activeLoansCount = 0;
         List<Loan> loans = getAllLoans(user);
         if (loans != null) {

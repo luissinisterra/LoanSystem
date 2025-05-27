@@ -33,7 +33,7 @@ public class IncomeService {
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()) // Registra el adaptador
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
-        String BASE_URL = "http://localhost:8080";
+        String BASE_URL = "https://loansystem-api.onrender.com";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -80,7 +80,7 @@ public class IncomeService {
         }
     }
 
-    public IncomeResponseDTO getById(int id, User user) {
+    public IncomeResponseDTO getById(int id, UserResponseDTO user) {
         try {
             String token = "Bearer " + user.getToken();
             Response<IncomeResponseDTO> response = apiService.getIncomeByID(token, id).execute();

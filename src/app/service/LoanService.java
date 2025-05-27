@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoanService {
-    private String BASE_URL = "http://localhost:8080";
+    private String BASE_URL = "https://loansystem-api.onrender.com/";
     private ILoanService iLoanService;
     private Retrofit retrofit;
 
